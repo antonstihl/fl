@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { FormEvent, useEffect, useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [input, setInput] = useState<number | undefined>(0);
+
+  useEffect(() => {
+    setCount(Number(localStorage.getItem("count")) ?? 0);
+  }, []);
+
+  const addInputToCount = (e: any) => {
+    if (input === undefined) {
+      return;
+    }
+    const newCount = count + input;
+    localStorage.setItem("count", newCount.toString());
+    setCount(newCount);
+    setInput(0);
+  };
+
+  const updateInput = (e: any) => {
+    setInput(Number(e.target.value));
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>FL</h1>
+      <form>
+        <label>
+          +
+          <input
+            style={{ marginLeft: 4, marginRight: 4, marginBottom: 12 }}
+            type='number'
+            value={input}
+            onChange={updateInput}
+          ></input>
+        </label>
+        <input
+          type="button"
+          onClick={addInputToCount}
+          value="Add to count"
+        ></input>
+      </form>
+      <div>Sum: {count}</div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
