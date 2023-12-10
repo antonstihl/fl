@@ -10,12 +10,15 @@ function App() {
     setCount(Number(localStorage.getItem("count")) ?? 0);
   }, []);
 
-  const updateCount = (op: (n: number) => number) => (e: any) => {
+  useEffect(() => {
+    localStorage.setItem("count", count.toString());
+  }, [count])
+
+  const updateCount = (op: (n: number) => number) => () => {
     if (input === undefined) {
       return;
     }
     const newCount = op(count);
-    localStorage.setItem("count", newCount.toString());
     setCount(newCount);
     // setInput(1);
   };
@@ -28,21 +31,50 @@ function App() {
     setInput(Number(input.toString() + n.toString()));
   };
 
-  const getButtonCell = (n: number | null) => {
-    return n === null ? (
-      <div></div>
-    ) : (
-      <div className="border-2 border-black  text-center hover:bg-green-500">
-        <button className="w-full" onClick={pressNumberButton(n)}>
+  const pressDeleteButton = () => {
+    setInput(Number(input.toString().slice(0, -1)));
+  };
+  
+  const pressClearButton = () => {
+    setInput(0);
+    setCount(0);
+  };
+
+  const getButtonCell = (n: number | "delete" | "clear") => {
+    if (n === "delete") {
+      return (
+        <div className="border-2 border-black  text-center hover:bg-green-500">
+          <button className="w-full" onClick={pressDeleteButton}>
+            {n}
+          </button>
+        </div>
+      );
+    }
+    if (n === "clear") {
+      return (
+        <div className="border-2 border-black  text-center hover:bg-green-500">
+        <button className="w-full" onClick={pressClearButton}>
           {n}
         </button>
       </div>
-    );
+      )
+    }
+      return (
+        <div className="border-2 border-black  text-center hover:bg-green-500">
+          <button className="w-full" onClick={pressNumberButton(n)}>
+            {n}
+          </button>
+        </div>
+      );
   };
 
   const line = <div className="h-0 border-white border-2 rounded-md w-6"></div>;
-  const arrowLeftUpper = <div className="h-0 border-white border-2 rounded-md w-6 -rotate-45"></div>;
-  const arrowLeftLower = <div className="h-0 border-white border-2 rounded-md w-6 rotate-45"></div>;
+  const arrowLeftUpper = (
+    <div className="h-0 border-white border-2 rounded-md w-6 -rotate-45"></div>
+  );
+  const arrowLeftLower = (
+    <div className="h-0 border-white border-2 rounded-md w-6 rotate-45"></div>
+  );
   return (
     <>
       <div className="flex w-full flex-row">
@@ -58,13 +90,13 @@ function App() {
         <div>
           <div className="py-2 pl-4 text-lg bg-emerald-500 shadow-emerald-500 shadow-md text-white font-mono w-screen">
             <div className="flex flex-row">
-              <button onClick={() => setMenuOpen(m => !m)}>
+              <button onClick={() => setMenuOpen((m) => !m)}>
                 <div className="flex flex-col space-y-1 pr-4">
-                  {!menuOpen && (line)}
-                  {!menuOpen && (line)}
-                  {!menuOpen && (line)}
-                  {menuOpen && (arrowLeftUpper)}
-                  {menuOpen && (arrowLeftLower)}
+                  {!menuOpen && line}
+                  {!menuOpen && line}
+                  {!menuOpen && line}
+                  {menuOpen && arrowLeftUpper}
+                  {menuOpen && arrowLeftLower}
                 </div>
               </button>
               <div className="rotate-3">För</div>
@@ -84,11 +116,11 @@ function App() {
                 onChange={updateInput}
               ></input>
             </form>
-            <div className="mt-2 grid grid-rows-4 grid-cols-3 w-full">
+            <div className="mt-2 grid grid-rows-4 grid-cols-3 w-full gap-1">
               {[1, 2, 3].map((n) => getButtonCell(n))}
               {[4, 5, 6].map((n) => getButtonCell(n))}
               {[7, 8, 9].map((n) => getButtonCell(n))}
-              {[null, 0, null].map((n) => getButtonCell(n))}
+              {["delete", 0, "clear"].map((n) => getButtonCell(n))}
             </div>
             {/* <table className="flex my-1">
           <tr>{[1, 2, 3].map((n) => getButtonCell(n))}</tr>
