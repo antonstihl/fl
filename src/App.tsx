@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Menu from "./components/Menu";
 import Calculator from "./components/Calculator";
+import { Outlet } from "react-router-dom";
 
-function App() {
+const App = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const line = <div className="h-1 bg-white rounded-md w-6"></div>;
@@ -15,7 +16,7 @@ function App() {
   );
   return (
     <>
-      {menuOpen && <Menu />}
+      {menuOpen && <Menu closeMenu={() => setMenuOpen(false)} />}
       <div>
         <div className="py-2 pl-4 text-lg bg-emerald-500 text-white font-mono w-screen h-11">
           <div className="flex flex-row">
@@ -36,10 +37,12 @@ function App() {
             <div className="rotate-6 animate-bounce">👶</div>
           </div>
         </div>
-        <Calculator/>
+        <Outlet  />
+        {/* <Calculator/> */}
+        {/* {props.children} */}
       </div>
     </>
   );
-}
+};
 
 export default App;
