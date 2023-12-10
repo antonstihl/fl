@@ -33,7 +33,7 @@ function App() {
             <div className="-rotate-3">äldra</div>
             <div className="rotate-3">ledighets</div>
             <div className="-rotate-6">projektet</div>
-            <div className="rotate-6">👶</div>
+            <div className="rotate-6 animate-bounce">👶</div>
           </div>
         </div>
         <Calculator/>
