@@ -36,7 +36,9 @@ const App = () => {
             <div className="rotate-6 animate-bounce">👶</div>
           </div>
         </div>
-        <Outlet  />
+        <main>
+          <Outlet />
+        </main>
       </div>
     </>
   );

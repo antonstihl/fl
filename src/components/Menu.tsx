@@ -13,7 +13,7 @@ function Menu({closeMenu}: Props) {
     );
   };
   return (
-    <div className="flex flex-row fixed top-11 h-full">
+    <nav className="flex flex-row fixed top-11 h-full">
       <div className="bg-emerald-500 pt-2 px-2 h-full text-white w-max flex-col space-y-2">
         {getMenuItem("Calendar", "/calendar")}
         {getMenuItem("Calculator", "/calculator")}
@@ -23,7 +23,7 @@ function Menu({closeMenu}: Props) {
         className="flex-grow w-screen h-full bg-black bg-opacity-50 block"
         onClick={closeMenu}
       ></div>
-    </div>
+    </nav>
   );
 }
 
