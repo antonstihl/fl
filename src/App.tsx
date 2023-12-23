@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Menu from "./components/Menu";
-import Calculator from "./components/Calculator";
 import { Outlet } from "react-router-dom";
 
 const App = () => {
@@ -38,8 +37,6 @@ const App = () => {
           </div>
         </div>
         <Outlet  />
-        {/* <Calculator/> */}
-        {/* {props.children} */}
       </div>
     </>
   );

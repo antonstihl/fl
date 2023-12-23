@@ -63,7 +63,7 @@ function Calculator() {
 
     return (
       <div
-        key={n}
+        key={n} 
         className="border-2 border-black  text-center hover:bg-green-500"
       >
         {button}
@@ -75,7 +75,7 @@ function Calculator() {
     return (
       <button
         key={text}
-        className="rounded-full hover:bg-green-500 bg-green-200 border-2 border-black my-2 w-8 h-8"
+        className="rounded-md px-2 hover:bg-green-500 bg-green-200 border-2 border-black my-2"
         onClick={updateCount((x) => op(x))}
       >
         {text}
@@ -94,17 +94,17 @@ function Calculator() {
           onChange={updateInput}
         ></input>
       </form>
-      <div className="mt-2 grid grid-rows-4 grid-cols-3 w-full gap-1">
+      <div className="mt-2 grid grid-rows-4 grid-cols-3 w-full gap-2">
         {[1, 2, 3].map((n) => getButtonCell(n))}
         {[4, 5, 6].map((n) => getButtonCell(n))}
         {[7, 8, 9].map((n) => getButtonCell(n))}
         {(["delete", 0, "clear"] as const).map((n) => getButtonCell(n))}
       </div>
       <div className="space-x-2">
-        {getOperationButton("Add", (x) => x + input)}
-        {getOperationButton("Sub", (x) => x - input)}
-        {getOperationButton("Mul", (x) => x * input)}
-        {getOperationButton("Div", (x) => x / input)}
+        {getOperationButton("+", (x) => x + input)}
+        {getOperationButton("–", (x) => x - input)}
+        {getOperationButton("*", (x) => x * input)}
+        {getOperationButton("/", (x) => x / input)}
       </div>
     </div>
   );
