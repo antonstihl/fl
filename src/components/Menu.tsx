@@ -4,16 +4,15 @@ type Props = {
   closeMenu: () => void;
 }
 
-function Menu(props: Props) {
+function Menu({closeMenu}: Props) {
   const getMenuItem = (text: string, path: string) => {
     return (
-      <button className="rounded-md text-left px-2 w-full hover:bg-emerald-700 cursor-pointer">
-        <Link to={path} onClick={() => props.closeMenu()}>{text}</Link>
+      <button className="rounded-md text-left px-2 py-2 w-full hover:bg-emerald-700 cursor-pointer">
+        <Link to={path} onClick={() => closeMenu()}>{text}</Link>
       </button>
     );
   };
   return (
-    // <div className="w-full h-full bg-black bg-opacity-50 block fixed top-11">
     <div className="flex flex-row fixed top-11 h-full">
       <div className="bg-emerald-500 pt-2 px-2 h-full text-white w-max flex-col space-y-2">
         {getMenuItem("Calendar", "/calendar")}
@@ -21,8 +20,8 @@ function Menu(props: Props) {
         {getMenuItem("Help", "/help")}
       </div>
       <div
-        className="flex-grow h-full bg-black bg-opacity-50 block"
-        onClick={props.closeMenu}
+        className="flex-grow w-screen h-full bg-black bg-opacity-50 block"
+        onClick={closeMenu}
       ></div>
     </div>
   );
