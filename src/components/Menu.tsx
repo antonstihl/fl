@@ -1,15 +1,21 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 type Props = {
   closeMenu: () => void;
-}
+};
 
-function Menu({closeMenu}: Props) {
+function Menu({ closeMenu }: Props) {
   const getMenuItem = (text: string, path: string) => {
     return (
-      <button className="rounded-md text-left px-2 py-2 w-full hover:bg-emerald-700 cursor-pointer">
-        <Link to={path} onClick={() => closeMenu()}>{text}</Link>
-      </button>
+      <div className="flex flex-row">
+        <NavLink
+          to={path}
+          onClick={() => closeMenu()}
+          className="rounded-md py-1 px-2 text-left w-full hover:bg-emerald-700"
+        >
+          {text}
+        </NavLink>
+      </div>
     );
   };
   return (
