@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { isDateSelected, popSelectedDate } from "../utils/DateUtilities";
 
 const Months = [
   "Januari",
@@ -60,7 +61,6 @@ function getDateCells(year: number, month: number): DateCell[] {
     d.getDay() !== 1;
     d = new Date(yearOfNextMonth, nextMonth, d.getDate() + 1)
   ) {
-    console.log("d", d, d.getDay());
     dates.push({
       date: d,
       current: false,
@@ -69,27 +69,36 @@ function getDateCells(year: number, month: number): DateCell[] {
   return dates;
 }
 
-const Calendar = () => {
+export type Props = {
+  selectedDates: Date[];
+  setSelectedDates: Dispatch<SetStateAction<Date[]>>;
+};
+
+const Calendar = (props: Props) => {
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
+  const { selectedDates, setSelectedDates } = props;
   const monthName = Months[month];
 
+  console.log(selectedDates);
+
+  const toggleSelectedDate = (date: Date) => {
+    setSelectedDates(popSelectedDate(date, selectedDates));
+  };
+
   const dateButton = (d: DateCell) => {
-    console.log(new Date().toDateString());
-    console.log(d.date.toDateString());
-    if (d.date.toDateString() == new Date().toDateString()) {
-      console.log(d.date);
-      return (
-        <div className="flex justify-center rounded-sm border-2 border-black bg-blue-100 p-2">
-          {d.date.getDate()}
-        </div>
-      );
-    }
+    const isToday = d.date.toDateString() == new Date().toDateString();
+    const isSelected = isDateSelected(d.date, selectedDates);
     if (d.current) {
       return (
-        <div className="flex justify-center rounded-sm border-2 border-black p-2">
+        <button
+          className={`flex justify-center rounded-sm border-2 border-black p-2 ${
+            isToday && "bg-blue-100"
+          } ${isSelected && "bg-green-100"}`}
+          onClick={() => toggleSelectedDate(d.date)}
+        >
           {d.date.getDate()}
-        </div>
+        </button>
       );
     } else {
       return (

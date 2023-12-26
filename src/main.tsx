@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Calculator from "./components/Calculator.tsx";
-import Calendar from "./components/Calendar.tsx";
 import Help from "./components/Help.tsx";
+import CalendarPage from "./pages/CalendarPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "calendar",
-        element: <Calendar />,
+        element: <CalendarPage />,
       },
       {
         path: "calculator",
