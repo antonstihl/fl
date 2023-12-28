@@ -21,9 +21,10 @@ function Menu({ closeMenu }: Props) {
   return (
     <nav className="flex flex-row fixed top-11 h-full">
       <div className="bg-emerald-500 pt-2 px-2 h-full text-white w-max flex-col space-y-2">
-        {getMenuItem("Calendar", "/calendar")}
-        {getMenuItem("Calculator", "/calculator")}
-        {getMenuItem("Help", "/help")}
+        {getMenuItem("Profil", "/profile")}
+        {getMenuItem("Kalender", "/calendar")}
+        {getMenuItem("Dålig kalkylator", "/calculator")}
+        {getMenuItem("Hjälp", "/help")}
       </div>
       <div
         className="flex-grow w-screen h-full bg-black bg-opacity-50 block"

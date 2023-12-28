@@ -5,12 +5,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Calculator from "./components/Calculator.tsx";
 import Help from "./components/Help.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
+      {
+        path: "profile",
+        element: <ProfilePage />,
+      },
       {
         path: "calendar",
         element: <CalendarPage />,
@@ -33,6 +38,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
