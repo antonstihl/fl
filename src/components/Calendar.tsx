@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { isDateInArray, toggleDateInArray } from "../utils/DateUtilities";
+import {
+  MyDate,
+  convertToMyDate,
+  getDayOfMyDate,
+  isDateInArray,
+  myDatesEqual,
+  toggleDateInArray,
+} from "../utils/DateUtilities";
 
 const Months = [
   "Januari",
@@ -23,7 +30,7 @@ function getDaysInMonth(year: number, month: number) {
 }
 
 type DateCell = {
-  date: Date;
+  date: MyDate;
   current: boolean;
 };
 
@@ -32,24 +39,24 @@ function getDateCells(year: number, month: number): DateCell[] {
   const dates: DateCell[] = [];
   for (let i = 1; i <= daysInMonth; i++) {
     dates.push({
-      date: new Date(year, month, i),
+      date: { year, month, date: i },
       current: true,
     });
   }
   const isJanuary = month === 0;
-  const previousMonth = isJanuary ? 11 : month - 1;
-  const yearOfPreviousMonth = isJanuary ? year - 1 : year;
+  const previousMonth: number = isJanuary ? 11 : month - 1;
+  const yearOfPreviousMonth: number = isJanuary ? year - 1 : year;
   const isDecember = month === 11;
   const nextMonth = isDecember ? 0 : month + 1;
   const yearOfNextMonth = isDecember ? year + 1 : year;
   for (
-    let d = new Date(
-      yearOfPreviousMonth,
-      previousMonth,
-      getDaysInMonth(yearOfPreviousMonth, previousMonth)
-    );
-    d.getDay() > 0;
-    d = new Date(yearOfPreviousMonth, previousMonth, d.getDate() - 1)
+    let d = {
+      year: yearOfPreviousMonth,
+      month: previousMonth,
+      date: getDaysInMonth(yearOfPreviousMonth, previousMonth),
+    };
+    getDayOfMyDate(d) > 0;
+    d = { year: yearOfPreviousMonth, month: previousMonth, date: d.date - 1 }
   ) {
     dates.unshift({
       date: d,
@@ -57,9 +64,9 @@ function getDateCells(year: number, month: number): DateCell[] {
     });
   }
   for (
-    let d = new Date(yearOfNextMonth, nextMonth, 1);
-    d.getDay() !== 1;
-    d = new Date(yearOfNextMonth, nextMonth, d.getDate() + 1)
+    let d = { year: yearOfNextMonth, month: nextMonth, date: 1 };
+    getDayOfMyDate(d) !== 1;
+    d = { year: yearOfNextMonth, month: nextMonth, date: d.date + 1 }
   ) {
     dates.push({
       date: d,
@@ -70,32 +77,36 @@ function getDateCells(year: number, month: number): DateCell[] {
 }
 
 export type Props = {
-  selectedDates: Date[];
-  setSelectedDates: (d: Date[]) => void;
-  allocatedDates: Date[];
+  selectedDates: MyDate[];
+  setSelectedDates: (d: MyDate[]) => void;
+  allocatedDates: MyDate[];
 };
 
 const Calendar = (props: Props) => {
-  const [month, setMonth] = useState(new Date().getMonth());
-  const [year, setYear] = useState(new Date().getFullYear());
+  const today = new Date();
+  const [month, setMonth] = useState(today.getMonth());
+  const [year, setYear] = useState(today.getFullYear());
   const { selectedDates, setSelectedDates, allocatedDates } = props;
   const monthName = Months[month];
 
-  const toggleSelectedDate = (date: Date) => {
+  const toggleSelectedDate = (date: MyDate) => {
     setSelectedDates(toggleDateInArray(date, selectedDates));
   };
 
   const dateButton = (d: DateCell) => {
-    const isToday = d.date.toDateString() == new Date().toDateString();
+    const isToday = myDatesEqual(convertToMyDate(today), d.date);
     const isSelected = isDateInArray(d.date, selectedDates);
     const isAllocated = isDateInArray(d.date, allocatedDates);
-    const dateButtonClasses = "flex items-end justify-between flex-col rounded-sm border-2 h-12";
+    const dateButtonClasses =
+      "flex items-end justify-between flex-col rounded-sm border-2 h-12";
     const whiteBorderClasses = "border-white border-4 rounded-sm";
     if (d.current) {
       return (
-        <div className={whiteBorderClasses}>
+        <div
+          key={`${d.date.year}+${d.date.month}+${d.date.date}`}
+          className={whiteBorderClasses}
+        >
           <button
-            key={d.date.toDateString()}
             className={`${dateButtonClasses} border-black`}
             onClick={() => toggleSelectedDate(d.date)}
           >
@@ -110,9 +121,7 @@ const Calendar = (props: Props) => {
             -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
               />
               <div className="flex justify-end w-4 pr-1">
-                <div>
-                  {isToday ? <u>{d.date.getDate()}</u> : d.date.getDate()}
-                </div>
+                <div>{isToday ? <u>{d.date.date}</u> : d.date.date}</div>
               </div>
             </div>
             {isAllocated && <div className="h-2 w-full bg-green-500" />}
@@ -121,12 +130,12 @@ const Calendar = (props: Props) => {
       );
     } else {
       return (
-        <div className={whiteBorderClasses}>
-          <div
-            key={d.date.toDateString()}
-            className={`${dateButtonClasses} border-gray-400 text-gray-400`}
-          >
-            {d.date.getDate()}
+        <div
+          key={`${d.date.year}+${d.date.month}+${d.date.date}`}
+          className={whiteBorderClasses}
+        >
+          <div className={`${dateButtonClasses} border-gray-400 text-gray-400`}>
+            {d.date.date}
           </div>
         </div>
       );

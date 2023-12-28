@@ -1,8 +1,8 @@
-import { toggleDateInArray } from "../utils/DateUtilities";
+import { MyDate, convertToDate, toggleDateInArray } from "../utils/DateUtilities";
 
 export type Props = {
-  selectedDates: Date[];
-  setSelectedDates: (dates: Date[]) => void;
+  selectedDates: MyDate[];
+  setSelectedDates: (dates: MyDate[]) => void;
   saveDates: () => void;
 };
 
@@ -17,10 +17,10 @@ export default function SelectedDatesList({
         {selectedDates.length === 0
           ? "Inga datum valda."
           : selectedDates
-              .sort((a, b) => a.getTime() - b.getTime())
+              .sort((a, b) => convertToDate(a).getTime() - convertToDate(b).getTime())
               .map((sd) => (
                 <div
-                  key={sd.toDateString()}
+                  key={sd.year + sd.month + sd.date}
                   className="flex justify-between items-center p-1 border-black border-2 rounded-md"
                 >
                   <button
@@ -31,7 +31,7 @@ export default function SelectedDatesList({
                   >
                     -
                   </button>
-                  <div>{sd.toDateString()}</div>
+                  <div>{`${sd.year}-${sd.month}-${sd.date}`}</div>
                 </div>
               ))}
         <div className="flex justify-center">

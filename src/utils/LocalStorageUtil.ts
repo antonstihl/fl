@@ -1,4 +1,6 @@
-export function getSelectedDatesFromLocalStorage(): Date[] {
+import { MyDate } from "./DateUtilities";
+
+export function getSelectedDatesFromLocalStorage(): MyDate[] {
   const localStorageData = localStorage.getItem("selectedDates");
   if (localStorageData === null) {
     return [];
@@ -10,16 +12,16 @@ export function getSelectedDatesFromLocalStorage(): Date[] {
     return [];
   }
   if (Array.isArray(selectedDatesFromLocalStorage)) {
-    return selectedDatesFromLocalStorage.map((sds) => new Date(sds));
+    selectedDatesFromLocalStorage;
   }
   return [];
 }
 
-export function setSelectedDatesLocalStorage(dates: Date[]) {
+export function setSelectedDatesLocalStorage(dates: MyDate[]) {
   localStorage.setItem("selectedDates", JSON.stringify(dates));
 }
 
-export function getAllocatedDatesFromLocalStorage(): Date[] {
+export function getAllocatedDatesFromLocalStorage(): MyDate[] {
   const localStorageData = localStorage.getItem("allocatedDates");
   if (localStorageData === null) {
     return [];
@@ -31,11 +33,11 @@ export function getAllocatedDatesFromLocalStorage(): Date[] {
     return [];
   }
   if (Array.isArray(allocatedDatesFromLocalStorage)) {
-    return allocatedDatesFromLocalStorage.map((sds) => new Date(sds));
+    return allocatedDatesFromLocalStorage;
   }
   return [];
 }
 
-export function setAllocatedDatesLocalStorage(dates: Date[]) {
+export function setAllocatedDatesLocalStorage(dates: MyDate[]) {
   localStorage.setItem("allocatedDates", JSON.stringify(dates));
 }
