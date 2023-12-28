@@ -1,16 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Calculator() {
   const [count, setCount] = useState(0);
   const [input, setInput] = useState<number>(0);
-
-  useEffect(() => {
-    setCount(Number(localStorage.getItem("count")) ?? 0);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("count", count.toString());
-  }, [count]);
 
   const updateCount = (op: (n: number) => number) => () => {
     if (input === undefined) {
@@ -63,7 +55,7 @@ function Calculator() {
 
     return (
       <div
-        key={n} 
+        key={n}
         className="border-2 border-black  text-center hover:bg-green-500"
       >
         {button}
