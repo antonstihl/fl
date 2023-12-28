@@ -71,7 +71,7 @@ function getDateCells(year: number, month: number): DateCell[] {
 
 export type Props = {
   selectedDates: Date[];
-  setSelectedDates: Dispatch<SetStateAction<Date[]>>;
+  setSelectedDates: (d: Date[]) => void;
 };
 
 const Calendar = (props: Props) => {
@@ -79,8 +79,6 @@ const Calendar = (props: Props) => {
   const [year, setYear] = useState(new Date().getFullYear());
   const { selectedDates, setSelectedDates } = props;
   const monthName = Months[month];
-
-  console.log(selectedDates);
 
   const toggleSelectedDate = (date: Date) => {
     setSelectedDates(popSelectedDate(date, selectedDates));
@@ -92,9 +90,10 @@ const Calendar = (props: Props) => {
     if (d.current) {
       return (
         <button
-          className={`flex justify-center rounded-sm border-2 border-black p-2 ${
-            isToday && "bg-blue-100"
-          } ${isSelected && "bg-green-100"}`}
+          key={d.date.toDateString()}
+          className={`flex justify-center rounded-sm ${
+            isToday ? "border-orange-500" : "border-black"
+          } border-2 p-2 ${isSelected && "bg-green-100"}`}
           onClick={() => toggleSelectedDate(d.date)}
         >
           {d.date.getDate()}
@@ -102,7 +101,10 @@ const Calendar = (props: Props) => {
       );
     } else {
       return (
-        <div className="flex justify-center rounded-sm border-2 border-gray-400 text-gray-400 p-2">
+        <div
+          key={d.date.toDateString()}
+          className="flex justify-center rounded-sm border-2 border-gray-400 text-gray-400 p-2"
+        >
           {d.date.getDate()}
         </div>
       );
@@ -164,7 +166,9 @@ const Calendar = (props: Props) => {
       </div>
       <div className="grid grid-cols-7 gap-2">
         {Weekdays.map((weekday) => (
-          <div className="flex justify-center items-center">{weekday}</div>
+          <div key={weekday} className="flex justify-center items-center">
+            {weekday}
+          </div>
         ))}
         {dates.map((date) => dateButton(date))}
       </div>
