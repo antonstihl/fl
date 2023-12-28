@@ -4,10 +4,7 @@ export function isDateInArray(date: Date, selectedDates: Date[]) {
     .find((sd) => sd === date.toDateString());
 }
 
-export function toggleDateInArray(
-  dateToToggle: Date,
-  dates: Date[]
-): Date[] {
+export function toggleDateInArray(dateToToggle: Date, dates: Date[]): Date[] {
   if (!isDateInArray(dateToToggle, dates)) {
     return [...dates, dateToToggle];
   } else {
@@ -20,13 +17,12 @@ export function toggleDateInArray(
   }
 }
 
-export function pushDate(
-  dateToPush: Date,
-  selectedDates: Date[]
-): Date[] {
-  if (!isDateInArray(dateToPush, selectedDates)) {
-    return [...selectedDates, dateToPush];
-  } else {
-    return [...selectedDates];
-  }
+export function pushDates(datesToPush: Date[], selectedDates: Date[]): Date[] {
+  const newSelectedDates = [...selectedDates];
+  datesToPush.forEach((dateToPush) => {
+    if (!isDateInArray(dateToPush, selectedDates)) {
+      newSelectedDates.push(dateToPush);
+    }
+  });
+  return newSelectedDates;
 }

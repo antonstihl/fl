@@ -89,9 +89,7 @@ const Calendar = (props: Props) => {
     const isToday = d.date.toDateString() == new Date().toDateString();
     const isSelected = isDateInArray(d.date, selectedDates);
     const isAllocated = isDateInArray(d.date, allocatedDates);
-    const dateButtonClasses = `flex justify-end pr-1 rounded-sm border-2 h-12 ${
-      isAllocated && "bg-green-100"
-    }`;
+    const dateButtonClasses = "flex items-end justify-between flex-col rounded-sm border-2 h-12";
     const whiteBorderClasses = "border-white border-4 rounded-sm";
     if (d.current) {
       return (
@@ -101,20 +99,23 @@ const Calendar = (props: Props) => {
             className={`${dateButtonClasses} border-black`}
             onClick={() => toggleSelectedDate(d.date)}
           >
-            <div
-              className={`w-0 h-0 
+            <div className="flex justify-end">
+              <div
+                className={`w-0 h-0 
             border-l-[15px] border-l-transparent
             border-b-[15px] ${
               isSelected ? "border-b-green-500" : "border-b-transparent"
             }
             border-r-[15px] border-r-transparent
             -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
-            />
-            <div className="flex justify-end w-4">
-              <div>
-                {isToday ? <u>{d.date.getDate()}</u> : d.date.getDate()}
+              />
+              <div className="flex justify-end w-4 pr-1">
+                <div>
+                  {isToday ? <u>{d.date.getDate()}</u> : d.date.getDate()}
+                </div>
               </div>
             </div>
+            {isAllocated && <div className="h-2 w-full bg-green-500" />}
           </button>
         </div>
       );

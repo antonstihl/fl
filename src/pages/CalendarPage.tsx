@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
 import SelectedDatesList from "../components/SelectedDatesList";
+import { pushDates } from "../utils/DateUtilities";
 import {
   getAllocatedDatesFromLocalStorage,
   getSelectedDatesFromLocalStorage,
+  setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorageUtil";
 
 function CalendarPage() {
@@ -28,8 +30,11 @@ function CalendarPage() {
   };
 
   const saveSelectedDates = () => {
+    setAllocatedDatesLocalStorage(
+      pushDates(selectedDates, getAllocatedDatesFromLocalStorage())
+    );
     updateSelectedDates([]);
-    alert("Aaaand its gone...");
+    setAllocatedDates(getAllocatedDatesFromLocalStorage());
   };
 
   return (
