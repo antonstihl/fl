@@ -87,23 +87,33 @@ const Calendar = (props: Props) => {
   const dateButton = (d: DateCell) => {
     const isToday = d.date.toDateString() == new Date().toDateString();
     const isSelected = isDateInArray(d.date, selectedDates);
+    const dateButtonClasses = "flex justify-end pr-1 rounded-sm border-2 h-12";
     if (d.current) {
       return (
         <button
           key={d.date.toDateString()}
-          className={`flex justify-center rounded-sm ${
+          className={`${dateButtonClasses} ${
             isToday ? "border-orange-500" : "border-black"
-          } border-2 p-2 ${isSelected && "bg-green-100"}`}
+          }`}
           onClick={() => toggleSelectedDate(d.date)}
         >
-          {d.date.getDate()}
+          <div
+            className={`w-0 h-0 
+            border-l-[15px] border-l-transparent
+            border-b-[15px] ${
+              isSelected ? "border-b-green-500" : "border-b-transparent"
+            }
+            border-r-[15px] border-r-transparent
+            -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
+          ></div>
+          <div className="flex justify-end grow">{d.date.getDate()}</div>
         </button>
       );
     } else {
       return (
         <div
           key={d.date.toDateString()}
-          className="flex justify-center rounded-sm border-2 border-gray-400 text-gray-400 p-2"
+          className={`${dateButtonClasses} border-gray-400 text-gray-400`}
         >
           {d.date.getDate()}
         </div>

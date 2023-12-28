@@ -21,7 +21,7 @@ export default function SelectedDatesList({
               .map((sd) => (
                 <div
                   key={sd.toDateString()}
-                  className="flex justify-between p-2 border-black border-2"
+                  className="flex justify-between items-center p-1 border-black border-2 rounded-md"
                 >
                   <button
                     onClick={() =>
