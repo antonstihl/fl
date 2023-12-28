@@ -1,13 +1,21 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
 import SelectedDatesList from "../components/SelectedDatesList";
-import { getSelectedDatesFromLocalStorage } from "../utils/LocalStorageUtil";
+import {
+  getAllocatedDatesFromLocalStorage,
+  getSelectedDatesFromLocalStorage,
+} from "../utils/LocalStorageUtil";
 
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [allocatedDates, setAllocatedDates] = useState<Date[]>([]);
 
   useEffect(() => {
     setSelectedDates(getSelectedDatesFromLocalStorage());
+  }, []);
+
+  useEffect(() => {
+    setAllocatedDates(getAllocatedDatesFromLocalStorage());
   }, []);
 
   const updateSelectedDates = (dates: Date[]) => {
@@ -31,6 +39,7 @@ function CalendarPage() {
           <Calendar
             selectedDates={selectedDates}
             setSelectedDates={updateSelectedDates}
+            allocatedDates={allocatedDates}
           />
           <div className="flex flex-col border-black border-2">
             <div className="flex justify-end m-2">

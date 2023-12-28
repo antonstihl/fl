@@ -72,12 +72,13 @@ function getDateCells(year: number, month: number): DateCell[] {
 export type Props = {
   selectedDates: Date[];
   setSelectedDates: (d: Date[]) => void;
+  allocatedDates: Date[];
 };
 
 const Calendar = (props: Props) => {
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
-  const { selectedDates, setSelectedDates } = props;
+  const { selectedDates, setSelectedDates, allocatedDates } = props;
   const monthName = Months[month];
 
   const toggleSelectedDate = (date: Date) => {
@@ -87,7 +88,10 @@ const Calendar = (props: Props) => {
   const dateButton = (d: DateCell) => {
     const isToday = d.date.toDateString() == new Date().toDateString();
     const isSelected = isDateInArray(d.date, selectedDates);
-    const dateButtonClasses = "flex justify-end pr-1 rounded-sm border-2 h-12";
+    const isAllocated = isDateInArray(d.date, allocatedDates);
+    const dateButtonClasses = `flex justify-end pr-1 rounded-sm border-2 h-12 ${
+      isAllocated && "bg-green-100"
+    }`;
     if (d.current) {
       return (
         <button
