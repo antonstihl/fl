@@ -1,26 +1,13 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
 import SelectedDatesList from "../components/SelectedDatesList";
+import { getSelectedDatesFromLocalStorage } from "../utils/LocalStorageUtil";
 
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
 
   useEffect(() => {
-    const localStorageData = localStorage.getItem("selectedDates");
-    if (localStorageData === null) {
-      return;
-    }
-    let selectedDatesFromLocalStorage;
-    try {
-      selectedDatesFromLocalStorage = JSON.parse(localStorageData);
-    } catch (e) {
-      return;
-    }
-    if (Array.isArray(selectedDatesFromLocalStorage)) {
-      setSelectedDates(
-        selectedDatesFromLocalStorage.map((sds) => new Date(sds))
-      );
-    }
+    setSelectedDates(getSelectedDatesFromLocalStorage());
   }, []);
 
   const updateSelectedDates = (dates: Date[]) => {
