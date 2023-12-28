@@ -48,7 +48,7 @@ function CalendarPage() {
           <div className="flex flex-col border-black border-2">
             <div className="flex justify-end m-2">
               <button
-                className="border-black rounded-md border-2 px-1 bg-red-300"
+                className="border-black rounded-md border-2 px-1"
                 onClick={clearSelectedDates}
               >
                 Rensa
