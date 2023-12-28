@@ -30,10 +30,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "/calculator",
-  //   element: <Calculator/>
-  // }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
