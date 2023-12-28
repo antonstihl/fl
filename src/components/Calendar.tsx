@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { isDateSelected, popSelectedDate } from "../utils/DateUtilities";
+import { isDateInArray, popSelectedDate } from "../utils/DateUtilities";
 
 const Months = [
   "Januari",
@@ -86,7 +86,7 @@ const Calendar = (props: Props) => {
 
   const dateButton = (d: DateCell) => {
     const isToday = d.date.toDateString() == new Date().toDateString();
-    const isSelected = isDateSelected(d.date, selectedDates);
+    const isSelected = isDateInArray(d.date, selectedDates);
     if (d.current) {
       return (
         <button

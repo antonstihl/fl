@@ -4,12 +4,12 @@ export function isDateInArray(date: Date, selectedDates: Date[]) {
     .find((sd) => sd === date.toDateString());
 }
 
-export function popDate(
+export function popSelectedDate(
   dateToPop: Date,
   selectedDates: Date[]
 ): Date[] {
   if (!isDateInArray(dateToPop, selectedDates)) {
-    return [...selectedDates];
+    return [...selectedDates, dateToPop];
   } else {
     const indexOfDate = selectedDates.findIndex((sd, _) => {
       return sd.toDateString() === dateToPop.toDateString();

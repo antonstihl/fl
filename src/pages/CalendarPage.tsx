@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
-import { popSelectedDate } from "../utils/DateUtilities";
 import SelectedDatesList from "../components/SelectedDatesList";
 
 function CalendarPage() {
