@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { isDateInArray, popSelectedDate } from "../utils/DateUtilities";
+import { isDateInArray, toggleDateInArray } from "../utils/DateUtilities";
 
 const Months = [
   "Januari",
@@ -81,7 +81,7 @@ const Calendar = (props: Props) => {
   const monthName = Months[month];
 
   const toggleSelectedDate = (date: Date) => {
-    setSelectedDates(popSelectedDate(date, selectedDates));
+    setSelectedDates(toggleDateInArray(date, selectedDates));
   };
 
   const dateButton = (d: DateCell) => {

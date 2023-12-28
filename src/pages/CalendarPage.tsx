@@ -32,6 +32,11 @@ function CalendarPage() {
     updateSelectedDates([]);
   };
 
+  const saveSelectedDates = () => {
+    updateSelectedDates([]);
+    alert("Aaaand its gone...");
+  };
+
   return (
     <>
       <div className="p-4">
@@ -52,6 +57,7 @@ function CalendarPage() {
             <SelectedDatesList
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
+              saveDates={saveSelectedDates}
             />
           </div>
         </div>

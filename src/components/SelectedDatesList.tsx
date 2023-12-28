@@ -1,13 +1,15 @@
-import { popSelectedDate } from "../utils/DateUtilities";
+import { toggleDateInArray } from "../utils/DateUtilities";
 
 export type Props = {
   selectedDates: Date[];
   setSelectedDates: (dates: Date[]) => void;
+  saveDates: () => void;
 };
 
 export default function SelectedDatesList({
   selectedDates,
   setSelectedDates: updateSelectedDates,
+  saveDates,
 }: Props) {
   return (
     <>
@@ -23,7 +25,7 @@ export default function SelectedDatesList({
                 >
                   <button
                     onClick={() =>
-                      updateSelectedDates(popSelectedDate(sd, selectedDates))
+                      updateSelectedDates(toggleDateInArray(sd, selectedDates))
                     }
                     className="font-bold border-2 border-black px-2 rounded-md bg-red-300"
                   >
@@ -34,6 +36,7 @@ export default function SelectedDatesList({
               ))}
         <div className="flex justify-center">
           <button
+            onClick={saveDates}
             className={`border-2 border-black rounded-md ${
               selectedDates.length > 0
                 ? "bg-green-200"

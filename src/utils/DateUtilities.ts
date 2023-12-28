@@ -4,17 +4,17 @@ export function isDateInArray(date: Date, selectedDates: Date[]) {
     .find((sd) => sd === date.toDateString());
 }
 
-export function popSelectedDate(
-  dateToPop: Date,
-  selectedDates: Date[]
+export function toggleDateInArray(
+  dateToToggle: Date,
+  dates: Date[]
 ): Date[] {
-  if (!isDateInArray(dateToPop, selectedDates)) {
-    return [...selectedDates, dateToPop];
+  if (!isDateInArray(dateToToggle, dates)) {
+    return [...dates, dateToToggle];
   } else {
-    const indexOfDate = selectedDates.findIndex((sd, _) => {
-      return sd.toDateString() === dateToPop.toDateString();
+    const indexOfDate = dates.findIndex((sd, _) => {
+      return sd.toDateString() === dateToToggle.toDateString();
     });
-    const newSds = [...selectedDates];
+    const newSds = [...dates];
     newSds.splice(indexOfDate, 1);
     return newSds;
   }
