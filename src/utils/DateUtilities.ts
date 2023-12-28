@@ -1,15 +1,15 @@
-export function isDateSelected(date: Date, selectedDates: Date[]) {
+export function isDateInArray(date: Date, selectedDates: Date[]) {
   return !!selectedDates
     .map((selectedDate) => selectedDate.toDateString())
     .find((sd) => sd === date.toDateString());
 }
 
-export function popSelectedDate(
+export function popDate(
   dateToPop: Date,
   selectedDates: Date[]
 ): Date[] {
-  if (!isDateSelected(dateToPop, selectedDates)) {
-    return [...selectedDates, dateToPop];
+  if (!isDateInArray(dateToPop, selectedDates)) {
+    return [...selectedDates];
   } else {
     const indexOfDate = selectedDates.findIndex((sd, _) => {
       return sd.toDateString() === dateToPop.toDateString();
@@ -17,5 +17,16 @@ export function popSelectedDate(
     const newSds = [...selectedDates];
     newSds.splice(indexOfDate, 1);
     return newSds;
+  }
+}
+
+export function pushDate(
+  dateToPush: Date,
+  selectedDates: Date[]
+): Date[] {
+  if (!isDateInArray(dateToPush, selectedDates)) {
+    return [...selectedDates, dateToPush];
+  } else {
+    return [...selectedDates];
   }
 }
