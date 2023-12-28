@@ -92,34 +92,41 @@ const Calendar = (props: Props) => {
     const dateButtonClasses = `flex justify-end pr-1 rounded-sm border-2 h-12 ${
       isAllocated && "bg-green-100"
     }`;
+    const whiteBorderClasses = "border-white border-4 rounded-sm";
     if (d.current) {
       return (
-        <button
-          key={d.date.toDateString()}
-          className={`${dateButtonClasses} ${
-            isToday ? "border-orange-500" : "border-black"
-          }`}
-          onClick={() => toggleSelectedDate(d.date)}
-        >
-          <div
-            className={`w-0 h-0 
+        <div className={whiteBorderClasses}>
+          <button
+            key={d.date.toDateString()}
+            className={`${dateButtonClasses} border-black`}
+            onClick={() => toggleSelectedDate(d.date)}
+          >
+            <div
+              className={`w-0 h-0 
             border-l-[15px] border-l-transparent
             border-b-[15px] ${
               isSelected ? "border-b-green-500" : "border-b-transparent"
             }
             border-r-[15px] border-r-transparent
             -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
-          ></div>
-          <div className="flex justify-end grow">{d.date.getDate()}</div>
-        </button>
+            />
+            <div className="flex justify-end w-4">
+              <div>
+                {isToday ? <u>{d.date.getDate()}</u> : d.date.getDate()}
+              </div>
+            </div>
+          </button>
+        </div>
       );
     } else {
       return (
-        <div
-          key={d.date.toDateString()}
-          className={`${dateButtonClasses} border-gray-400 text-gray-400`}
-        >
-          {d.date.getDate()}
+        <div className={whiteBorderClasses}>
+          <div
+            key={d.date.toDateString()}
+            className={`${dateButtonClasses} border-gray-400 text-gray-400`}
+          >
+            {d.date.getDate()}
+          </div>
         </div>
       );
     }
@@ -178,7 +185,7 @@ const Calendar = (props: Props) => {
           {">"}
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7">
         {Weekdays.map((weekday) => (
           <div key={weekday} className="flex justify-center items-center">
             {weekday}
