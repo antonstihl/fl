@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export type Props = {
   toggleMenu: () => void;
   menuOpen: boolean;
@@ -24,11 +26,15 @@ export default function Header({ toggleMenu, menuOpen }: Props) {
             {menuOpen && leaningLineBottom}
           </div>
         </button>
-        <div className="rotate-3">För</div>
-        <div className="-rotate-3">äldra</div>
-        <div className="rotate-3">ledighets</div>
-        <div className="-rotate-6">projektet</div>
-        <div className="rotate-6 animate-bounce">👶</div>
+        <NavLink to={"calendar"}>
+          <div className="flex flex-row">
+            <div className="rotate-3">För</div>
+            <div className="-rotate-3">äldra</div>
+            <div className="rotate-3">ledighets</div>
+            <div className="-rotate-6">projektet</div>
+            <div className="rotate-6 animate-bounce">👶</div>
+          </div>
+        </NavLink>
       </div>
     </div>
   );
