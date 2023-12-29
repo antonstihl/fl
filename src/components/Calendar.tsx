@@ -118,7 +118,7 @@ const Calendar = (props: Props) => {
   const dates = getDateCells(year, month);
 
   return (
-    <div className="border-black border-2 flex-col items-center w-max p-4">
+    <div className="border-black border-2 flex-col items-center w-max p-4 rounded-md">
       <div className="flex justify-between w-full items-center">
         <button
           onClick={decreaseMonth}

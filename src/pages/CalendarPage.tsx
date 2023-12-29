@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
 import SelectedDatesList from "../components/SelectedDatesList";
-import { MyDate, pushDates } from "../utils/DateUtilities";
+import { MyDate, convertToMyDate, pushDates } from "../utils/DateUtilities";
 import {
   getAllocatedDatesFromLocalStorage,
   getSelectedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorageUtil";
+import DateButton from "../components/DateButton";
 
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
@@ -46,7 +47,7 @@ function CalendarPage() {
             setSelectedDates={updateSelectedDates}
             allocatedDates={allocatedDates}
           />
-          <div className="flex flex-col border-black border-2">
+          <div className="flex flex-col border-black border-2 rounded-md">
             <div className="flex justify-end m-2">
               <button
                 className="border-black rounded-md border-2 px-1"
@@ -63,6 +64,16 @@ function CalendarPage() {
           </div>
         </div>
       </div>
+      {/* <div className="pl-4">
+        <DateButton
+          date={convertToMyDate(new Date())}
+          selected={true}
+          allocated={false}
+          today={false}
+          activeMonth={true}
+          toggleSelectedDate={() => {}}
+        />
+      </div> */}
     </>
   );
 }
