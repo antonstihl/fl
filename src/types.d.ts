@@ -1,5 +1,4 @@
-export type CustomDate = {
-  year: number;
-  month: number;
-  date: number;
+type DateCell = {
+  date: MyDate;
+  current: boolean;
 };

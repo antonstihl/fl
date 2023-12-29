@@ -7,6 +7,7 @@ import {
   myDatesEqual,
   toggleDateInArray,
 } from "../utils/DateUtilities";
+import DateButton from "./DateButton";
 
 const Months = [
   "Januari",
@@ -28,11 +29,6 @@ const Weekdays = ["Mån", "Tis", "Ons", "Tors", "Fre", "Lör", "Sön"];
 function getDaysInMonth(year: number, month: number) {
   return new Date(year, month + 1, 0).getDate();
 }
-
-type DateCell = {
-  date: MyDate;
-  current: boolean;
-};
 
 function getDateCells(year: number, month: number): DateCell[] {
   const daysInMonth = getDaysInMonth(year, month);
@@ -91,55 +87,6 @@ const Calendar = (props: Props) => {
 
   const toggleSelectedDate = (date: MyDate) => {
     setSelectedDates(toggleDateInArray(date, selectedDates));
-  };
-
-  const dateButton = (d: DateCell) => {
-    const isToday = myDatesEqual(convertToMyDate(today), d.date);
-    const isSelected = isDateInArray(d.date, selectedDates);
-    const isAllocated = isDateInArray(d.date, allocatedDates);
-    const dateButtonClasses =
-      "flex items-end justify-between flex-col rounded-sm border-2 h-12";
-    const whiteBorderClasses = "border-white border-4 rounded-sm";
-    if (d.current) {
-      return (
-        <div
-          key={`${d.date.year}+${d.date.month}+${d.date.date}`}
-          className={whiteBorderClasses}
-        >
-          <button
-            className={`${dateButtonClasses} border-black`}
-            onClick={() => toggleSelectedDate(d.date)}
-          >
-            <div className="flex justify-end">
-              <div
-                className={`w-0 h-0 
-            border-l-[15px] border-l-transparent
-            border-b-[15px] ${
-              isSelected ? "border-b-green-500" : "border-b-transparent"
-            }
-            border-r-[15px] border-r-transparent
-            -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
-              />
-              <div className="flex justify-end w-4 pr-1">
-                <div>{isToday ? <u>{d.date.date}</u> : d.date.date}</div>
-              </div>
-            </div>
-            {isAllocated && <div className="h-2 w-full bg-green-500" />}
-          </button>
-        </div>
-      );
-    } else {
-      return (
-        <div
-          key={`${d.date.year}+${d.date.month}+${d.date.date}`}
-          className={whiteBorderClasses}
-        >
-          <div className={`${dateButtonClasses} border-gray-400 text-gray-400`}>
-            {d.date.date}
-          </div>
-        </div>
-      );
-    }
   };
 
   const decreaseMonth = () => {
@@ -201,7 +148,15 @@ const Calendar = (props: Props) => {
             {weekday}
           </div>
         ))}
-        {dates.map((date) => dateButton(date))}
+        {dates.map((dateCell) => (
+          <DateButton
+            dateCell={dateCell}
+            selected={isDateInArray(dateCell.date, selectedDates)}
+            allocated={isDateInArray(dateCell.date, allocatedDates)}
+            today={myDatesEqual(convertToMyDate(today), dateCell.date)}
+            toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}
+          />
+        ))}
       </div>
     </div>
   );
