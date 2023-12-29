@@ -122,7 +122,7 @@ const Calendar = (props: Props) => {
       <div className="flex justify-between w-full items-center pb-4">
         <button
           onClick={decreaseMonth}
-          className="bg-blue-400 rounded-md px-4 h-7 hover:shadow-sm hover:shadow-black shadow-md shadow-black  flex items-center justify-center"
+          className="rounded-md m-2 px-4 py-1 bg-blue-300 hover:bg-blue-400 shadow-sm shadow-black"
         >
           {"<"}
         </button>
@@ -137,7 +137,7 @@ const Calendar = (props: Props) => {
         </div>
         <button
           onClick={increaseMonth}
-          className="bg-blue-400 rounded-md px-4 h-7 hover:shadow-sm hover:shadow-black shadow-md shadow-black  flex items-center justify-center"
+          className="rounded-md m-2 px-4 py-1 bg-blue-300 hover:bg-blue-400 shadow-sm shadow-black"
         >
           {">"}
         </button>

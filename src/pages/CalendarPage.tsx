@@ -57,7 +57,7 @@ function CalendarPage() {
           <div className="flex flex-col border-transparent shadow-sm shadow-black rounded-md">
             <div className="flex justify-start">
               <button
-                className="rounded-md m-2 p-1 shadow-sm shadow-black bg-blue-200"
+                className="rounded-md m-2 px-2 py-1 bg-blue-300 hover:bg-blue-400 shadow-sm shadow-black"
                 onClick={clearSelectedDates}
               >
                 Avmarkera alla
@@ -70,7 +70,7 @@ function CalendarPage() {
             <div className="flex justify-end gap-2 m-3">
               <button
                 onClick={addSelectedDates}
-                className={`bg-green-200 rounded-md px-1 h-7 hover:shadow-sm hover:shadow-black shadow-md shadow-black  flex items-center justify-center ${
+                className={`bg-green-300 rounded-md px-2 py-1 hover:bg-green-400 shadow-sm shadow-black flex items-center justify-center ${
                   selectedDates.length === 0 ? "cursor-not-allowed" : ""
                 }`}
               >
@@ -78,7 +78,7 @@ function CalendarPage() {
               </button>
               <button
                 onClick={removeSelectedDates}
-                className={`bg-red-200 rounded-md px-1 h-7 hover:shadow-sm hover:shadow-black shadow-md shadow-black  flex items-center justify-center ${
+                className={`bg-red-300 rounded-md px-2 py-1 hover:bg-red-400 shadow-sm shadow-black flex items-center justify-center ${
                   selectedDates.length === 0 ? "cursor-not-allowed" : ""
                 }`}
               >
