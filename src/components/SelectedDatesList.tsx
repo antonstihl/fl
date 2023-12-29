@@ -36,7 +36,7 @@ export default function SelectedDatesList({
                   >
                     -
                   </button>
-                  <div>{`${sd.year}-${sd.month}-${String(sd.date).padStart(
+                  <div className="font-mono text-sm">{`${sd.year}-${String(sd.month).padStart(2,"0")}-${String(sd.date).padStart(
                     2,
                     "0"
                   )}`}</div>
