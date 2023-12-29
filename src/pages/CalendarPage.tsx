@@ -54,36 +54,32 @@ function CalendarPage() {
             setSelectedDates={updateSelectedDates}
             allocatedDates={allocatedDates}
           />
-          <div className="flex flex-col border-black border-2 rounded-md">
+          <div className="flex flex-col border-transparent shadow-sm shadow-black rounded-md">
             <div className="flex justify-start">
               <button
-                className="border-black rounded-md border-2 m-2 px-1"
+                className="rounded-md m-2 p-1 shadow-sm shadow-black bg-blue-200"
                 onClick={clearSelectedDates}
               >
-                Rensa
+                Avmarkera alla
               </button>
             </div>
             <SelectedDatesList
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
             />
-            <div className="flex justify-end gap-2 m-2">
+            <div className="flex justify-end gap-2 m-3">
               <button
                 onClick={addSelectedDates}
-                className={`border-2 border-black rounded-md px-1 ${
-                  selectedDates.length > 0
-                    ? "bg-green-200"
-                    : "bg-slate-200 cursor-not-allowed"
+                className={`bg-green-200 rounded-md px-1 h-7 hover:shadow-sm hover:shadow-black shadow-md shadow-black  flex items-center justify-center ${
+                  selectedDates.length === 0 ? "cursor-not-allowed" : ""
                 }`}
               >
                 100%
               </button>
               <button
                 onClick={removeSelectedDates}
-                className={`border-2 border-black rounded-md px-2 ${
-                  selectedDates.length > 0
-                    ? "bg-red-200"
-                    : "bg-slate-200 cursor-not-allowed"
+                className={`bg-red-200 rounded-md px-1 h-7 hover:shadow-sm hover:shadow-black shadow-md shadow-black  flex items-center justify-center ${
+                  selectedDates.length === 0 ? "cursor-not-allowed" : ""
                 }`}
               >
                 Återställ

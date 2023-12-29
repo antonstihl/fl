@@ -118,15 +118,15 @@ const Calendar = (props: Props) => {
   const dates = getDateCells(year, month);
 
   return (
-    <div className="border-black border-2 flex-col items-center w-max p-4 rounded-md">
-      <div className="flex justify-between w-full items-center">
+    <div className="border-transparent shadow-sm shadow-black flex-col items-center w-max p-4 rounded-md">
+      <div className="flex justify-between w-full items-center pb-4">
         <button
           onClick={decreaseMonth}
-          className="border-black bg-green-100 rounded-md border-2 h-full w-12"
+          className="bg-blue-400 rounded-md px-4 h-7 hover:shadow-sm hover:shadow-black shadow-md shadow-black  flex items-center justify-center"
         >
           {"<"}
         </button>
-        <div className="flex flex-col items-center px-4 py-4">
+        <div className="flex flex-col items-center">
           <div>{monthName + " " + year}</div>
           <a
             className="cursor-pointer text-blue-500 text-sm font-mono"
@@ -137,7 +137,7 @@ const Calendar = (props: Props) => {
         </div>
         <button
           onClick={increaseMonth}
-          className="border-black bg-green-100 rounded-md border-2 h-full w-12"
+          className="bg-blue-400 rounded-md px-4 h-7 hover:shadow-sm hover:shadow-black shadow-md shadow-black  flex items-center justify-center"
         >
           {">"}
         </button>

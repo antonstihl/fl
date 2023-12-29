@@ -21,13 +21,13 @@ export default function DateButton({
   const isSelected = selected;
   const isAllocated = allocated;
   const dateButtonClasses =
-    "flex items-end justify-between flex-col rounded-sm border-2 h-12";
+    "flex items-end justify-between flex-col rounded-sm h-12";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
   if (activeMonth) {
     return (
       <div className={whiteBorderClasses}>
         <button
-          className={`${dateButtonClasses} border-black`}
+          className={`${dateButtonClasses} shadow-sm shadow-black`}
           onClick={toggleSelectedDate}
         >
           <div className="flex justify-end">
@@ -35,7 +35,7 @@ export default function DateButton({
               className={`w-0 h-0 
             border-l-[15px] border-l-transparent
             border-b-[15px] ${
-              isSelected ? "border-b-sky-500" : "border-b-transparent"
+              isSelected ? "border-b-blue-300" : "border-b-transparent"
             }
             border-r-[15px] border-r-transparent
             -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
@@ -51,7 +51,9 @@ export default function DateButton({
   } else {
     return (
       <div className={whiteBorderClasses}>
-        <div className={`${dateButtonClasses} border-gray-400 text-gray-400`}>
+        <div
+          className={`${dateButtonClasses} shadow-sm shadow-gray-400 border-gray-400 text-gray-400 pr-1`}
+        >
           {date.date}
         </div>
       </div>

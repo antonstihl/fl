@@ -26,13 +26,13 @@ export default function SelectedDatesList({
               .map((sd) => (
                 <div
                   key={sd.year + sd.month + sd.date}
-                  className="flex justify-between items-center p-1 border-black border-2 rounded-md"
+                  className="flex justify-between items-center p-2 shadow-sm shadow-black rounded-md"
                 >
                   <button
                     onClick={() =>
                       updateSelectedDates(toggleDateInArray(sd, selectedDates))
                     }
-                    className="font-bold border-2 border-black px-2 rounded-md"
+                    className="font-bold px-2 rounded-md shadow-black shadow-sm bg-blue-200"
                   >
                     -
                   </button>
