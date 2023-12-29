@@ -26,7 +26,6 @@ export default function DateButton({
   if (activeMonth) {
     return (
       <div
-        key={`${date.year}+${date.month}+${date.date}`}
         className={whiteBorderClasses}
       >
         <button
@@ -56,7 +55,6 @@ export default function DateButton({
   } else {
     return (
       <div
-        key={`${date.year}+${date.month}+${date.date}`}
         className={whiteBorderClasses}
       >
         <div className={`${dateButtonClasses} border-gray-400 text-gray-400`}>

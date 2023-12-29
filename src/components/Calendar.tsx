@@ -150,6 +150,7 @@ const Calendar = (props: Props) => {
         ))}
         {dates.map((dateCell) => (
           <DateButton
+            key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
             date={dateCell.date}
             selected={isDateInArray(dateCell.date, selectedDates)}
             allocated={isDateInArray(dateCell.date, allocatedDates)}
