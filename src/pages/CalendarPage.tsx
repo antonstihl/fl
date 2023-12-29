@@ -54,7 +54,7 @@ function CalendarPage() {
             setSelectedDates={updateSelectedDates}
             allocatedDates={allocatedDates}
           />
-          <div className="flex flex-col border-transparent shadow-sm shadow-black rounded-md">
+          <div className="flex flex-col border-transparent shadow-sm shadow-black rounded-md p-2">
             <div className="flex justify-start">
               <button
                 className="rounded-md m-2 px-2 py-1 bg-blue-300 hover:bg-blue-400 shadow-sm shadow-black"

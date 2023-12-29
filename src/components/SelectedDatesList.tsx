@@ -32,7 +32,7 @@ export default function SelectedDatesList({
                     onClick={() =>
                       updateSelectedDates(toggleDateInArray(sd, selectedDates))
                     }
-                    className="font-bold px-2 rounded-md shadow-black shadow-sm bg-blue-200"
+                    className="px-2 rounded-md shadow-black shadow-sm bg-blue-200"
                   >
                     -
                   </button>
