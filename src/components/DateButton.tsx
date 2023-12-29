@@ -1,17 +1,20 @@
+import { MyDate } from "../utils/DateUtilities";
 
 export type Props = {
-  dateCell: DateCell;
+  date: MyDate;
   selected: boolean;
   allocated: boolean;
   today: boolean;
+  activeMonth: boolean;
   toggleSelectedDate: () => void;
 };
 
 export default function DateButton({
-  dateCell,
+  date,
   selected,
   allocated,
   today,
+  activeMonth,
   toggleSelectedDate,
 }: Props) {
   const isToday = today;
@@ -20,10 +23,10 @@ export default function DateButton({
   const dateButtonClasses =
     "flex items-end justify-between flex-col rounded-sm border-2 h-12";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
-  if (dateCell.current) {
+  if (activeMonth) {
     return (
       <div
-        key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
+        key={`${date.year}+${date.month}+${date.date}`}
         className={whiteBorderClasses}
       >
         <button
@@ -42,7 +45,7 @@ export default function DateButton({
             />
             <div className="flex justify-end w-4 pr-1">
               <div>
-                {isToday ? <u>{dateCell.date.date}</u> : dateCell.date.date}
+                {isToday ? <u>{date.date}</u> : date.date}
               </div>
             </div>
           </div>
@@ -53,11 +56,11 @@ export default function DateButton({
   } else {
     return (
       <div
-        key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
+        key={`${date.year}+${date.month}+${date.date}`}
         className={whiteBorderClasses}
       >
         <div className={`${dateButtonClasses} border-gray-400 text-gray-400`}>
-          {dateCell.date.date}
+          {date.date}
         </div>
       </div>
     );

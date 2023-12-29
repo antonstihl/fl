@@ -150,10 +150,11 @@ const Calendar = (props: Props) => {
         ))}
         {dates.map((dateCell) => (
           <DateButton
-            dateCell={dateCell}
+            date={dateCell.date}
             selected={isDateInArray(dateCell.date, selectedDates)}
             allocated={isDateInArray(dateCell.date, allocatedDates)}
             today={myDatesEqual(convertToMyDate(today), dateCell.date)}
+            activeMonth={dateCell.current}
             toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}
           />
         ))}
