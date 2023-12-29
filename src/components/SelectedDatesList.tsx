@@ -31,7 +31,7 @@ export default function SelectedDatesList({
                   >
                     -
                   </button>
-                  <div>{`${sd.year}-${sd.month}-${sd.date}`}</div>
+                  <div>{`${sd.year}-${sd.month}-${String(sd.date).padStart(2, "0")}`}</div>
                 </div>
               ))}
         <div className="flex justify-center">
