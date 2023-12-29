@@ -44,15 +44,13 @@ export function toggleDateInArray(
   }
 }
 
-export function pushDates(
-  datesToPush: MyDate[],
-  selectedDates: MyDate[]
+export function toggleAllocatedDates(
+  dates: MyDate[],
+  allocatedDates: MyDate[]
 ): MyDate[] {
-  const newSelectedDates = [...selectedDates];
-  datesToPush.forEach((dateToPush) => {
-    if (!isDateInArray(dateToPush, selectedDates)) {
-      newSelectedDates.push(dateToPush);
-    }
+  let newAllocatedDates = [...allocatedDates];
+  dates.forEach((date) => {
+    newAllocatedDates = toggleDateInArray(date, newAllocatedDates);
   });
-  return newSelectedDates;
+  return newAllocatedDates;
 }
