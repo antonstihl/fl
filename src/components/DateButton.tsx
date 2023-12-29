@@ -25,9 +25,7 @@ export default function DateButton({
   const whiteBorderClasses = "border-white border-4 rounded-sm";
   if (activeMonth) {
     return (
-      <div
-        className={whiteBorderClasses}
-      >
+      <div className={whiteBorderClasses}>
         <button
           className={`${dateButtonClasses} border-black`}
           onClick={toggleSelectedDate}
@@ -37,15 +35,13 @@ export default function DateButton({
               className={`w-0 h-0 
             border-l-[15px] border-l-transparent
             border-b-[15px] ${
-              isSelected && !isAllocated ? "border-b-green-500": (isSelected && isAllocated ? "border-b-red-500" : "border-b-transparent")
+              isSelected ? "border-b-sky-500" : "border-b-transparent"
             }
             border-r-[15px] border-r-transparent
             -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
             />
             <div className="flex justify-end w-4 pr-1">
-              <div>
-                {isToday ? <u>{date.date}</u> : date.date}
-              </div>
+              <div>{isToday ? <u>{date.date}</u> : date.date}</div>
             </div>
           </div>
           {isAllocated && <div className="h-2 w-full bg-green-500" />}
@@ -54,9 +50,7 @@ export default function DateButton({
     );
   } else {
     return (
-      <div
-        className={whiteBorderClasses}
-      >
+      <div className={whiteBorderClasses}>
         <div className={`${dateButtonClasses} border-gray-400 text-gray-400`}>
           {date.date}
         </div>

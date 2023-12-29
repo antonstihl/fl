@@ -7,13 +7,11 @@ import {
 export type Props = {
   selectedDates: MyDate[];
   setSelectedDates: (dates: MyDate[]) => void;
-  saveDates: () => void;
 };
 
 export default function SelectedDatesList({
   selectedDates,
   setSelectedDates: updateSelectedDates,
-  saveDates,
 }: Props) {
   return (
     <>
@@ -44,18 +42,6 @@ export default function SelectedDatesList({
                   )}`}</div>
                 </div>
               ))}
-        <div className="flex justify-center">
-          <button
-            onClick={saveDates}
-            className={`border-2 border-black rounded-md ${
-              selectedDates.length > 0
-                ? "bg-green-200"
-                : "bg-slate-200 cursor-not-allowed"
-            }  w-full`}
-          >
-            Spara
-          </button>
-        </div>
       </div>
     </>
   );

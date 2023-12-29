@@ -119,20 +119,6 @@ const Calendar = (props: Props) => {
 
   return (
     <div className="border-black border-2 flex-col items-center w-max p-4 rounded-md">
-      <form className="flex flex-col items-end">
-        <div>
-          <input type="radio" id="add" value="add" name="action" />
-          <label htmlFor="add" className="mx-1">
-            Add
-          </label>
-        </div>
-        <div>
-          <input type="radio" id="remove" value="remove" name="action" />
-          <label htmlFor="remove" className="mx-1">
-            Remove
-          </label>
-        </div>
-      </form>
       <div className="flex justify-between w-full items-center">
         <button
           onClick={decreaseMonth}

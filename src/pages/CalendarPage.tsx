@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
 import SelectedDatesList from "../components/SelectedDatesList";
-import { MyDate, toggleAllocatedDates } from "../utils/DateUtilities";
+import { MyDate, addDates, removeDates } from "../utils/DateUtilities";
 import {
   getAllocatedDatesFromLocalStorage,
   getSelectedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorageUtil";
-
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [allocatedDates, setAllocatedDates] = useState<MyDate[]>([]);
@@ -29,10 +28,19 @@ function CalendarPage() {
     updateSelectedDates([]);
   };
 
-  const saveSelectedDates = () => {
-    setAllocatedDatesLocalStorage(
-      toggleAllocatedDates(selectedDates, allocatedDates)
-    );
+  const addSelectedDates = () => {
+    let updatedAllocatedDates: MyDate[] = [...allocatedDates];
+    updatedAllocatedDates = addDates(selectedDates, allocatedDates);
+    setAllocatedDatesLocalStorage(updatedAllocatedDates);
+    updateSelectedDates([]);
+    setAllocatedDates(getAllocatedDatesFromLocalStorage());
+  };
+
+  const removeSelectedDates = () => {
+    let updatedAllocatedDates: MyDate[] = [...allocatedDates];
+    updatedAllocatedDates = removeDates(selectedDates, allocatedDates);
+    console.log("remove");
+    setAllocatedDatesLocalStorage(updatedAllocatedDates);
     updateSelectedDates([]);
     setAllocatedDates(getAllocatedDatesFromLocalStorage());
   };
@@ -47,9 +55,9 @@ function CalendarPage() {
             allocatedDates={allocatedDates}
           />
           <div className="flex flex-col border-black border-2 rounded-md">
-            <div className="flex justify-end m-2">
+            <div className="flex justify-start">
               <button
-                className="border-black rounded-md border-2 px-1"
+                className="border-black rounded-md border-2 m-2 px-1"
                 onClick={clearSelectedDates}
               >
                 Rensa
@@ -58,8 +66,29 @@ function CalendarPage() {
             <SelectedDatesList
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
-              saveDates={saveSelectedDates}
             />
+            <div className="flex justify-end gap-2 m-2">
+              <button
+                onClick={addSelectedDates}
+                className={`border-2 border-black rounded-md px-1 ${
+                  selectedDates.length > 0
+                    ? "bg-green-200"
+                    : "bg-slate-200 cursor-not-allowed"
+                }`}
+              >
+                100%
+              </button>
+              <button
+                onClick={removeSelectedDates}
+                className={`border-2 border-black rounded-md px-2 ${
+                  selectedDates.length > 0
+                    ? "bg-red-200"
+                    : "bg-slate-200 cursor-not-allowed"
+                }`}
+              >
+                Återställ
+              </button>
+            </div>
           </div>
         </div>
       </div>

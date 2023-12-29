@@ -54,3 +54,26 @@ export function toggleAllocatedDates(
   });
   return newAllocatedDates;
 }
+
+export function addDates(datesToAdd: MyDate[], dates: MyDate[]) {
+  let newDates = [...dates];
+  datesToAdd.forEach((date) => {
+    if (!isDateInArray(date, newDates)) {
+      newDates.push(date);
+    }
+  });
+  return newDates;
+}
+
+export function removeDates(datesToRemove: MyDate[], dates: MyDate[]) {
+  let newDates = [...dates];
+  datesToRemove.forEach((date) => {
+    if (isDateInArray(date, newDates)) {
+      const index = newDates.findIndex((newDate, _) =>
+        myDatesEqual(newDate, date)
+      );
+      newDates.splice(index, 1);
+    }
+  });
+  return newDates;
+}
