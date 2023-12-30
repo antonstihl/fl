@@ -153,7 +153,7 @@ const Calendar = (props: Props) => {
             key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
             date={dateCell.date}
             selected={isDateInArray(dateCell.date, selectedDates)}
-            allocated={isDateInArray(dateCell.date, allocatedDates)}
+            allocated={isDateInArray(dateCell.date, allocatedDates) ? 0.75 : 0}
             today={myDatesEqual(convertToMyDate(today), dateCell.date)}
             activeMonth={dateCell.current}
             toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}
