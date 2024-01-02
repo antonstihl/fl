@@ -76,7 +76,7 @@ function Calculator() {
   };
 
   return (
-    <div className="border-black ml-4 mt-4 p-2 rounded-md border-2 flex w-max flex-col items-center">
+    <div className="border-black ml-4 mt-4 p-2 rounded-md border-2 flex w-max flex-col items-center hover:animate-bounce">
       <div className="justify-center">{count}</div>
       <form>
         <input
