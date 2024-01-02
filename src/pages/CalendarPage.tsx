@@ -76,7 +76,7 @@ function CalendarPage() {
               >
                 100%
               </Button>
-              <Button onClick={removeSelectedDates}>Återställ</Button>
+              <Button onClick={removeSelectedDates}>Ta bort</Button>
             </div>
           </div>
         </div>
@@ -86,6 +86,38 @@ function CalendarPage() {
           date={convertToMyDate(new Date())}
           selected={false}
           allocated={1}
+          today={false}
+          activeMonth={true}
+          toggleSelectedDate={() => {}}
+        />{" "}
+        <DateButton
+          date={convertToMyDate(new Date())}
+          selected={false}
+          allocated={0}
+          today={false}
+          activeMonth={true}
+          toggleSelectedDate={() => {}}
+        />{" "}
+        <DateButton
+          date={convertToMyDate(new Date())}
+          selected={false}
+          allocated={0.75}
+          today={false}
+          activeMonth={true}
+          toggleSelectedDate={() => {}}
+        />
+        <DateButton
+          date={convertToMyDate(new Date())}
+          selected={false}
+          allocated={0.5}
+          today={false}
+          activeMonth={true}
+          toggleSelectedDate={() => {}}
+        />
+        <DateButton
+          date={convertToMyDate(new Date())}
+          selected={false}
+          allocated={0.25}
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}

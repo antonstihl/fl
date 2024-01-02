@@ -8,13 +8,16 @@ export default function Button({
   variant = "secondary",
   ...props
 }: ButtonProps) {
-  const colorStyle =
-    variant === "primary"
-      ? "bg-green-300"
-      : variant === "secondary"
-      ? "bg-white"
-      : "";
-  const hoverColorStyle = colorStyle.slice(0, colorStyle.length - 3) + "400";
+  let variantStyle;
+  switch (variant) {
+    case "primary":
+      variantStyle =
+        "text-slate-200 bg-green-700 hover:bg-green-900 shadow-black shadow-md active:shadow-sm active:shadow-black";
+      break;
+    case "secondary":
+      variantStyle =
+        "bg-white shadow-black hover:bg-green-700 hover:text-slate-200 shadow-md active:shadow-sm active:shadow-black";
+  }
   const shadowStyle =
     variant === "primary"
       ? "shadow-black shadow-md active:shadow-sm active:shadow-black"
@@ -22,7 +25,7 @@ export default function Button({
 
   return (
     <button
-      className={`${colorStyle} rounded-md border-black px-2 py-1 hover:${hoverColorStyle} ${shadowStyle} flex items-center justify-center ${
+      className={`${variantStyle} rounded-md border-black px-2 py-1 ${shadowStyle} flex items-center justify-center ${
         props.disabled ? "cursor-not-allowed" : ""
       }`}
       {...props}

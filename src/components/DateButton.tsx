@@ -3,14 +3,16 @@ import { MyDate } from "../utils/DateUtilities";
 export type Props = {
   date: MyDate;
   selected: boolean;
-  allocated: number;
+  allocated?: number;
   today: boolean;
   activeMonth: boolean;
   toggleSelectedDate: () => void;
 };
 
-function getAllocationBarWidthStyle(allocation: number) {
-  if (allocation < 0.25) {
+function getAllocationBarWidthStyle(allocation?: number) {
+  if (!allocation) {
+    return "";
+  } else if (allocation < 0.25) {
     return "w-0";
   } else if (allocation >= 0.25 && allocation < 0.5) {
     return "w-1/4";
@@ -56,7 +58,20 @@ export default function DateButton({
               <div>{today ? <p>{date.date}</p> : date.date}</div>
             </div>
           </div>
-          <div className={`h-2 ${allocationBarWidthStyle} bg-green-500`} />
+          {!!allocated && (
+            <div className="flex flex-col align-bottom w-full">
+              <div
+                className={`h-2 border-2 ${
+                  !!allocated && "border-green-700"
+                } ${allocationBarWidthStyle} bg-white rounded-sm`}
+              />{" "}
+              <div
+                className={`h-2 border-2 ${
+                  !!allocated && "border-amber-700"
+                } ${allocationBarWidthStyle} bg-white rounded-sm`}
+              />
+            </div>
+          )}
         </button>
       </div>
     );
