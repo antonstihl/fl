@@ -124,7 +124,7 @@ function CalendarPage() {
             selected={false}
             leaves={[
               { pace: 1, payment: 0.75 },
-              { pace: 0.5, payment: 0.5 },
+              { pace: 0.5, payment: 0.25 },
             ]}
             today={false}
             activeMonth={true}

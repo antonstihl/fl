@@ -33,7 +33,9 @@ export default function DateButton({
 }: Props) {
   const decoratedLeaves = leaves.map((leave: Leave) => ({
     paceStyle: getAllocationBarWidthStyle(leave.pace),
-    paymentStyle: getAllocationBarWidthStyle(leave.payment),
+    paymentStyle: getAllocationBarWidthStyle(
+      Math.min(leave.payment, leave.pace)
+    ),
   }));
 
   const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12";
@@ -62,13 +64,15 @@ export default function DateButton({
           <div className="flex flex-col gap-0 align-bottom w-full">
             {decoratedLeaves.map((decoratedLeave, index) => {
               return (
-                <div
-                  key={index}
-                  className={`h-2 border-2 bg-white rounded-sm ${"border-green-700"} ${
-                    decoratedLeave.paceStyle
-                  }`}
-                >
-                  {newFunction(decoratedLeave.paymentStyle || "", index)}
+                <div key={index}>
+                  <div
+                    className={`h-2 border-2 bg-white rounded-sm ${"border-green-700"} ${
+                      decoratedLeave.paceStyle
+                    }`}
+                  ></div>
+                  <div
+                    className={`-mt-2 h-2 ${decoratedLeave.paymentStyle} bg-green-700 rounded-sm`}
+                  />
                 </div>
               );
             })}
@@ -86,17 +90,5 @@ export default function DateButton({
         </div>
       </div>
     );
-  }
-
-  function newFunction(widthStyle: string, index: number) {
-    const fullStyle = `h-full ${widthStyle} bg-green-700`;
-    console.log(
-      "c",
-      index,
-      { style: widthStyle },
-      // paymentBarWidthStyles,
-      { fullStyle }
-    );
-    return <div key={index} className={fullStyle} />;
   }
 }
