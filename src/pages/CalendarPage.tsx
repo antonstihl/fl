@@ -61,7 +61,7 @@ function CalendarPage() {
             allocatedDates={allocatedDates}
           />
           <div className="flex flex-col gap-4 border-transparent shadow-sm shadow-black rounded-md px-3 py-4">
-            <div className="flex justify-start">
+            <div className="flex justify-end">
               <Button onClick={clearSelectedDates}>Avmarkera alla</Button>
             </div>
             <SelectedDatesList

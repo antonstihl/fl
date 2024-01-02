@@ -53,7 +53,7 @@ export default function DateButton({
               className={`w-0 h-0 
             border-l-[15px] border-l-transparent
             border-b-[15px] ${
-              selected ? "border-b-blue-300" : "border-b-transparent"
+              selected ? "border-b-black" : "border-b-transparent"
             }
             border-r-[15px] border-r-transparent
             -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
@@ -63,14 +63,17 @@ export default function DateButton({
             </div>
           </div>
           <div className="flex flex-col gap-0 align-bottom w-full">
-            {allocations.map((_, index) => (
-              <div
-                key={index}
-                className={`h-2 border-2 ${"border-" + COLORS[index]} ${
-                  allocationBarWidthStyles[index]
-                } bg-white rounded-sm`}
-              />
-            ))}
+            {allocations.map((_, index) => {
+              console.log("border-" + COLORS[index]);
+              return (
+                <div
+                  key={index}
+                  className={`h-2 border-2 ${"border-" + COLORS[index]} ${
+                    allocationBarWidthStyles[index]
+                  } bg-white rounded-sm`}
+                />
+              );
+            })}
           </div>
         </button>
       </div>

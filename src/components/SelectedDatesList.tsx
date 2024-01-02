@@ -3,6 +3,7 @@ import {
   convertToDate,
   toggleDateInArray,
 } from "../utils/DateUtilities";
+import Button from "./Button";
 
 export type Props = {
   selectedDates: MyDate[];
@@ -32,20 +33,20 @@ export default function SelectedDatesList({
                   }
                   className="flex justify-between items-center p-2 shadow-sm shadow-black rounded-md"
                 >
-                  <button
-                    onClick={() =>
-                      updateSelectedDates(toggleDateInArray(sd, selectedDates))
-                    }
-                    className="px-2 rounded-md shadow-black shadow-sm bg-blue-200"
-                  >
-                    -
-                  </button>
                   <div className="font-mono text-sm">{`${sd.year}-${String(
                     sd.month + 1
                   ).padStart(2, "0")}-${String(sd.date).padStart(
                     2,
                     "0"
                   )}`}</div>
+                  <Button
+                    onClick={() =>
+                      updateSelectedDates(toggleDateInArray(sd, selectedDates))
+                    }
+                    variant={"secondary"}
+                  >
+                    -
+                  </Button>
                 </div>
               ))}
       </div>
