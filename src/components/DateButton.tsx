@@ -17,7 +17,6 @@ export default function DateButton({
   activeMonth,
   toggleSelectedDate,
 }: Props) {
-  console.log(`w-${allocated * 12}/12`);
   const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
   if (activeMonth) {

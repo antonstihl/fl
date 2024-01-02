@@ -46,7 +46,6 @@ function CalendarPage() {
   const removeSelectedDates = () => {
     let updatedAllocatedDates: MyDate[] = [...allocatedDates];
     updatedAllocatedDates = removeDates(selectedDates, allocatedDates);
-    console.log("remove");
     setAllocatedDatesLocalStorage(updatedAllocatedDates);
     updateSelectedDates([]);
     setAllocatedDates(getAllocatedDatesFromLocalStorage());
@@ -61,7 +60,7 @@ function CalendarPage() {
             setSelectedDates={updateSelectedDates}
             allocatedDates={allocatedDates}
           />
-          <div className="flex flex-col border-transparent shadow-sm shadow-black rounded-md p-2">
+          <div className="flex flex-col border-transparent shadow-sm shadow-black rounded-md px-3 py-4">
             <div className="flex justify-start">
               <Button onClick={clearSelectedDates}>Avmarkera alla</Button>
             </div>
@@ -69,7 +68,7 @@ function CalendarPage() {
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
             />
-            <div className="flex justify-end gap-2 m-3">
+            <div className="flex pt-2 justify-end gap-2">
               <Button
                 variant="primary"
                 onClick={addSelectedDates}
