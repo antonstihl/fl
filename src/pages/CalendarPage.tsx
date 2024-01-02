@@ -85,7 +85,7 @@ function CalendarPage() {
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
-          allocated={1}
+          allocations={[1]}
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}
@@ -93,7 +93,7 @@ function CalendarPage() {
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
-          allocated={0}
+          allocations={[0]}
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}
@@ -101,7 +101,7 @@ function CalendarPage() {
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
-          allocated={0.75}
+          allocations={[0.75]}
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}
@@ -109,7 +109,7 @@ function CalendarPage() {
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
-          allocated={0.5}
+          allocations={[0.5, 0.75]}
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}
@@ -117,7 +117,7 @@ function CalendarPage() {
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
-          allocated={0.25}
+          allocations={[0.25]}
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}

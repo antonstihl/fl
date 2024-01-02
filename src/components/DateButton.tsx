@@ -3,7 +3,7 @@ import { MyDate } from "../utils/DateUtilities";
 export type Props = {
   date: MyDate;
   selected: boolean;
-  allocated?: number;
+  allocations: number[];
   today: boolean;
   activeMonth: boolean;
   toggleSelectedDate: () => void;
@@ -28,12 +28,14 @@ function getAllocationBarWidthStyle(allocation?: number) {
 export default function DateButton({
   date,
   selected,
-  allocated,
+  allocations,
   today,
   activeMonth,
   toggleSelectedDate,
 }: Props) {
-  const allocationBarWidthStyle = getAllocationBarWidthStyle(allocated);
+  const allocationBarWidthStyles = allocations?.map((allocation) =>
+    getAllocationBarWidthStyle(allocation)
+  );
 
   const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
@@ -58,20 +60,15 @@ export default function DateButton({
               <div>{today ? <p>{date.date}</p> : date.date}</div>
             </div>
           </div>
-          {!!allocated && (
-            <div className="flex flex-col align-bottom w-full">
+          <div className="flex flex-col gap-0 align-bottom w-full">
+            {allocations.map((_, index) => (
               <div
                 className={`h-2 border-2 ${
-                  !!allocated && "border-green-700"
-                } ${allocationBarWidthStyle} bg-white rounded-sm`}
-              />{" "}
-              <div
-                className={`h-2 border-2 ${
-                  !!allocated && "border-amber-700"
-                } ${allocationBarWidthStyle} bg-white rounded-sm`}
+                  "border-green-700"
+                } ${allocationBarWidthStyles[index]} bg-white rounded-sm`}
               />
-            </div>
-          )}
+            ))}
+          </div>
         </button>
       </div>
     );
