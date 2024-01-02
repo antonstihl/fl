@@ -25,7 +25,11 @@ export default function SelectedDatesList({
               )
               .map((sd) => (
                 <div
-                  key={sd.year + sd.month + sd.date}
+                  key={
+                    sd.year.toString() +
+                    sd.month.toString() +
+                    sd.date.toString()
+                  }
                   className="flex justify-between items-center p-2 shadow-sm shadow-black rounded-md"
                 >
                   <button
@@ -36,7 +40,9 @@ export default function SelectedDatesList({
                   >
                     -
                   </button>
-                  <div className="font-mono text-sm">{`${sd.year}-${String(sd.month).padStart(2,"0")}-${String(sd.date).padStart(
+                  <div className="font-mono text-sm">{`${sd.year}-${String(
+                    sd.month + 1
+                  ).padStart(2, "0")}-${String(sd.date).padStart(
                     2,
                     "0"
                   )}`}</div>
