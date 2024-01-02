@@ -15,7 +15,7 @@ export default function SelectedDatesList({
 }: Props) {
   return (
     <>
-      <div className="flex w-64 flex-col gap-2 justify-end">
+      <div className="flex w-full flex-col gap-2 justify-end">
         {selectedDates.length === 0
           ? "Inga datum valda."
           : selectedDates

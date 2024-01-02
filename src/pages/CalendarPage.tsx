@@ -18,6 +18,8 @@ import Card from "../components/Card";
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [allocatedDates, setAllocatedDates] = useState<MyDate[]>([]);
+  const [leave, setLeave] = useState<number>(1);
+  const [payment, setPayment] = useState<number>(1);
 
   useEffect(() => {
     setSelectedDates(getSelectedDatesFromLocalStorage());
@@ -71,58 +73,106 @@ function CalendarPage() {
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
             />
-            <div className="flex flex-col items-en gap-2">
-              <div className="flex justify-center gap-2">
-                <Button
-                  variant="secondary"
-                  onClick={addSelectedDates}
-                  disabled={selectedDates.length === 0}
-                >
-                  100% m. FP
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={addSelectedDates}
-                  disabled={selectedDates.length === 0}
-                >
-                  75%
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={addSelectedDates}
-                  disabled={selectedDates.length === 0}
-                >
-                  50%
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={addSelectedDates}
-                  disabled={selectedDates.length === 0}
-                >
-                  25%
-                </Button>
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center gap-4">
+                <p>Ledig</p>
+                <div className="flex justify-center gap-0">
+                  <button
+                    className={`rounded-l-md py-1 px-2 shadow-sm shadow-black ${
+                      leave === 1
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-l-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setLeave(1)}
+                  >
+                    100%
+                  </button>
+                  <button
+                    className={`py-1 px-2 shadow-sm shadow-black ${
+                      leave === 0.75
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-r-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setLeave(0.75)}
+                  >
+                    75%
+                  </button>
+                  <button
+                    className={`py-1 px-2 shadow-sm shadow-black ${
+                      leave === 0.5
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-r-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setLeave(0.5)}
+                  >
+                    50%
+                  </button>
+                  <button
+                    className={`rounded-r-md py-1 px-2 shadow-sm shadow-black ${
+                      leave === 0.25
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-r-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setLeave(0.25)}
+                  >
+                    25%
+                  </button>
+                </div>
               </div>
-              <div className="flex justify-center gap-0">
-                <button
-                  className={`rounded-l-md py-1 px-2 shadow-sm shadow-black ${
-                    true
-                      ? "bg-green-700 text-white"
-                      : "bg-white border-2 border-green-700"
-                  }`}
-                  onClick={addSelectedDates}
-                >
-                  100%
-                </button>
-                <button
-                  className={`rounded-r-md py-1 px-2 shadow-sm shadow-black ${
-                    false
-                      ? "bg-green-700 text-white"
-                      : "bg-white border-2 border-green-700"
-                  }`}
-                  onClick={addSelectedDates}
-                >
-                  50%
-                </button>
+              <div className="flex justify-between items-center gap-4">
+                <p>Föräldrapenning</p>
+                <div className="flex justify-center gap-0">
+                  <button
+                    className={`rounded-l-md py-1 px-2 shadow-sm shadow-black ${
+                      payment === 1
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-l-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setPayment(1)}
+                  >
+                    100%
+                  </button>
+                  <button
+                    className={`py-1 px-2 shadow-sm shadow-black ${
+                      payment === 0.75
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-r-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setPayment(0.75)}
+                  >
+                    75%
+                  </button>
+                  <button
+                    className={`py-1 px-2 shadow-sm shadow-black ${
+                      payment === 0.5
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-r-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setPayment(0.5)}
+                  >
+                    50%
+                  </button>
+                  <button
+                    className={`py-1 px-2 shadow-sm shadow-black ${
+                      payment === 0.25
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-r-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setPayment(0.25)}
+                  >
+                    25%
+                  </button>
+                  <button
+                    className={`rounded-r-md py-1 px-2 shadow-sm shadow-black ${
+                      payment === 0
+                        ? "bg-green-700 text-white"
+                        : "bg-white border-r-2 border-y-2 border-green-700"
+                    }`}
+                    onClick={() => setPayment(0)}
+                  >
+                    0%
+                  </button>
+                </div>
               </div>
               <Button variant="primary" onClick={addSelectedDates}>
                 Lägg till
