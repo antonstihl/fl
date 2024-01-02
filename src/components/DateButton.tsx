@@ -9,6 +9,20 @@ export type Props = {
   toggleSelectedDate: () => void;
 };
 
+function getAllocationBarWidthStyle(allocation: number) {
+  if (allocation < 0.25) {
+    return "w-0";
+  } else if (allocation >= 0.25 && allocation < 0.5) {
+    return "w-1/4";
+  } else if (allocation >= 0.5 && allocation < 0.75) {
+    return "w-1/2";
+  } else if (allocation >= 0.75 && allocation < 1) {
+    return "w-3/4";
+  } else if (allocation >= 1) {
+    return "w-full";
+  }
+}
+
 export default function DateButton({
   date,
   selected,
@@ -17,6 +31,9 @@ export default function DateButton({
   activeMonth,
   toggleSelectedDate,
 }: Props) {
+  const allocationBarWidthStyle = getAllocationBarWidthStyle(allocated);
+  console.log(allocationBarWidthStyle, "allocationBarWidthStyle");
+
   const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
   if (activeMonth) {
@@ -40,13 +57,7 @@ export default function DateButton({
               <div>{today ? <p>{date.date}</p> : date.date}</div>
             </div>
           </div>
-          {
-            <div
-              className={`h-2 ${
-                allocated === 1 ? "w-full" : "w-" + allocated * 12 + "/12"
-              }  bg-green-500 -z-10`}
-            />
-          }
+          <div className={`h-2 ${allocationBarWidthStyle} bg-green-500`} />
         </button>
       </div>
     );

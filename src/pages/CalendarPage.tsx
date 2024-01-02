@@ -85,7 +85,7 @@ function CalendarPage() {
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
-          allocated={0.25}
+          allocated={1}
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}
