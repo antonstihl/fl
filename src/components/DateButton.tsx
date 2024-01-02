@@ -32,7 +32,6 @@ export default function DateButton({
   toggleSelectedDate,
 }: Props) {
   const allocationBarWidthStyle = getAllocationBarWidthStyle(allocated);
-  console.log(allocationBarWidthStyle, "allocationBarWidthStyle");
 
   const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
