@@ -119,7 +119,7 @@ const Calendar = (props: Props) => {
   const dates = getDateCells(year, month);
 
   return (
-    <div className="border-transparent shadow-sm shadow-black flex flex-col items-center w-max p-2 rounded-md">
+    <>
       <div className="flex justify-center gap-2 w-full items-center pb-4">
         <Button onClick={decreaseMonth}>{"<"}</Button>
         <div className="flex flex-col items-center w-36">
@@ -153,7 +153,7 @@ const Calendar = (props: Props) => {
           />
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

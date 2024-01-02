@@ -14,6 +14,7 @@ import {
 } from "../utils/LocalStorageUtil";
 import DateButton from "../components/DateButton";
 import Button from "../components/Button";
+import Card from "../components/Card";
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [allocatedDates, setAllocatedDates] = useState<MyDate[]>([]);
@@ -52,15 +53,17 @@ function CalendarPage() {
   };
 
   return (
-    <>
-      <div className="p-4">
-        <div className="flex items-start gap-4">
+    <div className="m-2">
+      <div className="flex items-start gap-4">
+        <Card>
           <Calendar
             selectedDates={selectedDates}
             setSelectedDates={updateSelectedDates}
             allocatedDates={allocatedDates}
           />
-          <div className="flex flex-col gap-4 border-transparent shadow-sm shadow-black rounded-md px-3 py-4">
+        </Card>
+        <Card>
+          <div className="flex flex-col gap-3">
             <div className="flex justify-end">
               <Button onClick={clearSelectedDates}>Avmarkera alla</Button>
             </div>
@@ -79,9 +82,9 @@ function CalendarPage() {
               <Button onClick={removeSelectedDates}>Ta bort</Button>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
-      <div className="pl-4">
+      <Card>
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
@@ -89,7 +92,7 @@ function CalendarPage() {
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}
-        />{" "}
+        />
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
@@ -97,7 +100,7 @@ function CalendarPage() {
           today={false}
           activeMonth={true}
           toggleSelectedDate={() => {}}
-        />{" "}
+        />
         <DateButton
           date={convertToMyDate(new Date())}
           selected={false}
@@ -122,8 +125,8 @@ function CalendarPage() {
           activeMonth={true}
           toggleSelectedDate={() => {}}
         />
-      </div>
-    </>
+      </Card>
+    </div>
   );
 }
 
