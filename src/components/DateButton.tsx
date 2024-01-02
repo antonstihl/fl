@@ -1,18 +1,7 @@
 import { MyDate } from "../utils/DateUtilities";
 
-export type Props = {
-  date: MyDate;
-  selected: boolean;
-  allocations: number[];
-  today: boolean;
-  activeMonth: boolean;
-  toggleSelectedDate: () => void;
-};
-
 function getAllocationBarWidthStyle(allocation?: number) {
-  if (!allocation) {
-    return "";
-  } else if (allocation < 0.25) {
+  if (!allocation || allocation < 0.25) {
     return "w-0";
   } else if (allocation >= 0.25 && allocation < 0.5) {
     return "w-1/4";
@@ -25,19 +14,27 @@ function getAllocationBarWidthStyle(allocation?: number) {
   }
 }
 
-const COLORS = ["green-700", "orange-700", "indigo-700"];
+export type Props = {
+  date: MyDate;
+  selected: boolean;
+  leaves: Leave[];
+  today: boolean;
+  activeMonth: boolean;
+  toggleSelectedDate: () => void;
+};
 
 export default function DateButton({
   date,
   selected,
-  allocations,
+  leaves,
   today,
   activeMonth,
   toggleSelectedDate,
 }: Props) {
-  const allocationBarWidthStyles = allocations?.map((allocation) =>
-    getAllocationBarWidthStyle(allocation)
-  );
+  const decoratedLeaves = leaves.map((leave: Leave) => ({
+    paceStyle: getAllocationBarWidthStyle(leave.pace),
+    paymentStyle: getAllocationBarWidthStyle(leave.payment),
+  }));
 
   const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
@@ -63,14 +60,16 @@ export default function DateButton({
             </div>
           </div>
           <div className="flex flex-col gap-0 align-bottom w-full">
-            {allocations.map((_, index) => {
+            {decoratedLeaves.map((decoratedLeave, index) => {
               return (
                 <div
                   key={index}
-                  className={`h-2 border-2 ${"border-" + COLORS[index]} ${
-                    allocationBarWidthStyles[index]
-                  } bg-white rounded-sm`}
-                />
+                  className={`h-2 border-2 bg-white rounded-sm ${"border-green-700"} ${
+                    decoratedLeave.paceStyle
+                  }`}
+                >
+                  {newFunction(decoratedLeave.paymentStyle || "", index)}
+                </div>
               );
             })}
           </div>
@@ -87,5 +86,17 @@ export default function DateButton({
         </div>
       </div>
     );
+  }
+
+  function newFunction(widthStyle: string, index: number) {
+    const fullStyle = `h-full ${widthStyle} bg-green-700`;
+    console.log(
+      "c",
+      index,
+      { style: widthStyle },
+      // paymentBarWidthStyles,
+      { fullStyle }
+    );
+    return <div key={index} className={fullStyle} />;
   }
 }
