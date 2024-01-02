@@ -16,7 +16,7 @@ export default function Button({
       break;
     case "secondary":
       variantStyle =
-        "bg-white shadow-black hover:bg-green-700 hover:text-slate-200 shadow-md active:shadow-sm active:shadow-black";
+        "bg-white shadow-black hover:bg-green-700 hover:text-slate-200 shadow-md active:shadow-sm active:shadow-black text-black";
   }
   const shadowStyle =
     variant === "primary"

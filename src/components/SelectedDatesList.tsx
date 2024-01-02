@@ -31,7 +31,7 @@ export default function SelectedDatesList({
                     sd.month.toString() +
                     sd.date.toString()
                   }
-                  className="flex justify-between items-center p-2 shadow-sm shadow-black rounded-md"
+                  className="flex bg-black text-white justify-between items-center p-2 shadow-sm shadow-black rounded-md"
                 >
                   <div className="font-mono text-sm">{`${sd.year}-${String(
                     sd.month + 1
