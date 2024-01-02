@@ -64,7 +64,6 @@ export default function DateButton({
           </div>
           <div className="flex flex-col gap-0 align-bottom w-full">
             {allocations.map((_, index) => {
-              console.log("border-" + COLORS[index]);
               return (
                 <div
                   key={index}
