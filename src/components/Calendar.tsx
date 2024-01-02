@@ -125,7 +125,7 @@ const Calendar = (props: Props) => {
         <div className="flex flex-col items-center w-36">
           <div>{monthName + " " + year}</div>
           <a
-            className="cursor-pointer text-green-700 text-sm font-mono"
+            className="cursor-pointer text-green-700 text-sm font-mono select-none"
             onClick={resetMonth}
           >
             {"> "}Idag{" <"}

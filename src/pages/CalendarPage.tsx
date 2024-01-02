@@ -83,49 +83,49 @@ function CalendarPage() {
             </div>
           </div>
         </Card>
+        <Card>
+          <DateButton
+            date={convertToMyDate(new Date())}
+            selected={false}
+            allocations={[1]}
+            today={false}
+            activeMonth={true}
+            toggleSelectedDate={() => {}}
+          />
+          <DateButton
+            date={convertToMyDate(new Date())}
+            selected={false}
+            allocations={[0]}
+            today={false}
+            activeMonth={true}
+            toggleSelectedDate={() => {}}
+          />
+          <DateButton
+            date={convertToMyDate(new Date())}
+            selected={false}
+            allocations={[0.75]}
+            today={false}
+            activeMonth={true}
+            toggleSelectedDate={() => {}}
+          />
+          <DateButton
+            date={convertToMyDate(new Date())}
+            selected={false}
+            allocations={[0.5, 1]}
+            today={false}
+            activeMonth={true}
+            toggleSelectedDate={() => {}}
+          />
+          <DateButton
+            date={convertToMyDate(new Date())}
+            selected={false}
+            allocations={[0.25]}
+            today={false}
+            activeMonth={true}
+            toggleSelectedDate={() => {}}
+          />
+        </Card>
       </div>
-      <Card>
-        <DateButton
-          date={convertToMyDate(new Date())}
-          selected={false}
-          allocations={[1]}
-          today={false}
-          activeMonth={true}
-          toggleSelectedDate={() => {}}
-        />
-        <DateButton
-          date={convertToMyDate(new Date())}
-          selected={false}
-          allocations={[0]}
-          today={false}
-          activeMonth={true}
-          toggleSelectedDate={() => {}}
-        />
-        <DateButton
-          date={convertToMyDate(new Date())}
-          selected={false}
-          allocations={[0.75]}
-          today={false}
-          activeMonth={true}
-          toggleSelectedDate={() => {}}
-        />
-        <DateButton
-          date={convertToMyDate(new Date())}
-          selected={false}
-          allocations={[0.5, 0.75, 0.25]}
-          today={false}
-          activeMonth={true}
-          toggleSelectedDate={() => {}}
-        />
-        <DateButton
-          date={convertToMyDate(new Date())}
-          selected={false}
-          allocations={[0.25]}
-          today={false}
-          activeMonth={true}
-          toggleSelectedDate={() => {}}
-        />
-      </Card>
     </div>
   );
 }

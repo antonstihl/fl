@@ -31,22 +31,22 @@ export default function SelectedDatesList({
                     sd.month.toString() +
                     sd.date.toString()
                   }
-                  className="flex bg-black text-white justify-between items-center p-2 shadow-sm shadow-black rounded-md"
+                  className="flex bg-green-700 text-white justify-between items-center shadow-sm shadow-black rounded-md"
                 >
-                  <div className="font-mono text-sm">{`${sd.year}-${String(
+                  <div className="font-mono text-sm pl-2 py-1">{`${sd.year}-${String(
                     sd.month + 1
                   ).padStart(2, "0")}-${String(sd.date).padStart(
                     2,
                     "0"
                   )}`}</div>
-                  <Button
+                  <button
+                    className="text-white px-3 py-1 hover:bg-green-900 h-full rounded-md"
                     onClick={() =>
                       updateSelectedDates(toggleDateInArray(sd, selectedDates))
                     }
-                    variant={"secondary"}
                   >
-                    -
-                  </Button>
+                    x
+                  </button>
                 </div>
               ))}
       </div>

@@ -53,7 +53,7 @@ export default function DateButton({
               className={`w-0 h-0 
             border-l-[15px] border-l-transparent
             border-b-[15px] ${
-              selected ? "border-b-black" : "border-b-transparent"
+              selected ? "border-b-green-700" : "border-b-transparent"
             }
             border-r-[15px] border-r-transparent
             -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
