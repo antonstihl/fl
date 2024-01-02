@@ -71,13 +71,61 @@ function CalendarPage() {
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
             />
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="primary"
-                onClick={addSelectedDates}
-                disabled={selectedDates.length === 0}
-              >
-                100%
+            <div className="flex flex-col items-en gap-2">
+              <div className="flex justify-center gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={addSelectedDates}
+                  disabled={selectedDates.length === 0}
+                >
+                  100% m. FP
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={addSelectedDates}
+                  disabled={selectedDates.length === 0}
+                >
+                  75%
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={addSelectedDates}
+                  disabled={selectedDates.length === 0}
+                >
+                  50%
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={addSelectedDates}
+                  disabled={selectedDates.length === 0}
+                >
+                  25%
+                </Button>
+              </div>
+              <div className="flex justify-center gap-0">
+                <button
+                  className={`rounded-l-md py-1 px-2 shadow-sm shadow-black ${
+                    true
+                      ? "bg-green-700 text-white"
+                      : "bg-white border-2 border-green-700"
+                  }`}
+                  onClick={addSelectedDates}
+                >
+                  100%
+                </button>
+                <button
+                  className={`rounded-r-md py-1 px-2 shadow-sm shadow-black ${
+                    false
+                      ? "bg-green-700 text-white"
+                      : "bg-white border-2 border-green-700"
+                  }`}
+                  onClick={addSelectedDates}
+                >
+                  50%
+                </button>
+              </div>
+              <Button variant="primary" onClick={addSelectedDates}>
+                Lägg till
               </Button>
               <Button onClick={removeSelectedDates}>Ta bort</Button>
             </div>
