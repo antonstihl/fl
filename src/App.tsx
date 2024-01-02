@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./App.css";
-import NavBar from "./components/NavBar";
+import Menu from "./components/Menu";
 import { Outlet } from "react-router-dom";
-import Header from "./components/Header";
+import NavBar from "./components/NavBar";
 
 const App = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,8 +12,8 @@ const App = () => {
   };
   return (
     <>
-      {menuOpen && <NavBar closeMenu={() => setMenuOpen(false)} />}
-      <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
+      {menuOpen && <Menu closeMenu={() => setMenuOpen(false)} />}
+      <NavBar toggleMenu={toggleMenu} menuOpen={menuOpen} />
       <main>
         <Outlet />
       </main>
