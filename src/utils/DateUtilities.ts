@@ -1,8 +1,4 @@
-export type MyDate = {
-  year: number;
-  month: number;
-  date: number;
-};
+
 
 export function getDayOfMyDate(myDate: MyDate): number {
   return new Date(myDate.year, myDate.month, myDate.date).getDay();

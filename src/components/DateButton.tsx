@@ -1,5 +1,3 @@
-import { MyDate } from "../utils/DateUtilities";
-
 function getAllocationBarWidthStyle(allocation?: number) {
   if (!allocation || allocation < 0.25) {
     return "w-0";
@@ -38,7 +36,8 @@ export default function DateButton({
     ),
   }));
 
-  const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12 select-none";
+  const dateButtonClasses =
+    "flex justify-between flex-col rounded-sm h-12 select-none";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
   if (activeMonth) {
     return (

@@ -1,5 +1,3 @@
-import { MyDate } from "./DateUtilities";
-
 export function getSelectedDatesFromLocalStorage(): MyDate[] {
   const localStorageData = localStorage.getItem("selectedDates");
   if (localStorageData === null) {

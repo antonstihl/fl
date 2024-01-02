@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
 import SelectedDatesList from "../components/SelectedDatesList";
-import {
-  MyDate,
-  addDates,
-  convertToMyDate,
-  removeDates,
-} from "../utils/DateUtilities";
+import { addDates, convertToMyDate, removeDates } from "../utils/DateUtilities";
 import {
   getAllocatedDatesFromLocalStorage,
   getSelectedDatesFromLocalStorage,

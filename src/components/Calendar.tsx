@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  MyDate,
   convertToMyDate,
   getDayOfMyDate,
   isDateInArray,
@@ -76,14 +75,17 @@ function getDateCells(year: number, month: number): DateCell[] {
 export type Props = {
   selectedDates: MyDate[];
   setSelectedDates: (d: MyDate[]) => void;
-  allocatedDates: MyDate[];
+  allocatedDates: MyAllocatedDate[];
 };
 
-const Calendar = (props: Props) => {
+const Calendar = ({
+  selectedDates,
+  setSelectedDates,
+  allocatedDates,
+}: Props) => {
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth());
   const [year, setYear] = useState(today.getFullYear());
-  const { selectedDates, setSelectedDates, allocatedDates } = props;
   const monthName = Months[month];
 
   const toggleSelectedDate = (date: MyDate) => {
