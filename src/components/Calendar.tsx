@@ -8,6 +8,7 @@ import {
   toggleDateInArray,
 } from "../utils/DateUtilities";
 import DateButton from "./DateButton";
+import Button from "./Button";
 
 const Months = [
   "Januari",
@@ -118,15 +119,10 @@ const Calendar = (props: Props) => {
   const dates = getDateCells(year, month);
 
   return (
-    <div className="border-transparent shadow-sm shadow-black flex-col items-center w-max p-2 rounded-md">
-      <div className="flex justify-between w-full items-center pb-4">
-        <button
-          onClick={decreaseMonth}
-          className="rounded-md m-2 px-4 py-1 bg-blue-300 hover:bg-blue-400 shadow-sm shadow-black"
-        >
-          {"<"}
-        </button>
-        <div className="flex flex-col items-center">
+    <div className="border-transparent shadow-sm shadow-black flex flex-col items-center w-max p-2 rounded-md">
+      <div className="flex justify-center gap-2 w-full items-center pb-4">
+        <Button onClick={decreaseMonth}>{"<"}</Button>
+        <div className="flex flex-col items-center w-36">
           <div>{monthName + " " + year}</div>
           <a
             className="cursor-pointer text-blue-500 text-sm font-mono"
@@ -135,12 +131,7 @@ const Calendar = (props: Props) => {
             {"> "}Idag{" <"}
           </a>
         </div>
-        <button
-          onClick={increaseMonth}
-          className="rounded-md m-2 px-4 py-1 bg-blue-300 hover:bg-blue-400 shadow-sm shadow-black"
-        >
-          {">"}
-        </button>
+        <Button onClick={increaseMonth}>{">"}</Button>
       </div>
       <div className="grid grid-cols-7">
         {Weekdays.map((weekday) => (

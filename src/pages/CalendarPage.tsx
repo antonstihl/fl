@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import Calendar from "../components/Calendar";
 import SelectedDatesList from "../components/SelectedDatesList";
-import { MyDate, addDates, convertToMyDate, removeDates } from "../utils/DateUtilities";
+import {
+  MyDate,
+  addDates,
+  convertToMyDate,
+  removeDates,
+} from "../utils/DateUtilities";
 import {
   getAllocatedDatesFromLocalStorage,
   getSelectedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorageUtil";
 import DateButton from "../components/DateButton";
+import Button from "../components/Button";
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [allocatedDates, setAllocatedDates] = useState<MyDate[]>([]);
@@ -57,34 +63,21 @@ function CalendarPage() {
           />
           <div className="flex flex-col border-transparent shadow-sm shadow-black rounded-md p-2">
             <div className="flex justify-start">
-              <button
-                className="rounded-md m-2 px-2 py-1 bg-blue-300 hover:bg-blue-400 shadow-sm shadow-black"
-                onClick={clearSelectedDates}
-              >
-                Avmarkera alla
-              </button>
+              <Button onClick={clearSelectedDates}>Avmarkera alla</Button>
             </div>
             <SelectedDatesList
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
             />
             <div className="flex justify-end gap-2 m-3">
-              <button
+              <Button
+                variant="primary"
                 onClick={addSelectedDates}
-                className={`bg-green-300 rounded-md px-2 py-1 hover:bg-green-400 shadow-sm shadow-black flex items-center justify-center ${
-                  selectedDates.length === 0 ? "cursor-not-allowed" : ""
-                }`}
+                disabled={selectedDates.length === 0}
               >
                 100%
-              </button>
-              <button
-                onClick={removeSelectedDates}
-                className={`bg-red-300 rounded-md px-2 py-1 hover:bg-red-400 shadow-sm shadow-black flex items-center justify-center ${
-                  selectedDates.length === 0 ? "cursor-not-allowed" : ""
-                }`}
-              >
-                Återställ
-              </button>
+              </Button>
+              <Button onClick={removeSelectedDates}>Återställ</Button>
             </div>
           </div>
         </div>
