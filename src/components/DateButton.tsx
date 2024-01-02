@@ -38,7 +38,7 @@ export default function DateButton({
     ),
   }));
 
-  const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12";
+  const dateButtonClasses = "flex justify-between flex-col rounded-sm h-12 select-none";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
   if (activeMonth) {
     return (

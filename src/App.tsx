@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Menu from "./components/Menu";
+import NavBar from "./components/NavBar";
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
 
@@ -12,7 +12,7 @@ const App = () => {
   };
   return (
     <>
-      {menuOpen && <Menu closeMenu={() => setMenuOpen(false)} />}
+      {menuOpen && <NavBar closeMenu={() => setMenuOpen(false)} />}
       <Header toggleMenu={toggleMenu} menuOpen={menuOpen} />
       <main>
         <Outlet />

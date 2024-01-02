@@ -4,7 +4,7 @@ type Props = {
   closeMenu: () => void;
 };
 
-function Menu({ closeMenu }: Props) {
+function NavBar({ closeMenu }: Props) {
   const getMenuItem = (text: string, path: string) => {
     return (
       <div className="flex flex-row">
@@ -34,4 +34,4 @@ function Menu({ closeMenu }: Props) {
   );
 }
 
-export default Menu;
+export default NavBar;
