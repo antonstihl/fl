@@ -25,6 +25,8 @@ function getAllocationBarWidthStyle(allocation?: number) {
   }
 }
 
+const COLORS = ["green-700", "orange-700", "indigo-700"];
+
 export default function DateButton({
   date,
   selected,
@@ -63,9 +65,10 @@ export default function DateButton({
           <div className="flex flex-col gap-0 align-bottom w-full">
             {allocations.map((_, index) => (
               <div
-                className={`h-2 border-2 ${
-                  "border-green-700"
-                } ${allocationBarWidthStyles[index]} bg-white rounded-sm`}
+                key={index}
+                className={`h-2 border-2 ${"border-" + COLORS[index]} ${
+                  allocationBarWidthStyles[index]
+                } bg-white rounded-sm`}
               />
             ))}
           </div>
