@@ -3,7 +3,6 @@ import {
   convertToDate,
   toggleDateInArray,
 } from "../utils/DateUtilities";
-import Button from "./Button";
 
 export type Props = {
   selectedDates: MyDate[];
