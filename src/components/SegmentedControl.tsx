@@ -25,6 +25,7 @@ export default function SegmentedControl({
           isActive(option) ? "bg-green-700 text-white" : "bg-white"
         }`}
         onClick={() => setOptionValue(option.value)}
+        key={option.value}
       >
         {option.label}
       </button>
@@ -38,6 +39,7 @@ export default function SegmentedControl({
           isActive(option) ? "bg-green-700 text-white" : "bg-white"
         }`}
         onClick={() => setOptionValue(option.value)}
+        key={option.value}
       >
         {option.label}
       </button>
@@ -51,6 +53,7 @@ export default function SegmentedControl({
           isActive(option) ? "bg-green-700 text-white" : "bg-white"
         }`}
         onClick={() => setOptionValue(option.value)}
+        key={option.value}
       >
         {option.label}
       </button>

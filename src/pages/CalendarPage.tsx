@@ -110,7 +110,7 @@ function CalendarPage() {
 
   return (
     <div className="m-4 flex flex-col justify-start gap-2">
-      <Card>
+      {/* <Card>
         <div className="flex items-center gap-4">
           <select className="rounded-md p-2" name="child">
             {children.map((c) => (
@@ -121,7 +121,7 @@ function CalendarPage() {
             ))}
           </select>
         </div>
-      </Card>
+      </Card> */}
       <div className="flex items-start gap-4">
         <Card>
           <Calendar
