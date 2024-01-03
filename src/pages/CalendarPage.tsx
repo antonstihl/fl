@@ -109,7 +109,7 @@ function CalendarPage() {
   };
 
   return (
-    <div className="m-2 flex flex-col justify-start gap-2">
+    <div className="m-4 flex flex-col justify-start gap-2">
       <Card>
         <div className="flex items-center gap-4">
           <select className="rounded-md p-2" name="child">

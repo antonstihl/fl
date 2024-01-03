@@ -1,5 +1,13 @@
+import Card from "../components/Card";
+
 function ProfilePage() {
-  return <p className="border-black border-2 m-2 p-2 w-fit">Profile page goes here</p>;
+  return (
+    <div className="m-4">
+      <Card>
+        Profile stuff goes here
+      </Card>
+    </div>
+  );
 }
 
 export default ProfilePage;
