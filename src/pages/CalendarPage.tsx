@@ -76,12 +76,12 @@ function CalendarPage() {
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
             />
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid items-center grid-cols-[35%_65%] gap-2">
               <p>Ledig</p>
               <div className="flex justify-between items-center gap-4">
                 <div className="flex justify-center gap-0">
                   <button
-                    className={`rounded-l-md py-1 px-2 shadow-sm shadow-black ${
+                    className={`rounded-l-md py-1 px-1 shadow-sm shadow-black ${
                       leave === 1
                         ? "bg-green-700 text-white"
                         : "bg-white border-l-2 border-y-2 border-green-700"
@@ -91,7 +91,7 @@ function CalendarPage() {
                     100%
                   </button>
                   <button
-                    className={`py-1 px-2 shadow-sm shadow-black ${
+                    className={`py-1 px-1 shadow-sm shadow-black ${
                       leave === 0.75
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
@@ -101,7 +101,7 @@ function CalendarPage() {
                     75%
                   </button>
                   <button
-                    className={`py-1 px-2 shadow-sm shadow-black ${
+                    className={`py-1 px-1 shadow-sm shadow-black ${
                       leave === 0.5
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
@@ -111,7 +111,7 @@ function CalendarPage() {
                     50%
                   </button>
                   <button
-                    className={`rounded-r-md py-1 px-2 shadow-sm shadow-black ${
+                    className={`rounded-r-md py-1 px-1 shadow-sm shadow-black ${
                       leave === 0.25
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
@@ -126,7 +126,7 @@ function CalendarPage() {
               <div className="flex justify-between items-center gap-4">
                 <div className="flex justify-center gap-0">
                   <button
-                    className={`rounded-l-md py-1 px-2 shadow-sm shadow-black ${
+                    className={`rounded-l-md py-1 px-1 shadow-sm shadow-black ${
                       payment === 1
                         ? "bg-green-700 text-white"
                         : "bg-white border-l-2 border-y-2 border-green-700"
@@ -136,7 +136,7 @@ function CalendarPage() {
                     100%
                   </button>
                   <button
-                    className={`py-1 px-2 shadow-sm shadow-black ${
+                    className={`py-1 px-1 shadow-sm shadow-black ${
                       payment === 0.75
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
@@ -146,7 +146,7 @@ function CalendarPage() {
                     75%
                   </button>
                   <button
-                    className={`py-1 px-2 shadow-sm shadow-black ${
+                    className={`py-1 px-1 shadow-sm shadow-black ${
                       payment === 0.5
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
@@ -156,7 +156,7 @@ function CalendarPage() {
                     50%
                   </button>
                   <button
-                    className={`py-1 px-2 shadow-sm shadow-black ${
+                    className={`py-1 px-1 shadow-sm shadow-black ${
                       payment === 0.25
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
@@ -166,7 +166,7 @@ function CalendarPage() {
                     25%
                   </button>
                   <button
-                    className={`rounded-r-md py-1 px-2 shadow-sm shadow-black ${
+                    className={`rounded-r-md py-1 px-1 shadow-sm shadow-black ${
                       payment === 0
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
@@ -188,6 +188,7 @@ function CalendarPage() {
             </div>
           </div>
         </Card>
+
         {/* <Card>
           <DateButton
             date={convertToMyDate(new Date())}
