@@ -186,7 +186,7 @@ function CalendarPage() {
             </div>
           </div>
         </Card>
-        <Card>
+        {/* <Card>
           <DateButton
             date={convertToMyDate(new Date())}
             selected={false}
@@ -233,7 +233,7 @@ function CalendarPage() {
             activeMonth={true}
             toggleSelectedDate={() => {}}
           />
-        </Card>
+        </Card> */}
       </div>
     </div>
   );
