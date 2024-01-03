@@ -144,25 +144,39 @@ function CalendarPage() {
 
   return (
     <div className="m-4 flex flex-col justify-start gap-2">
+      <div className="w-1/2 gap-2 flex">
+        <Card width="w-full">
+          <select
+            onChange={(e) => setChildId(e.target.value)}
+            className="rounded-md p-2 w-full"
+            name="child"
+            value={childId}
+          >
+            {CHILDREN.map((c) => (
+              <option value={c.id} key={c.id}>{`${c.name} (${diffYearsFloor(
+                new Date(),
+                convertToDate(c.dateOfBirth)
+              )} år)`}</option>
+            ))}
+          </select>
+        </Card>
+        <Card width="w-full">
+          <select
+            onChange={(e) => setParentId(e.target.value)}
+            className="rounded-md p-2 w-full"
+            name="parent"
+            value={parentId}
+          >
+            {PARENTS.map((p) => (
+              <option value={p.id} key={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        </Card>
+      </div>
       <div className="flex items-start gap-4 w-1/2">
         <div className="flex flex-col items-start gap-4">
-          <Card width="w-full">
-            <div className="flex items-center gap-4">
-              <select
-                onChange={(e) => setChildId(e.target.value)}
-                className="rounded-md p-2 w-full"
-                name="child"
-                value={childId}
-              >
-                {CHILDREN.map((c) => (
-                  <option value={c.id} key={c.id}>{`${c.name} (${diffYearsFloor(
-                    new Date(),
-                    convertToDate(c.dateOfBirth)
-                  )} år)`}</option>
-                ))}
-              </select>
-            </div>
-          </Card>
           <Card>
             <Calendar
               selectedDates={selectedDates}
@@ -234,22 +248,6 @@ function CalendarPage() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <Card width="w-full">
-            <div className="flex items-center gap-4">
-              <select
-                onChange={(e) => setParentId(e.target.value)}
-                className="rounded-md p-2 w-full"
-                name="parent"
-                value={parentId}
-              >
-                {PARENTS.map((p) => (
-                  <option value={p.id} key={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </Card>
           <Card>
             <div className="flex flex-col items-center w-max">
               <div className="flex flex-col gap-3">
