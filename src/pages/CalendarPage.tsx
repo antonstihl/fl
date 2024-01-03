@@ -185,7 +185,7 @@ function CalendarPage() {
             />
           </Card>
           <div className="flex gap-2 w-full">
-            <Card width="w-1/2">
+            <Card width="w-1/2" title="Ledighet">
               <div className="ml-2 flex flex-col">
                 <p>
                   <b>{daysWithLeave} dagar</b> föräldraledighet
@@ -206,7 +206,7 @@ function CalendarPage() {
                 <p>25%</p>
               </div>
             </Card>
-            <Card width="w-1/2">
+            <Card width="w-1/2" title="Penning">
               <div>
                 <div className="ml-2 flex flex-col">
                   <p>
