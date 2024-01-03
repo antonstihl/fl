@@ -12,8 +12,8 @@ const App = () => {
   };
   return (
     <>
-      {menuOpen && <Menu closeMenu={() => setMenuOpen(false)} />}
       <NavBar toggleMenu={toggleMenu} menuOpen={menuOpen} />
+      {menuOpen && <Menu closeMenu={() => setMenuOpen(false)} />}
       <main>
         <Outlet />
       </main>

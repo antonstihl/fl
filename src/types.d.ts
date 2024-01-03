@@ -15,3 +15,9 @@ type MyDate = {
 };
 
 type MyAllocatedDate = MyDate & { pace: number; payment: number };
+
+type Child = {
+  name: string;
+  dateOfBirth: MyDate;
+  id: string;
+}
