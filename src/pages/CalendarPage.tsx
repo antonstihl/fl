@@ -8,9 +8,8 @@ import SelectedDatesList from "../components/SelectedDatesList";
 import { addDates, convertToDate, removeDates } from "../utils/DateUtilities";
 import {
   getAllocatedDatesFromLocalStorage,
-  getSelectedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
-} from "../utils/LocalStorageUtil";
+} from "../utils/LocalStorage";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -27,33 +26,41 @@ const paymentOptions: Option[] = [
   { label: "0%", value: 0 },
 ];
 
-// const children: Child[] = [
-//   {
-//     id: "1",
-//     name: "Alfred",
-//     dateOfBirth: { year: 2020, month: 3, date: 14 },
-//   },
-//   {
-//     id: "2",
-//     name: "Alma",
-//     dateOfBirth: { year: 2023, month: 2, date: 30 },
-//   },
-// ];
+const CHILDREN: Child[] = [
+  {
+    id: "1",
+    name: "Alfred",
+    dateOfBirth: { year: 2020, month: 3, date: 14 },
+  },
+  {
+    id: "2",
+    name: "Alma",
+    dateOfBirth: { year: 2023, month: 2, date: 30 },
+  },
+];
+
+const PARENTS: Parent[] = [
+  {
+    id: "1",
+    name: "Simon",
+  },
+  {
+    id: "2",
+    name: "Anna",
+  },
+];
 
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
-  // const [child, setChild] = useState<Child>(children[0]);
+  const [childId, setChildId] = useState(CHILDREN[0].id);
+  const [parentId, setParentId] = useState(PARENTS[0].id);
 
   useEffect(() => {
-    setSelectedDates(getSelectedDatesFromLocalStorage());
-  }, []);
-
-  useEffect(() => {
-    setAllocatedDates(getAllocatedDatesFromLocalStorage());
-  }, []);
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId));
+  }, [childId]);
 
   const updateSelectedDates = (dates: MyDate[]) => {
     setSelectedDates(dates);
@@ -65,14 +72,16 @@ function CalendarPage() {
   };
 
   const addSelectedDates = () => {
+    console.log(allocatedDates.length, { childId });
     const updatedDates: MyDate[] = [...allocatedDates];
     const updatedAllocatedDates: MyAllocatedDate[] = addDates(
       selectedDates,
       updatedDates
     ).map((date) => ({ pace: leave, payment, ...date }));
-    setAllocatedDatesLocalStorage(updatedAllocatedDates);
+    console.log(updatedAllocatedDates.length, { childId });
+    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId);
     updateSelectedDates([]);
-    setAllocatedDates(getAllocatedDatesFromLocalStorage());
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId));
   };
 
   const removeSelectedDates = () => {
@@ -81,9 +90,9 @@ function CalendarPage() {
       selectedDates,
       updatedDates
     ) as MyAllocatedDate[];
-    setAllocatedDatesLocalStorage(updatedAllocatedDates);
+    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId);
     updateSelectedDates([]);
-    setAllocatedDates(getAllocatedDatesFromLocalStorage());
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId));
   };
 
   const updatePayment = (p: number) => {
@@ -109,10 +118,10 @@ function CalendarPage() {
     return day >= 1 && day <= 5;
   };
 
-  // const diffYearsFloor = (d1: Date, d2: Date) => {
-  //   const timeDiff = Math.abs(d1.getTime() - d2.getTime());
-  //   return Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365));
-  // };
+  const diffYearsFloor = (d1: Date, d2: Date) => {
+    const timeDiff = Math.abs(d1.getTime() - d2.getTime());
+    return Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365));
+  };
 
   const daysWithPayment = allocatedDates
     .map((ad) => ad.payment)
@@ -135,20 +144,25 @@ function CalendarPage() {
 
   return (
     <div className="m-4 flex flex-col justify-start gap-2">
-      {/* <Card>
-        <div className="flex items-center gap-4">
-          <select className="rounded-md p-2" name="child">
-            {children.map((c) => (
-              <option key={c.id}>{`${c.name} (${diffYearsFloor(
-                new Date(),
-                convertToDate(c.dateOfBirth)
-              )} år)`}</option>
-            ))}
-          </select>
-        </div>
-      </Card> */}
       <div className="flex items-start gap-4 w-1/2">
         <div className="flex flex-col items-start gap-4">
+          <Card width="w-full">
+            <div className="flex items-center gap-4">
+              <select
+                onChange={(e) => setChildId(e.target.value)}
+                className="rounded-md p-2 w-full"
+                name="child"
+                value={childId}
+              >
+                {CHILDREN.map((c) => (
+                  <option value={c.id} key={c.id}>{`${c.name} (${diffYearsFloor(
+                    new Date(),
+                    convertToDate(c.dateOfBirth)
+                  )} år)`}</option>
+                ))}
+              </select>
+            </div>
+          </Card>
           <Card>
             <Calendar
               selectedDates={selectedDates}
@@ -180,21 +194,21 @@ function CalendarPage() {
             </Card>
             <Card width="w-1/2">
               <div>
-                <p className="ml-2 flex flex-col">
+                <div className="ml-2 flex flex-col">
                   <p>
-                    <p>
-                      <b>{daysWithPayment} dagar</b> med föräldrapenning
-                    </p>
-                    <p></p>
-                    ({((daysWithPayment / 480) * 100).toPrecision(2)}% av{" "}
+                    <b>{daysWithPayment} dagar</b> med föräldrapenning
+                  </p>
+                  <p>
+                    ({`${((daysWithPayment / 480) * 100).toPrecision(2)}% av `}
                     <span
                       className="text-blue-700 font-bold cursor-default"
                       title="390 sjukpenningnivå + 90 lågkostnadsdagar"
                     >
                       480 st
-                    </span>)
-                  </p>{" "}
-                </p>
+                    </span>
+                    )
+                  </p>
+                </div>
               </div>
 
               {/* <div className="translate-x-1 translate-y-0 w-0 h-0 border-l-[15px] border-l-transparent border-b-[15px] border-b-black border-r-[15px] border-r-transparent" /> */}
@@ -219,44 +233,62 @@ function CalendarPage() {
             </Card>
           </div>
         </div>
-        <Card>
-          <div className="flex flex-col items-center w-max">
-            <div className="flex flex-col gap-3">
-              <div className="flex justify-end">
-                <Button variant="delete" onClick={clearSelectedDates}>
-                  Avmarkera alla
-                </Button>
-              </div>
-              <SelectedDatesList
-                selectedDates={selectedDates}
-                setSelectedDates={updateSelectedDates}
-              />
-              {selectedDates.length === 0 && <p>Inga datum valda.</p>}
-              <div className="grid items-center grid-cols-[35%_65%] gap-2">
-                <p>Ledig</p>
-                <SegmentedControl
-                  optionValue={leave}
-                  setOptionValue={updateLeave}
-                  options={leaveOptions}
+        <div className="flex flex-col">
+          <Card width="w-full">
+            <div className="flex items-center gap-4">
+              <select
+                onChange={(e) => setParentId(e.target.value)}
+                className="rounded-md p-2 w-full"
+                name="parent"
+                value={parentId}
+              >
+                {PARENTS.map((p) => (
+                  <option value={p.id} key={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </Card>
+          <Card>
+            <div className="flex flex-col items-center w-max">
+              <div className="flex flex-col gap-3">
+                <div className="flex justify-end">
+                  <Button variant="delete" onClick={clearSelectedDates}>
+                    Avmarkera alla
+                  </Button>
+                </div>
+                <SelectedDatesList
+                  selectedDates={selectedDates}
+                  setSelectedDates={updateSelectedDates}
                 />
-                <p>Föräldrapenning</p>
-                <SegmentedControl
-                  optionValue={payment}
-                  setOptionValue={updatePayment}
-                  options={paymentOptions}
-                />
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button variant="primary" onClick={addSelectedDates}>
-                  Uppdatera
-                </Button>
-                <Button variant="delete" onClick={removeSelectedDates}>
-                  Ta bort
-                </Button>
+                {selectedDates.length === 0 && <p>Inga datum valda.</p>}
+                <div className="grid items-center grid-cols-[35%_65%] gap-2">
+                  <p>Ledig</p>
+                  <SegmentedControl
+                    optionValue={leave}
+                    setOptionValue={updateLeave}
+                    options={leaveOptions}
+                  />
+                  <p>Föräldrapenning</p>
+                  <SegmentedControl
+                    optionValue={payment}
+                    setOptionValue={updatePayment}
+                    options={paymentOptions}
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="primary" onClick={addSelectedDates}>
+                    Uppdatera
+                  </Button>
+                  <Button variant="delete" onClick={removeSelectedDates}>
+                    Ta bort
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
     </div>
   );
