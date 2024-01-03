@@ -54,6 +54,9 @@ export function addDates(datesToAdd: MyDate[], dates: MyDate[]) {
   datesToAdd.forEach((date) => {
     if (!isDateInArray(date, newDates)) {
       newDates.push(date);
+    } else {
+      newDates = removeDates([date], newDates);
+      newDates.push(date);
     }
   });
   return newDates;

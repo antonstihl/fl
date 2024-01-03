@@ -1,4 +1,4 @@
-export type Variant = "primary" | "secondary";
+export type Variant = "primary" | "secondary" | "delete";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -17,6 +17,10 @@ export default function Button({
     case "secondary":
       variantStyle =
         "bg-white shadow-black hover:bg-green-700 hover:text-slate-200 shadow-md active:shadow-sm active:shadow-black text-black";
+      break;
+    case "delete":
+      variantStyle =
+        "bg-white shadow-black hover:bg-red-800 hover:text-slate-200 shadow-md active:shadow-sm active:shadow-black text-black";
   }
   const shadowStyle =
     variant === "primary"

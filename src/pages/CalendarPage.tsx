@@ -68,7 +68,9 @@ function CalendarPage() {
         <Card>
           <div className="flex flex-col gap-3">
             <div className="flex justify-end">
-              <Button onClick={clearSelectedDates}>Avmarkera alla</Button>
+              <Button variant="delete" onClick={clearSelectedDates}>
+                Avmarkera alla
+              </Button>
             </div>
             <SelectedDatesList
               selectedDates={selectedDates}
@@ -176,9 +178,11 @@ function CalendarPage() {
                 </div>
               </div>
               <Button variant="primary" onClick={addSelectedDates}>
-                Lägg till
+                Uppdatera
               </Button>
-              <Button onClick={removeSelectedDates}>Ta bort</Button>
+              <Button variant="delete" onClick={removeSelectedDates}>
+                Ta bort
+              </Button>
             </div>
           </div>
         </Card>
