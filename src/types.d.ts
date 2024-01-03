@@ -20,9 +20,10 @@ type Child = {
   name: string;
   dateOfBirth: MyDate;
   id: string;
-}
+};
 
 type Parent = {
   name: string;
   id: string;
-}
+  color: "green" | "red" | "blue";
+};

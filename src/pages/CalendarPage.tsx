@@ -1,5 +1,6 @@
 import { getDay } from "date-fns";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import Card from "../components/Card";
@@ -43,10 +44,12 @@ const PARENTS: Parent[] = [
   {
     id: "1",
     name: "Simon",
+    color: "red",
   },
   {
     id: "2",
     name: "Anna",
+    color: "green",
   },
 ];
 
@@ -55,8 +58,13 @@ function CalendarPage() {
   const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
-  const [childId, setChildId] = useState(CHILDREN[0].id);
-  const [parentId, setParentId] = useState(PARENTS[0].id);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [childId, setChildId] = useState(
+    searchParams.get("child") || CHILDREN[0].id
+  );
+  const [parentId, setParentId] = useState(
+    searchParams.get("parent") || PARENTS[0].id
+  );
 
   useEffect(() => {
     setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parentId));
@@ -113,6 +121,18 @@ function CalendarPage() {
     }
   };
 
+  const updateChildId = (childId: string) => {
+    setChildId(childId);
+    searchParams.set("child", childId);
+    setSearchParams(searchParams);
+  };
+
+  const updateParentId = (parentId: string) => {
+    setParentId(parentId);
+    searchParams.set("parent", parentId);
+    setSearchParams(searchParams);
+  };
+
   const isWeekday = (date: Date) => {
     const day = getDay(date);
     return day >= 1 && day <= 5;
@@ -147,7 +167,7 @@ function CalendarPage() {
       <div className="w-1/2 gap-2 flex">
         <Card width="w-full">
           <select
-            onChange={(e) => setChildId(e.target.value)}
+            onChange={(e) => updateChildId(e.target.value)}
             className="rounded-md p-2 w-full"
             name="child"
             value={childId}
@@ -162,7 +182,7 @@ function CalendarPage() {
         </Card>
         <Card width="w-full">
           <select
-            onChange={(e) => setParentId(e.target.value)}
+            onChange={(e) => updateParentId(e.target.value)}
             className="rounded-md p-2 w-full"
             name="parent"
             value={parentId}
