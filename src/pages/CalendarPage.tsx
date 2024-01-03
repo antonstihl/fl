@@ -9,6 +9,23 @@ import {
   getSelectedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorageUtil";
+import SegmentedControl, { Option } from "../components/SegmentedControl";
+
+const leaveOptions: Option[] = [
+  { label: "100%", value: 1 },
+  { label: "75%", value: 0.75 },
+  { label: "50%", value: 0.5 },
+  { label: "25%", value: 0.25 },
+];
+
+const paymentOptions: Option[] = [
+  { label: "100%", value: 1 },
+  { label: "75%", value: 0.75 },
+  { label: "50%", value: 0.5 },
+  { label: "25%", value: 0.25 },
+  { label: "0%", value: 0 },
+];
+
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
@@ -96,105 +113,17 @@ function CalendarPage() {
             {selectedDates.length === 0 && <p>Inga datum valda.</p>}
             <div className="grid items-center grid-cols-[35%_65%] gap-2">
               <p>Ledig</p>
-              <div className="flex justify-between items-center gap-4">
-                <div className="flex justify-center gap-0">
-                  <button
-                    className={`rounded-l-md py-1 px-1 shadow-sm shadow-black ${
-                      leave === 1
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-l-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updateLeave(1)}
-                  >
-                    100%
-                  </button>
-                  <button
-                    className={`py-1 px-1 shadow-sm shadow-black ${
-                      leave === 0.75
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-r-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updateLeave(0.75)}
-                  >
-                    75%
-                  </button>
-                  <button
-                    className={`py-1 px-1 shadow-sm shadow-black ${
-                      leave === 0.5
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-r-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updateLeave(0.5)}
-                  >
-                    50%
-                  </button>
-                  <button
-                    className={`rounded-r-md py-1 px-1 shadow-sm shadow-black ${
-                      leave === 0.25
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-r-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updateLeave(0.25)}
-                  >
-                    25%
-                  </button>
-                </div>
-              </div>
+              <SegmentedControl
+                optionValue={leave}
+                setOptionValue={updateLeave}
+                options={leaveOptions}
+              />
               <p>Föräldrapenning</p>
-              <div className="flex justify-between items-center gap-4">
-                <div className="flex justify-center gap-0">
-                  <button
-                    className={`rounded-l-md py-1 px-1 shadow-sm shadow-black ${
-                      payment === 1
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-l-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updatePayment(1)}
-                  >
-                    100%
-                  </button>
-                  <button
-                    className={`py-1 px-1 shadow-sm shadow-black ${
-                      payment === 0.75
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-r-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updatePayment(0.75)}
-                  >
-                    75%
-                  </button>
-                  <button
-                    className={`py-1 px-1 shadow-sm shadow-black ${
-                      payment === 0.5
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-r-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updatePayment(0.5)}
-                  >
-                    50%
-                  </button>
-                  <button
-                    className={`py-1 px-1 shadow-sm shadow-black ${
-                      payment === 0.25
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-r-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updatePayment(0.25)}
-                  >
-                    25%
-                  </button>
-                  <button
-                    className={`rounded-r-md py-1 px-1 shadow-sm shadow-black ${
-                      payment === 0
-                        ? "bg-green-700 text-white"
-                        : "bg-white border-r-2 border-y-2 border-green-700"
-                    }`}
-                    onClick={() => updatePayment(0)}
-                  >
-                    0%
-                  </button>
-                </div>
-              </div>
+              <SegmentedControl
+                optionValue={payment}
+                setOptionValue={updatePayment}
+                options={paymentOptions}
+              />
             </div>
             <div className="flex flex-col gap-2">
               <Button variant="primary" onClick={addSelectedDates}>
@@ -206,55 +135,6 @@ function CalendarPage() {
             </div>
           </div>
         </Card>
-
-        {/* <Card>
-          <DateButton
-            date={convertToMyDate(new Date())}
-            selected={false}
-            leaves={[{ pace: 1, payment: 0 }]}
-            today={false}
-            activeMonth={true}
-            toggleSelectedDate={() => {}}
-          />
-          <DateButton
-            date={convertToMyDate(new Date())}
-            selected={false}
-            leaves={[{ pace: 1, payment: 0 }]}
-            today={false}
-            activeMonth={true}
-            toggleSelectedDate={() => {}}
-          />
-          <DateButton
-            date={convertToMyDate(new Date())}
-            selected={false}
-            leaves={[{ pace: 1, payment: 0.5 }]}
-            today={false}
-            activeMonth={true}
-            toggleSelectedDate={() => {}}
-          />
-          <DateButton
-            date={convertToMyDate(new Date())}
-            selected={false}
-            leaves={[
-              { pace: 1, payment: 1 },
-              { pace: 0.5, payment: 1 },
-            ]}
-            today={false}
-            activeMonth={true}
-            toggleSelectedDate={() => {}}
-          />
-          <DateButton
-            date={convertToMyDate(new Date())}
-            selected={false}
-            leaves={[
-              { pace: 1, payment: 0.75 },
-              { pace: 0.5, payment: 0.25 },
-            ]}
-            today={false}
-            activeMonth={true}
-            toggleSelectedDate={() => {}}
-          />
-        </Card> */}
       </div>
     </div>
   );
