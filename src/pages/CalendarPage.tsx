@@ -76,9 +76,9 @@ function CalendarPage() {
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
             />
-            <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-2 gap-2">
+              <p>Ledig</p>
               <div className="flex justify-between items-center gap-4">
-                <p>Ledig</p>
                 <div className="flex justify-center gap-0">
                   <button
                     className={`rounded-l-md py-1 px-2 shadow-sm shadow-black ${
@@ -122,8 +122,8 @@ function CalendarPage() {
                   </button>
                 </div>
               </div>
+              <p>Föräldrapenning</p>
               <div className="flex justify-between items-center gap-4">
-                <p>Föräldrapenning</p>
                 <div className="flex justify-center gap-0">
                   <button
                     className={`rounded-l-md py-1 px-2 shadow-sm shadow-black ${
@@ -177,6 +177,8 @@ function CalendarPage() {
                   </button>
                 </div>
               </div>
+            </div>
+            <div className="flex flex-col gap-2">
               <Button variant="primary" onClick={addSelectedDates}>
                 Uppdatera
               </Button>
