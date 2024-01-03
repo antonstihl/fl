@@ -1,7 +1,9 @@
+import { getDay } from "date-fns";
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import Card from "../components/Card";
+import SegmentedControl, { Option } from "../components/SegmentedControl";
 import SelectedDatesList from "../components/SelectedDatesList";
 import { addDates, convertToDate, removeDates } from "../utils/DateUtilities";
 import {
@@ -9,7 +11,6 @@ import {
   getSelectedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorageUtil";
-import SegmentedControl, { Option } from "../components/SegmentedControl";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -26,25 +27,25 @@ const paymentOptions: Option[] = [
   { label: "0%", value: 0 },
 ];
 
-const children: Child[] = [
-  {
-    id: "1",
-    name: "Alfred",
-    dateOfBirth: { year: 2020, month: 3, date: 14 },
-  },
-  {
-    id: "2",
-    name: "Alma",
-    dateOfBirth: { year: 2023, month: 2, date: 30 },
-  },
-];
+// const children: Child[] = [
+//   {
+//     id: "1",
+//     name: "Alfred",
+//     dateOfBirth: { year: 2020, month: 3, date: 14 },
+//   },
+//   {
+//     id: "2",
+//     name: "Alma",
+//     dateOfBirth: { year: 2023, month: 2, date: 30 },
+//   },
+// ];
 
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
-  const [child, setChild] = useState<Child>(children[0]);
+  // const [child, setChild] = useState<Child>(children[0]);
 
   useEffect(() => {
     setSelectedDates(getSelectedDatesFromLocalStorage());
@@ -103,10 +104,34 @@ function CalendarPage() {
     }
   };
 
-  const diffYearsFloor = (d1: Date, d2: Date) => {
-    const timeDiff = Math.abs(d1.getTime() - d2.getTime());
-    return Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365));
+  const isWeekday = (date: Date) => {
+    const day = getDay(date);
+    return day >= 1 && day <= 5;
   };
+
+  // const diffYearsFloor = (d1: Date, d2: Date) => {
+  //   const timeDiff = Math.abs(d1.getTime() - d2.getTime());
+  //   return Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365));
+  // };
+
+  const daysWithPayment = allocatedDates
+    .map((ad) => ad.payment)
+    .reduce((acc, current) => {
+      return acc + current;
+    }, 0);
+  const allocatedWeekdayDates = allocatedDates.filter((ad) =>
+    isWeekday(convertToDate(ad))
+  );
+  const weekdaysWithLeave = allocatedWeekdayDates
+    .map((ad) => ad.pace)
+    .reduce((acc, current) => {
+      return acc + current;
+    }, 0);
+  const daysWithLeave = allocatedDates
+    .map((ad) => ad.pace)
+    .reduce((acc, current) => {
+      return acc + current;
+    }, 0);
 
   return (
     <div className="m-4 flex flex-col justify-start gap-2">
@@ -122,14 +147,78 @@ function CalendarPage() {
           </select>
         </div>
       </Card> */}
-      <div className="flex items-start gap-4">
-        <Card>
-          <Calendar
-            selectedDates={selectedDates}
-            setSelectedDates={updateSelectedDates}
-            allocatedDates={allocatedDates}
-          />
-        </Card>
+      <div className="flex items-start gap-4 w-1/2">
+        <div className="flex flex-col items-start gap-4">
+          <Card>
+            <Calendar
+              selectedDates={selectedDates}
+              setSelectedDates={updateSelectedDates}
+              allocatedDates={allocatedDates}
+            />
+          </Card>
+          <div className="flex gap-2 w-full">
+            <Card width="w-1/2">
+              <div className="ml-2 flex flex-col">
+                <p>
+                  <b>{daysWithLeave} dagar</b> föräldraledighet
+                </p>
+                <p>
+                  (<b>{weekdaysWithLeave}</b> vardagar)
+                </p>
+              </div>
+              {/* <div className="translate-x-1 translate-y-0 w-0 h-0 border-l-[15px] border-l-transparent border-b-[15px] border-b-black border-r-[15px] border-r-transparent" /> */}
+              <div className="ml-2 mt-1 mb-2 border-transparent shadow-sm shadow-black py-1 px-2 w-max rounded-md grid grid-cols-2 gap-x-2">
+                <p>{allocatedDates.filter((ad) => ad.pace === 1).length}</p>
+                <p>100%</p>
+                <p>{allocatedDates.filter((ad) => ad.pace === 0.75).length}</p>
+                <p>75%</p>
+                <p>{allocatedDates.filter((ad) => ad.pace === 0.5).length}</p>
+                <p>50%</p>
+                <p>{allocatedDates.filter((ad) => ad.pace === 0.25).length}</p>
+                <p>25%</p>
+              </div>
+            </Card>
+            <Card width="w-1/2">
+              <div>
+                <p className="ml-2 flex flex-col">
+                  <p>
+                    <p>
+                      <b>{daysWithPayment} dagar</b> med föräldrapenning
+                    </p>
+                    <p></p>
+                    ({((daysWithPayment / 480) * 100).toPrecision(2)}% av{" "}
+                    <span
+                      className="text-blue-700 font-bold cursor-default"
+                      title="390 sjukpenningnivå + 90 lågkostnadsdagar"
+                    >
+                      480 st
+                    </span>)
+                  </p>{" "}
+                </p>
+              </div>
+
+              {/* <div className="translate-x-1 translate-y-0 w-0 h-0 border-l-[15px] border-l-transparent border-b-[15px] border-b-black border-r-[15px] border-r-transparent" /> */}
+              <div className="ml-2 mt-1 mb-2 border-transparent shadow-sm shadow-black py-1 px-2 w-max rounded-md grid grid-cols-2 gap-x-2">
+                <p>{allocatedDates.filter((ad) => ad.payment === 1).length}</p>
+                <p>100%</p>
+                <p>
+                  {allocatedDates.filter((ad) => ad.payment === 0.75).length}
+                </p>
+                <p>75%</p>
+                <p>
+                  {allocatedDates.filter((ad) => ad.payment === 0.5).length}
+                </p>
+                <p>50%</p>
+                <p>
+                  {allocatedDates.filter((ad) => ad.payment === 0.25).length}
+                </p>
+                <p>25%</p>
+                <p>{allocatedDates.filter((ad) => ad.payment === 0).length}</p>
+                <p>0%</p>
+              </div>
+            </Card>
+          </div>
+        </div>
         <Card>
           <div className="flex flex-col items-center w-max">
             <div className="flex flex-col gap-3">
@@ -157,7 +246,7 @@ function CalendarPage() {
                   options={paymentOptions}
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex justify-end gap-2">
                 <Button variant="primary" onClick={addSelectedDates}>
                   Uppdatera
                 </Button>

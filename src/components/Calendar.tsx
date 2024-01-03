@@ -6,8 +6,8 @@ import {
   myDatesEqual,
   toggleDateInArray,
 } from "../utils/DateUtilities";
-import DateButton from "./DateButton";
 import Button from "./Button";
+import DateButton from "./DateButton";
 
 const Months = [
   "Januari",
@@ -130,7 +130,7 @@ const Calendar = ({
             className="cursor-pointer text-green-700 text-sm font-mono select-none"
             onClick={resetMonth}
           >
-            {"> "}Idag{" <"}
+            {">"}Idag{"<"}
           </a>
         </div>
         <Button onClick={increaseMonth}>{">"}</Button>

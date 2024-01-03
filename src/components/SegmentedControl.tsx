@@ -22,7 +22,9 @@ export default function SegmentedControl({
     return (
       <button
         className={`rounded-l-md py-1 px-1 shadow-sm shadow-black border-green-700 border-2 ${
-          isActive(option) ? "bg-green-700 text-white" : "bg-white"
+          isActive(option)
+            ? "bg-green-700 text-white"
+            : "bg-white text-slate-400"
         }`}
         onClick={() => setOptionValue(option.value)}
         key={option.value}
@@ -36,7 +38,9 @@ export default function SegmentedControl({
     return (
       <button
         className={`py-1 px-1 shadow-sm shadow-black border-green-700 border-y-2 border-r-2 ${
-          isActive(option) ? "bg-green-700 text-white" : "bg-white"
+          isActive(option)
+            ? "bg-green-700 text-white"
+            : "bg-white text-slate-400"
         }`}
         onClick={() => setOptionValue(option.value)}
         key={option.value}
@@ -50,7 +54,9 @@ export default function SegmentedControl({
     return (
       <button
         className={`rounded-r-md py-1 px-1 shadow-sm shadow-black border-green-700 border-y-2 border-r-2 ${
-          isActive(option) ? "bg-green-700 text-white" : "bg-white"
+          isActive(option)
+            ? "bg-green-700 text-white"
+            : "bg-white text-slate-400"
         }`}
         onClick={() => setOptionValue(option.value)}
         key={option.value}

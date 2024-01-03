@@ -11,7 +11,7 @@ export default function SelectedDatesList({
 }: Props) {
   return (
     <>
-      <div className="flex w-full flex-col gap-2 justify-end">
+      <div className="flex w-full flex-col gap-2 justify-start">
         {selectedDates
               .sort(
                 (a, b) =>

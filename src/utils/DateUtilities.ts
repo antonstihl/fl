@@ -15,7 +15,7 @@ export function convertToMyDate(date: Date): MyDate {
 }
 
 export function convertToDate(myDate: MyDate): Date {
-  return new Date(myDate.year, myDate.month - 1, myDate.date);
+  return new Date(myDate.year, myDate.month, myDate.date);
 }
 
 export function isDateInArray(date: MyDate, selectedDates: MyDate[]) {
