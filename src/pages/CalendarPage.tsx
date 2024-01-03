@@ -59,8 +59,8 @@ function CalendarPage() {
   const [parentId, setParentId] = useState(PARENTS[0].id);
 
   useEffect(() => {
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId));
-  }, [childId]);
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parentId));
+  }, [childId, parentId]);
 
   const updateSelectedDates = (dates: MyDate[]) => {
     setSelectedDates(dates);
@@ -79,9 +79,9 @@ function CalendarPage() {
       updatedDates
     ).map((date) => ({ pace: leave, payment, ...date }));
     console.log(updatedAllocatedDates.length, { childId });
-    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId);
+    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parentId);
     updateSelectedDates([]);
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId));
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parentId));
   };
 
   const removeSelectedDates = () => {
@@ -90,9 +90,9 @@ function CalendarPage() {
       selectedDates,
       updatedDates
     ) as MyAllocatedDate[];
-    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId);
+    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parentId);
     updateSelectedDates([]);
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId));
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parentId));
   };
 
   const updatePayment = (p: number) => {
@@ -233,7 +233,7 @@ function CalendarPage() {
             </Card>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-4">
           <Card width="w-full">
             <div className="flex items-center gap-4">
               <select

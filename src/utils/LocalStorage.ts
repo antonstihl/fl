@@ -1,10 +1,12 @@
 export function getAllocatedDatesFromLocalStorage(
-  childId: string
+  childId: string,
+  parentId: string
 ): MyAllocatedDate[] {
   const localStorageData = localStorage.getItem("allocatedDates") || "{}";
   let allocatedDatesFromLocalStorage;
   try {
-    allocatedDatesFromLocalStorage = JSON.parse(localStorageData)[childId];
+    allocatedDatesFromLocalStorage =
+      JSON.parse(localStorageData)[childId][parentId];
   } catch (e) {
     return [];
   }
@@ -16,13 +18,17 @@ export function getAllocatedDatesFromLocalStorage(
 
 export function setAllocatedDatesLocalStorage(
   dates: MyAllocatedDate[],
-  childId: string
+  childId: string,
+  parentId: string
 ) {
   let existingAllocatedDates = JSON.parse(
     localStorage.getItem("allocatedDates") || "[]"
   );
 
-  existingAllocatedDates = { ...existingAllocatedDates, [childId]: dates };
+  existingAllocatedDates = {
+    ...existingAllocatedDates,
+    [childId]: { ...existingAllocatedDates[childId], [parentId]: dates },
+  };
 
   localStorage.setItem(
     "allocatedDates",
