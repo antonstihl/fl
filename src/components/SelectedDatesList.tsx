@@ -12,9 +12,7 @@ export default function SelectedDatesList({
   return (
     <>
       <div className="flex w-full flex-col gap-2 justify-end">
-        {selectedDates.length === 0
-          ? "Inga datum valda."
-          : selectedDates
+        {selectedDates
               .sort(
                 (a, b) =>
                   convertToDate(a).getTime() - convertToDate(b).getTime()

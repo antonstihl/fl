@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
+import Button from "../components/Button";
 import Calendar from "../components/Calendar";
+import Card from "../components/Card";
 import SelectedDatesList from "../components/SelectedDatesList";
-import { addDates, convertToMyDate, removeDates } from "../utils/DateUtilities";
+import { addDates, removeDates } from "../utils/DateUtilities";
 import {
   getAllocatedDatesFromLocalStorage,
   getSelectedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorageUtil";
-import DateButton from "../components/DateButton";
-import Button from "../components/Button";
-import Card from "../components/Card";
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
@@ -55,6 +54,24 @@ function CalendarPage() {
     setAllocatedDates(getAllocatedDatesFromLocalStorage());
   };
 
+  const updatePayment = (p: number) => {
+    if (p > leave) {
+      setLeave(p);
+      setPayment(p);
+    } else {
+      setPayment(p);
+    }
+  };
+
+  const updateLeave = (p: number) => {
+    if (p < payment) {
+      setLeave(p);
+      setPayment(p);
+    } else {
+      setLeave(p);
+    }
+  };
+
   return (
     <div className="m-2">
       <div className="flex items-start gap-4">
@@ -76,6 +93,7 @@ function CalendarPage() {
               selectedDates={selectedDates}
               setSelectedDates={updateSelectedDates}
             />
+            {selectedDates.length === 0 && <p>Inga datum valda.</p>}
             <div className="grid items-center grid-cols-[35%_65%] gap-2">
               <p>Ledig</p>
               <div className="flex justify-between items-center gap-4">
@@ -86,7 +104,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-l-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setLeave(1)}
+                    onClick={() => updateLeave(1)}
                   >
                     100%
                   </button>
@@ -96,7 +114,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setLeave(0.75)}
+                    onClick={() => updateLeave(0.75)}
                   >
                     75%
                   </button>
@@ -106,7 +124,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setLeave(0.5)}
+                    onClick={() => updateLeave(0.5)}
                   >
                     50%
                   </button>
@@ -116,7 +134,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setLeave(0.25)}
+                    onClick={() => updateLeave(0.25)}
                   >
                     25%
                   </button>
@@ -131,7 +149,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-l-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setPayment(1)}
+                    onClick={() => updatePayment(1)}
                   >
                     100%
                   </button>
@@ -141,7 +159,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setPayment(0.75)}
+                    onClick={() => updatePayment(0.75)}
                   >
                     75%
                   </button>
@@ -151,7 +169,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setPayment(0.5)}
+                    onClick={() => updatePayment(0.5)}
                   >
                     50%
                   </button>
@@ -161,7 +179,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setPayment(0.25)}
+                    onClick={() => updatePayment(0.25)}
                   >
                     25%
                   </button>
@@ -171,7 +189,7 @@ function CalendarPage() {
                         ? "bg-green-700 text-white"
                         : "bg-white border-r-2 border-y-2 border-green-700"
                     }`}
-                    onClick={() => setPayment(0)}
+                    onClick={() => updatePayment(0)}
                   >
                     0%
                   </button>
