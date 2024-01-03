@@ -19,7 +19,7 @@ export function setSelectedDatesLocalStorage(dates: MyDate[]) {
   localStorage.setItem("selectedDates", JSON.stringify(dates));
 }
 
-export function getAllocatedDatesFromLocalStorage(): MyDate[] {
+export function getAllocatedDatesFromLocalStorage(): MyAllocatedDate[] {
   const localStorageData = localStorage.getItem("allocatedDates");
   if (localStorageData === null) {
     return [];
@@ -36,6 +36,6 @@ export function getAllocatedDatesFromLocalStorage(): MyDate[] {
   return [];
 }
 
-export function setAllocatedDatesLocalStorage(dates: MyDate[]) {
+export function setAllocatedDatesLocalStorage(dates: MyAllocatedDate[]) {
   localStorage.setItem("allocatedDates", JSON.stringify(dates));
 }

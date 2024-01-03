@@ -14,4 +14,4 @@ type MyDate = {
   date: number;
 };
 
-type MyAllocatedDate = MyAllocatedDate & { pace: number; payment: number };
+type MyAllocatedDate = MyDate & { pace: number; payment: number };

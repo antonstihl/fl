@@ -146,16 +146,14 @@ const Calendar = ({
             key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
             date={dateCell.date}
             selected={isDateInArray(dateCell.date, selectedDates)}
-            leaves={
-              isDateInArray(dateCell.date, allocatedDates)
-                ? [
-                    {
-                      pace: 1,
-                      payment: 0,
-                    },
-                  ]
-                : []
-            }
+            leaves={allocatedDates
+              .filter((allocatedDate) =>
+                myDatesEqual(allocatedDate, dateCell.date)
+              )
+              .map((allocatedDate) => ({
+                pace: allocatedDate.pace,
+                payment: allocatedDate.payment,
+              }))}
             today={myDatesEqual(convertToMyDate(today), dateCell.date)}
             activeMonth={dateCell.current}
             toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}

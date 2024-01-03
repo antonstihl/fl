@@ -12,7 +12,7 @@ import Button from "../components/Button";
 import Card from "../components/Card";
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
-  const [allocatedDates, setAllocatedDates] = useState<MyDate[]>([]);
+  const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
 
@@ -34,16 +34,22 @@ function CalendarPage() {
   };
 
   const addSelectedDates = () => {
-    let updatedAllocatedDates: MyDate[] = [...allocatedDates];
-    updatedAllocatedDates = addDates(selectedDates, allocatedDates);
+    const updatedDates: MyDate[] = [...allocatedDates];
+    const updatedAllocatedDates: MyAllocatedDate[] = addDates(
+      selectedDates,
+      updatedDates
+    ).map((date) => ({ pace: leave, payment, ...date }));
     setAllocatedDatesLocalStorage(updatedAllocatedDates);
     updateSelectedDates([]);
     setAllocatedDates(getAllocatedDatesFromLocalStorage());
   };
 
   const removeSelectedDates = () => {
-    let updatedAllocatedDates: MyDate[] = [...allocatedDates];
-    updatedAllocatedDates = removeDates(selectedDates, allocatedDates);
+    const updatedDates: MyAllocatedDate[] = [...allocatedDates];
+    const updatedAllocatedDates: MyAllocatedDate[] = removeDates(
+      selectedDates,
+      updatedDates
+    ) as MyAllocatedDate[];
     setAllocatedDatesLocalStorage(updatedAllocatedDates);
     updateSelectedDates([]);
     setAllocatedDates(getAllocatedDatesFromLocalStorage());

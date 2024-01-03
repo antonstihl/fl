@@ -1,5 +1,3 @@
-
-
 export function getDayOfMyDate(myDate: MyDate): number {
   return new Date(myDate.year, myDate.month, myDate.date).getDay();
 }
@@ -61,7 +59,10 @@ export function addDates(datesToAdd: MyDate[], dates: MyDate[]) {
   return newDates;
 }
 
-export function removeDates(datesToRemove: MyDate[], dates: MyDate[]) {
+export function removeDates<T extends (MyDate | MyAllocatedDate)[]>(
+  datesToRemove: T,
+  dates: T
+) {
   let newDates = [...dates];
   datesToRemove.forEach((date) => {
     if (isDateInArray(date, newDates)) {
