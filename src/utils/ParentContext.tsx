@@ -53,8 +53,8 @@ export default function ParentProvider({ children }: PropsWithChildren) {
 
   const handleSetParent = (id: string) => {
     setParent(PARENTS.find((p) => p.id === id) || dummyParent);
-    localStorage.setItem("parent", parent.id);
-    searchParams.set("parent", parent.id);
+    localStorage.setItem("parent", id);
+    searchParams.set("parent", id);
     setSearchParams(searchParams);
   };
 
