@@ -1,4 +1,7 @@
 import { NavLink } from "react-router-dom";
+import Card from "./Card";
+import { useContext } from "react";
+import { PARENTS, ParentContext, ParentUpdateContext } from "../App";
 
 export type Props = {
   toggleMenu: () => void;
@@ -6,6 +9,8 @@ export type Props = {
 };
 
 export default function NavBar({ toggleMenu, menuOpen }: Props) {
+  const parent = useContext(ParentContext);
+  const setParent = useContext(ParentUpdateContext);
   const line = <div className="h-1 bg-white rounded-md w-6"></div>;
   const leaningLineTop = (
     <div className="h-1 bg-white rounded-md w-6 -rotate-12"></div>
@@ -14,7 +19,7 @@ export default function NavBar({ toggleMenu, menuOpen }: Props) {
     <div className="h-1 bg-white rounded-md w-6 rotate-12"></div>
   );
   return (
-    <div className="flex items-center py-6 pl-4 text-lg bg-green-700 text-white font-mono w-full h-11">
+    <div className="flex justify-between items-center py-6 px-4 text-lg bg-green-700 text-white font-mono w-full h-11">
       <button onClick={() => toggleMenu()}>
         <div className="flex flex-col space-y-1 pr-4">
           {!menuOpen && line}
@@ -34,6 +39,18 @@ export default function NavBar({ toggleMenu, menuOpen }: Props) {
           <div className="rotate-6 animate-bounce">👶</div>
         </div>
       </NavLink>
+      <select
+        onChange={(e) => setParent(e.target.value)}
+        className="rounded-md p-1 w-max text-black"
+        name="parent"
+        value={parent.id}
+      >
+        {PARENTS.map((p) => (
+          <option value={p.id} key={p.id}>
+            {p.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

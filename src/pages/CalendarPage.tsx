@@ -1,6 +1,7 @@
 import { getDay } from "date-fns";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { ParentContext } from "../App";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import Card from "../components/Card";
@@ -40,18 +41,7 @@ const CHILDREN: Child[] = [
   },
 ];
 
-const PARENTS: Parent[] = [
-  {
-    id: "1",
-    name: "Simon",
-    color: "red",
-  },
-  {
-    id: "2",
-    name: "Anna",
-    color: "green",
-  },
-];
+type Level = "Sjukpenning" | "Lägstanivå";
 
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
@@ -62,13 +52,12 @@ function CalendarPage() {
   const [childId, setChildId] = useState(
     searchParams.get("child") || CHILDREN[0].id
   );
-  const [parentId, setParentId] = useState(
-    searchParams.get("parent") || PARENTS[0].id
-  );
+  const parent = useContext(ParentContext);
+  const [level, setLevel] = useState<Level>("Sjukpenning");
 
   useEffect(() => {
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parentId));
-  }, [childId, parentId]);
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parent.id));
+  }, [childId, parent]);
 
   const updateSelectedDates = (dates: MyDate[]) => {
     setSelectedDates(dates);
@@ -87,9 +76,9 @@ function CalendarPage() {
       updatedDates
     ).map((date) => ({ pace: leave, payment, ...date }));
     console.log(updatedAllocatedDates.length, { childId });
-    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parentId);
+    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parent.id);
     updateSelectedDates([]);
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parentId));
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parent.id));
   };
 
   const removeSelectedDates = () => {
@@ -98,9 +87,9 @@ function CalendarPage() {
       selectedDates,
       updatedDates
     ) as MyAllocatedDate[];
-    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parentId);
+    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parent.id);
     updateSelectedDates([]);
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parentId));
+    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parent.id));
   };
 
   const updatePayment = (p: number) => {
@@ -124,12 +113,6 @@ function CalendarPage() {
   const updateChildId = (childId: string) => {
     setChildId(childId);
     searchParams.set("child", childId);
-    setSearchParams(searchParams);
-  };
-
-  const updateParentId = (parentId: string) => {
-    setParentId(parentId);
-    searchParams.set("parent", parentId);
     setSearchParams(searchParams);
   };
 
@@ -163,40 +146,24 @@ function CalendarPage() {
     }, 0);
 
   return (
-    <div className="m-4 flex flex-col justify-start gap-2">
-      <div className="w-1/2 gap-2 flex">
-        <Card width="w-full">
-          <select
-            onChange={(e) => updateChildId(e.target.value)}
-            className="rounded-md p-2 w-full"
-            name="child"
-            value={childId}
-          >
-            {CHILDREN.map((c) => (
-              <option value={c.id} key={c.id}>{`${c.name} (${diffYearsFloor(
-                new Date(),
-                convertToDate(c.dateOfBirth)
-              )} år)`}</option>
-            ))}
-          </select>
-        </Card>
-        <Card width="w-full">
-          <select
-            onChange={(e) => updateParentId(e.target.value)}
-            className="rounded-md p-2 w-full"
-            name="parent"
-            value={parentId}
-          >
-            {PARENTS.map((p) => (
-              <option value={p.id} key={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </select>
-        </Card>
-      </div>
+    <div className="m-4 flex flex-col justify-start gap-2 w-full">
       <div className="flex items-start gap-4 w-1/2">
         <div className="flex flex-col items-start gap-4">
+          <Card width="w-full">
+            <select
+              onChange={(e) => updateChildId(e.target.value)}
+              className="rounded-md p-2 w-full"
+              name="child"
+              value={childId}
+            >
+              {CHILDREN.map((c) => (
+                <option value={c.id} key={c.id}>{`${c.name} (${diffYearsFloor(
+                  new Date(),
+                  convertToDate(c.dateOfBirth)
+                )} år)`}</option>
+              ))}
+            </select>
+          </Card>
           <Card>
             <Calendar
               selectedDates={selectedDates}
@@ -293,6 +260,15 @@ function CalendarPage() {
                     optionValue={payment}
                     setOptionValue={updatePayment}
                     options={paymentOptions}
+                  />
+                  <p>Nivå</p>
+                  <SegmentedControl
+                    optionValue={level}
+                    setOptionValue={(s) => setLevel(s)}
+                    options={[
+                      { label: "Sjukpenning", value: "Sjukpenning" },
+                      { label: "Lägstanivå", value: "Lägstanivå" },
+                    ]}
                   />
                 </div>
                 <div className="flex justify-end gap-2">
