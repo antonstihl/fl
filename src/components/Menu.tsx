@@ -23,6 +23,7 @@ function Menu({ closeMenu }: Props) {
       <div className="bg-green-700 pt-2 px-2 h-full text-white w-max flex-col space-y-2">
         {getMenuItem("Profil", "/profile")}
         {getMenuItem("Kalender", "/calendar")}
+        {getMenuItem("Statistik", "/stats")}
         {getMenuItem("Hoppande kalkylator", "/calculator")}
         {getMenuItem("Hjälp", "/help")}
       </div>

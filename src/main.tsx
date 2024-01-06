@@ -1,11 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import Calculator from "./components/Calculator.tsx";
 import Help from "./components/Help.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
+import StatsPage from "./pages/StatsPage.tsx";
 
 const landingLoader = async () => {
   return redirect("/calendar");
@@ -18,7 +23,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        loader: landingLoader
+        loader: landingLoader,
       },
       {
         path: "profile",
@@ -27,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "calendar",
         element: <CalendarPage />,
+      },
+      {
+        path: "stats",
+        element: <StatsPage />,
       },
       {
         path: "calculator",

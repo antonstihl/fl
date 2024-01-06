@@ -16,6 +16,20 @@ export function getAllocatedDatesFromLocalStorage(
   return [];
 }
 
+export function getAllAllocatedDatesFromLocalStorage(): Record<
+  string,
+  Record<string, MyAllocatedDate[]>
+> {
+  const localStorageData = localStorage.getItem("allocatedDates") || "{}";
+  let allocatedDatesFromLocalStorage;
+  try {
+    return (allocatedDatesFromLocalStorage = JSON.parse(localStorageData));
+  } catch (e) {
+    return {};
+  }
+  return {};
+}
+
 export function setAllocatedDatesLocalStorage(
   dates: MyAllocatedDate[],
   childId: string,

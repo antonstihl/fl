@@ -1,4 +1,5 @@
-import { PropsWithChildren, createContext, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export const PARENTS: Parent[] = [
   {
@@ -34,9 +35,11 @@ export function useParentUpdate() {
 
 export default function ParentProvider({ children }: PropsWithChildren) {
   const [parent, setParent] = useState(PARENTS[0]);
+
   const handleSetParent = (id: string) => {
     setParent(PARENTS.find((p) => p.id === id) || dummyParent);
   };
+
   return (
     <ParentContext.Provider value={parent}>
       <ParentUpdateContext.Provider value={handleSetParent}>

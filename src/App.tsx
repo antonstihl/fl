@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import ParentProvider from "./ParentContext";
+import ParentProvider from "./utils/ParentContext";
 import Menu from "./components/Menu";
 import NavBar from "./components/NavBar";
 

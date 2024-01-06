@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { PARENTS, useParent, useParentUpdate } from "../ParentContext";
+import { PARENTS, useParent, useParentUpdate } from "../utils/ParentContext";
 
 export type Props = {
   toggleMenu: () => void;
