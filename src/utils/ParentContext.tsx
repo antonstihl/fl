@@ -1,14 +1,20 @@
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useSearchParams } from "react-router-dom";
 
 export const PARENTS: Parent[] = [
   {
-    id: "1",
+    id: "alfa",
     name: "Simon",
     color: "red",
   },
   {
-    id: "2",
+    id: "beta",
     name: "Anna",
     color: "green",
   },
@@ -34,10 +40,22 @@ export function useParentUpdate() {
 }
 
 export default function ParentProvider({ children }: PropsWithChildren) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [parent, setParent] = useState(PARENTS[0]);
+
+  useEffect(() => {
+    setParent(
+      PARENTS.find((p) => p.id === searchParams.get("parent")) ||
+        PARENTS.find((p) => p.id === localStorage.getItem("parent")) ||
+        PARENTS[0]
+    );
+  }, []);
 
   const handleSetParent = (id: string) => {
     setParent(PARENTS.find((p) => p.id === id) || dummyParent);
+    localStorage.setItem("parent", parent.id);
+    searchParams.set("parent", parent.id);
+    setSearchParams(searchParams);
   };
 
   return (

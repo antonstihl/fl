@@ -52,6 +52,7 @@ function CalendarPage() {
     searchParams.get("child") || CHILDREN[0].id
   );
   const parent = useParent();
+  
   const [level, setLevel] = useState<Level>("Sjukpenning");
   console.log({ parent });
   console.log({ allocatedDates });
