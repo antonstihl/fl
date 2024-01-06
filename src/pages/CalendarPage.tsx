@@ -1,4 +1,3 @@
-import { getDay } from "date-fns";
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ParentContext } from "../App";
@@ -117,7 +116,7 @@ function CalendarPage() {
   };
 
   const isWeekday = (date: Date) => {
-    const day = getDay(date);
+    const day = date.getDay();
     return day >= 1 && day <= 5;
   };
 
