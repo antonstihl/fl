@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
+import { Outlet } from "react-router-dom";
 import "./App.css";
 import Menu from "./components/Menu";
-import { Outlet } from "react-router-dom";
 import NavBar from "./components/NavBar";
 
 export const PARENTS: Parent[] = [

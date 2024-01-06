@@ -1,6 +1,5 @@
-import { NavLink } from "react-router-dom";
-import Card from "./Card";
 import { useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { PARENTS, ParentContext, ParentUpdateContext } from "../App";
 
 export type Props = {
