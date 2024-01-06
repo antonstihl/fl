@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { ParentContext } from "../App";
+import { useParent } from "../ParentContext";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import Card from "../components/Card";
@@ -51,8 +51,10 @@ function CalendarPage() {
   const [childId, setChildId] = useState(
     searchParams.get("child") || CHILDREN[0].id
   );
-  const parent = useContext(ParentContext);
+  const parent = useParent();
   const [level, setLevel] = useState<Level>("Sjukpenning");
+  console.log({ parent });
+  console.log({ allocatedDates });
 
   useEffect(() => {
     setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parent.id));

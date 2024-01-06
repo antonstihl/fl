@@ -1,6 +1,5 @@
-import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { PARENTS, ParentContext, ParentUpdateContext } from "../App";
+import { PARENTS, useParent, useParentUpdate } from "../ParentContext";
 
 export type Props = {
   toggleMenu: () => void;
@@ -8,8 +7,8 @@ export type Props = {
 };
 
 export default function NavBar({ toggleMenu, menuOpen }: Props) {
-  const parent = useContext(ParentContext);
-  const setParent = useContext(ParentUpdateContext);
+  const parent = useParent();
+  const setParent = useParentUpdate();
   const line = <div className="h-1 bg-white rounded-md w-6"></div>;
   const leaningLineTop = (
     <div className="h-1 bg-white rounded-md w-6 -rotate-12"></div>
