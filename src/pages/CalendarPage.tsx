@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useParent } from "../utils/ParentContext";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import Card from "../components/Card";
 import SegmentedControl, { Option } from "../components/SegmentedControl";
 import SelectedDatesList from "../components/SelectedDatesList";
-import { addDates, convertToDate, removeDates } from "../utils/DateUtilities";
-import {
-  getAllocatedDatesFromLocalStorage,
-  setAllocatedDatesLocalStorage,
-} from "../utils/LocalStorage";
+import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
+import { convertToDate } from "../utils/DateUtilities";
+import { useParent } from "../utils/ParentContext";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -44,7 +41,7 @@ type Level = "Sjukpenning" | "Lägstanivå";
 
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
-  const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
+  // const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -52,14 +49,10 @@ function CalendarPage() {
     searchParams.get("child") || CHILDREN[0].id
   );
   const parent = useParent();
-  
-  const [level, setLevel] = useState<Level>("Sjukpenning");
-  console.log({ parent });
-  console.log({ allocatedDates });
+  const { allocatedDates, addAllocatedDates, removeAllocatedDates } =
+    useAllAllocatedDates(parent.id, childId);
 
-  useEffect(() => {
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parent.id));
-  }, [childId, parent]);
+  const [level, setLevel] = useState<Level>("Sjukpenning");
 
   const updateSelectedDates = (dates: MyDate[]) => {
     setSelectedDates(dates);
@@ -68,30 +61,6 @@ function CalendarPage() {
 
   const clearSelectedDates = () => {
     updateSelectedDates([]);
-  };
-
-  const addSelectedDates = () => {
-    console.log(allocatedDates.length, { childId });
-    const updatedDates: MyDate[] = [...allocatedDates];
-    const updatedAllocatedDates: MyAllocatedDate[] = addDates(
-      selectedDates,
-      updatedDates
-    ).map((date) => ({ pace: leave, payment, ...date }));
-    console.log(updatedAllocatedDates.length, { childId });
-    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parent.id);
-    updateSelectedDates([]);
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parent.id));
-  };
-
-  const removeSelectedDates = () => {
-    const updatedDates: MyAllocatedDate[] = [...allocatedDates];
-    const updatedAllocatedDates: MyAllocatedDate[] = removeDates(
-      selectedDates,
-      updatedDates
-    ) as MyAllocatedDate[];
-    setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parent.id);
-    updateSelectedDates([]);
-    setAllocatedDates(getAllocatedDatesFromLocalStorage(childId, parent.id));
   };
 
   const updatePayment = (p: number) => {
@@ -118,34 +87,43 @@ function CalendarPage() {
     setSearchParams(searchParams);
   };
 
-  const isWeekday = (date: Date) => {
-    const day = date.getDay();
-    return day >= 1 && day <= 5;
-  };
+  // const isWeekday = (date: Date) => {
+  //   const day = date.getDay();
+  //   return day >= 1 && day <= 5;
+  // };
 
   const diffYearsFloor = (d1: Date, d2: Date) => {
     const timeDiff = Math.abs(d1.getTime() - d2.getTime());
     return Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365));
   };
 
-  const daysWithPayment = allocatedDates
-    .map((ad) => ad.payment)
-    .reduce((acc, current) => {
-      return acc + current;
-    }, 0);
-  const allocatedWeekdayDates = allocatedDates.filter((ad) =>
-    isWeekday(convertToDate(ad))
-  );
-  const weekdaysWithLeave = allocatedWeekdayDates
-    .map((ad) => ad.pace)
-    .reduce((acc, current) => {
-      return acc + current;
-    }, 0);
-  const daysWithLeave = allocatedDates
-    .map((ad) => ad.pace)
-    .reduce((acc, current) => {
-      return acc + current;
-    }, 0);
+  const handleSave = () => {
+    addAllocatedDates(parent.id, childId, selectedDates, leave, payment);
+    setSelectedDates([]);
+  };
+
+  const handleDelete = () => {
+    removeAllocatedDates(parent.id, childId, selectedDates);
+    setSelectedDates([]);
+  };
+  // const daysWithPayment = allocatedDates
+  //   .map((ad) => ad.payment)
+  //   .reduce((acc, current) => {
+  //     return acc + current;
+  //   }, 0);
+  // const allocatedWeekdayDates = allocatedDates.filter((ad) =>
+  //   isWeekday(convertToDate(ad))
+  // );
+  // const weekdaysWithLeave = allocatedWeekdayDates
+  //   .map((ad) => ad.pace)
+  //   .reduce((acc, current) => {
+  //     return acc + current;
+  //   }, 0);
+  // const daysWithLeave = allocatedDates
+  //   .map((ad) => ad.pace)
+  //   .reduce((acc, current) => {
+  //     return acc + current;
+  //   }, 0);
 
   return (
     <div className="m-4 flex flex-col justify-start gap-2 w-full">
@@ -173,7 +151,6 @@ function CalendarPage() {
               allocatedDates={allocatedDates}
             />
           </Card>
-        
         </div>
         <div className="flex flex-col gap-4">
           <Card>
@@ -213,10 +190,10 @@ function CalendarPage() {
                   />
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button variant="primary" onClick={addSelectedDates}>
-                    Uppdatera
+                  <Button variant="primary" onClick={handleSave}>
+                    Spara
                   </Button>
-                  <Button variant="delete" onClick={removeSelectedDates}>
+                  <Button variant="delete" onClick={handleDelete}>
                     Ta bort
                   </Button>
                 </div>
