@@ -12,15 +12,15 @@ export default function Button({
   switch (variant) {
     case "primary":
       variantStyle =
-        "text-slate-200 bg-green-700 hover:bg-green-900 shadow-black shadow-md active:shadow-sm active:shadow-black";
+        "text-white bg-green-700 hover:bg-green-900 shadow-black shadow-md active:shadow-sm active:shadow-black";
       break;
     case "secondary":
       variantStyle =
-        "bg-white shadow-black hover:bg-green-700 hover:text-slate-200 shadow-md active:shadow-sm active:shadow-black text-black";
+        "bg-white shadow-black hover:bg-green-700 hover:text-white shadow-md active:shadow-sm active:shadow-black text-black";
       break;
     case "delete":
       variantStyle =
-        "bg-white shadow-black hover:bg-red-800 hover:text-slate-200 shadow-md active:shadow-sm active:shadow-black text-black";
+        "bg-white shadow-black hover:bg-red-800 hover:text-white shadow-md active:shadow-sm active:shadow-black text-black";
   }
   const shadowStyle =
     variant === "primary"
