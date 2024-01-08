@@ -20,12 +20,7 @@ export const CHILDREN: Child[] = [
   },
 ];
 
-const dummyChild: Child = {
-  id: "-1",
-  name: "John",
-};
-
-const ChildContext = createContext<Child | undefined>(dummyChild);
+const ChildContext = createContext<Child | undefined>(undefined);
 const ChildrenContext = createContext<Child[]>([]);
 const ChildUpdateContext = createContext((id: string) =>
   alert(`No handler in place, but you entere${id}`)
@@ -56,19 +51,18 @@ export default function ChildProvider({
 }: PropsWithChildren) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [child, setChild] = useState<Child | undefined>(undefined);
-  const [children, setChildren] = useState<Child[]>(CHILDREN);
+  const [children, setChildren] = useState<Child[]>([]);
 
   useEffect(() => {
     const savedChildren: Child[] =
       JSON.parse(localStorage.getItem("children") || "[]") || [];
     setChildren(savedChildren);
-  }, []);
-
-  useEffect(() => {
     const savedChild =
-      CHILDREN.find((p) => p.id === searchParams.get("child")) ||
-      CHILDREN.find((p) => p.id === localStorage.getItem("child")) ||
-      undefined;
+      savedChildren.find((p) => p.id === searchParams.get("child")) ||
+      savedChildren.find((p) => p.id === localStorage.getItem("child")) ||
+      savedChildren.length > 0
+        ? savedChildren[0]
+        : undefined;
     setChild(savedChild);
     if (savedChild) {
       searchParams.set("child", savedChild.id);
@@ -77,7 +71,7 @@ export default function ChildProvider({
   }, []);
 
   const handleSetChild = (id: string) => {
-    setChild(CHILDREN.find((p) => p.id === id) || dummyChild);
+    setChild(children.find((p) => p.id === id) || children[0]);
     localStorage.setItem("child", id);
     searchParams.set("child", id);
     setSearchParams(searchParams);
