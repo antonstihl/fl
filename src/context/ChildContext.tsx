@@ -25,7 +25,7 @@ const dummyChild: Child = {
   name: "John",
 };
 
-export const ChildContext = createContext<Child>(dummyChild);
+export const ChildContext = createContext<Child | undefined>(dummyChild);
 export const ChildUpdateContext = createContext((id: string) =>
   alert("No handler in place, but you entered " + id)
 );
@@ -40,13 +40,13 @@ export function useChildUpdate() {
 
 export default function ChildProvider({ children }: PropsWithChildren) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [child, setChild] = useState(CHILDREN[0]);
+  const [child, setChild] = useState<Child | undefined>(CHILDREN[0]);
 
   useEffect(() => {
     setChild(
       CHILDREN.find((p) => p.id === searchParams.get("child")) ||
         CHILDREN.find((p) => p.id === localStorage.getItem("child")) ||
-        CHILDREN[0]
+        undefined
     );
   }, []);
 

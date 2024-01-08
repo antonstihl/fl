@@ -5,7 +5,7 @@ import {
 } from "../utils/LocalStorage";
 import { addDates, removeDates } from "../utils/DateUtilities";
 
-export function useAllAllocatedDates(parentId: string, childId: string) {
+export function useAllAllocatedDates() {
   const [allAllocatedDatesMap, setAllAllocatedDatesMap] = useState<
     Record<string, Record<string, MyAllocatedDate[]>>
   >({});
@@ -58,9 +58,8 @@ export function useAllAllocatedDates(parentId: string, childId: string) {
     }
   };
 
-  const allocatedDates = allAllocatedDatesMap?.[childId]?.[parentId] || [];
   return {
-    allocatedDates,
+    allAllocatedDatesMap,
     addAllocatedDates,
     removeAllocatedDates,
   };
