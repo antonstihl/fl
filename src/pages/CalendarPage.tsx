@@ -97,8 +97,8 @@ function CalendarPage() {
 
   const handleSave = () => {
     if (childId && parent && selectedDates.length > 0) {
+      updateSelectedDates([]);
       addAllocatedDates(parent.id, childId, selectedDates, leave, payment);
-      setSelectedDates([]);
     }
   };
 
