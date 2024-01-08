@@ -37,9 +37,8 @@ function CalendarPage() {
   const parent = useParent();
   const { allAllocatedDatesMap, addAllocatedDates, removeAllocatedDates } =
     useAllAllocatedDates();
-  const allocatedDates = childId
-    ? allAllocatedDatesMap?.[childId]?.[parent.id] || []
-    : [];
+  const allocatedDates =
+    childId && parent ? allAllocatedDatesMap?.[childId]?.[parent.id] || [] : [];
 
   const [level, setLevel] = useState<Level>("Sjukpenning");
 
@@ -82,14 +81,14 @@ function CalendarPage() {
 
   const handleSave = () => {
     if (childId) {
-      addAllocatedDates(parent.id, childId, selectedDates, leave, payment);
+      addAllocatedDates(parent!.id, childId, selectedDates, leave, payment);
       setSelectedDates([]);
     }
   };
 
   const handleDelete = () => {
     if (childId) {
-      removeAllocatedDates(parent.id, childId, selectedDates);
+      removeAllocatedDates(parent!.id, childId, selectedDates);
       setSelectedDates([]);
     }
   };

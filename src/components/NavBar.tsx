@@ -1,5 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { PARENTS, useParent, useParentUpdate } from "../context/ParentContext";
+import {
+  useParent,
+  useParentUpdate,
+  useParents,
+} from "../context/ParentContext";
 
 export type Props = {
   toggleMenu: () => void;
@@ -8,6 +12,7 @@ export type Props = {
 
 export default function NavBar({ toggleMenu, menuOpen }: Props) {
   const parent = useParent();
+  const parents = useParents();
   const setParent = useParentUpdate();
   const line = <div className="h-1 bg-white rounded-md w-6"></div>;
   const leaningLineTop = (
@@ -37,13 +42,14 @@ export default function NavBar({ toggleMenu, menuOpen }: Props) {
           <div className="rotate-6 animate-bounce">👶</div>
         </div>
       </NavLink>
+
       <select
         onChange={(e) => setParent(e.target.value)}
         className="rounded-md p-1 w-max text-black"
         name="parent"
-        value={parent.id}
+        value={parent?.id}
       >
-        {PARENTS.map((p) => (
+        {parents.map((p) => (
           <option value={p.id} key={p.id}>
             {p.name}
           </option>
