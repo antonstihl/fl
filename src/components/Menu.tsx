@@ -11,7 +11,7 @@ function Menu({ closeMenu }: Props) {
         <NavLink
           to={path}
           onClick={() => closeMenu()}
-          className="rounded-md py-1 px-2 text-left w-full hover:bg-emerald-700"
+          className="rounded-md py-1 pl-2 pr-10 text-left w-full hover:bg-emerald-700"
         >
           {text}
         </NavLink>
