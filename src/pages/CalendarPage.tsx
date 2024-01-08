@@ -160,7 +160,7 @@ function CalendarPage() {
           <div className="flex flex-col items-start gap-4">
             {children.length === 0 && (
               <Card>
-                Inga barn tillagda. Konfigurera på{" "}
+                Både barn och föräldrar krävs för kalendern. Konfigurera på{" "}
                 <Link to="/family" className="font-bold text-blue-700">
                   familjsidan.
                 </Link>
