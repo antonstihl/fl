@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import Card from "../components/Card";
 import SegmentedControl, { Option } from "../components/SegmentedControl";
 import SelectedDatesList from "../components/SelectedDatesList";
 import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
+import { useChild, useChildUpdate } from "../utils/ChildContext";
 import { convertToDate } from "../utils/DateUtilities";
 import { useParent } from "../utils/ParentContext";
 
@@ -41,13 +41,11 @@ type Level = "Sjukpenning" | "Lägstanivå";
 
 function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
-  // const [allocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>([]);
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [childId, setChildId] = useState(
-    searchParams.get("child") || CHILDREN[0].id
-  );
+  const child = useChild();
+  const childId = child.id;
+  const setChildId = useChildUpdate();
   const parent = useParent();
   const { allocatedDates, addAllocatedDates, removeAllocatedDates } =
     useAllAllocatedDates(parent.id, childId);
@@ -79,12 +77,6 @@ function CalendarPage() {
     } else {
       setLeave(p);
     }
-  };
-
-  const updateChildId = (childId: string) => {
-    setChildId(childId);
-    searchParams.set("child", childId);
-    setSearchParams(searchParams);
   };
 
   // const isWeekday = (date: Date) => {
@@ -131,16 +123,17 @@ function CalendarPage() {
         <div className="flex flex-col items-start gap-4">
           <Card width="w-full">
             <select
-              onChange={(e) => updateChildId(e.target.value)}
+              onChange={(e) => setChildId(e.target.value)}
               className="rounded-md p-2 w-full"
               name="child"
               value={childId}
             >
               {CHILDREN.map((c) => (
-                <option value={c.id} key={c.id}>{`${c.name} (${diffYearsFloor(
-                  new Date(),
-                  convertToDate(c.dateOfBirth)
-                )} år)`}</option>
+                <option value={c.id} key={c.id}>{`${c.name} (${
+                  c.dateOfBirth
+                    ? diffYearsFloor(new Date(), convertToDate(c.dateOfBirth))
+                    : "?"
+                } år)`}</option>
               ))}
             </select>
           </Card>

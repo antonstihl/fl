@@ -4,6 +4,7 @@ import "./App.css";
 import ParentProvider from "./utils/ParentContext";
 import Menu from "./components/Menu";
 import NavBar from "./components/NavBar";
+import ChildProvider from "./utils/ChildContext";
 
 const App = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -15,11 +16,13 @@ const App = () => {
   return (
     <>
       <ParentProvider>
-        <NavBar toggleMenu={toggleMenu} menuOpen={menuOpen} />
-        {menuOpen && <Menu closeMenu={() => setMenuOpen(false)} />}
-        <main>
-          <Outlet />
-        </main>
+        <ChildProvider>
+          <NavBar toggleMenu={toggleMenu} menuOpen={menuOpen} />
+          {menuOpen && <Menu closeMenu={() => setMenuOpen(false)} />}
+          <main>
+            <Outlet />
+          </main>
+        </ChildProvider>
       </ParentProvider>
     </>
   );
