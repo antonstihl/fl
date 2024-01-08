@@ -9,6 +9,7 @@ import { useChild, useChildUpdate, useChildren } from "../context/ChildContext";
 import { convertToDate } from "../utils/DateUtilities";
 import { useParent } from "../context/ParentContext";
 import { Link } from "react-router-dom";
+import Modal from "../components/Modal";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -31,6 +32,7 @@ function CalendarPage() {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
+  const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
   const child = useChild();
   const children = useChildren();
   const childId = child ? child.id : undefined;
@@ -93,18 +95,26 @@ function CalendarPage() {
   };
 
   const handleSave = () => {
-    if (childId) {
-      addAllocatedDates(parent!.id, childId, selectedDates, leave, payment);
+    if (childId && parent && selectedDates.length > 0) {
+      addAllocatedDates(parent.id, childId, selectedDates, leave, payment);
       setSelectedDates([]);
     }
   };
 
-  const handleDelete = () => {
-    if (childId) {
-      removeAllocatedDates(parent!.id, childId, selectedDates);
-      setSelectedDates([]);
+  const handleClickDelete = () => {
+    if (selectedDates.length > 0) {
+      setIsRemoveModalOpen(true);
     }
   };
+
+  const handleDelete = () => {
+    if (childId && parent) {
+      removeAllocatedDates(parent.id, childId, selectedDates);
+      setSelectedDates([]);
+      setIsRemoveModalOpen(false);
+    }
+  };
+
   // const daysWithPayment = allocatedDates
   //   .map((ad) => ad.payment)
   //   .reduce((acc, current) => {
@@ -125,107 +135,134 @@ function CalendarPage() {
   //   }, 0);
 
   return (
-    <div className="m-4 flex flex-col justify-start gap-2 w-full">
-      <div className="flex items-start gap-4 w-1/2">
-        <div className="flex flex-col items-start gap-4">
-          {children.length === 0 && (
-            <Card>
-              Inga barn tillagda. Konfigurera på{" "}
-              <Link to="/family" className="font-bold text-blue-700">
-                familjsidan.
-              </Link>
-            </Card>
-          )}
-          {child && (
-            <Card width="w-full">
-              <select
-                onChange={(e) => setChildId(e.target.value)}
-                className="rounded-md p-2 w-full"
-                name="child"
-                value={childId}
-              >
-                {children.map((c) => (
-                  <option value={c.id} key={c.id}>{`${c.name} (${
-                    c.dateOfBirth
-                      ? diffYearsFloor(new Date(), convertToDate(c.dateOfBirth))
-                      : "?"
-                  } år)`}</option>
-                ))}
-              </select>
-            </Card>
-          )}
-          {child && (
-            <Card>
-              <Calendar
-                selectedDates={selectedDates}
-                setSelectedDates={updateSelectedDates}
-                allocatedDates={allocatedDates}
-              />
-            </Card>
-          )}
-        </div>
-        {child && (
-          <div className="flex flex-col gap-4">
-            {!parent ? (
+    <>
+      {isRemoveModalOpen && (
+        <Modal>
+          <Card title="Bekräfta">
+            <div className="m-2">
+              <p className="mb-4">
+                Vill du verkligen rensa föräldraledighet för valda datum?
+              </p>
+              <div className="flex justify-end gap-2">
+                <Button variant="primary" onClick={handleDelete}>
+                  Rensa
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => setIsRemoveModalOpen(false)}
+                >
+                  Avbryt
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </Modal>
+      )}
+      <div className="m-4 flex flex-col justify-start gap-2 w-full">
+        <div className="flex items-start gap-4 w-1/2">
+          <div className="flex flex-col items-start gap-4">
+            {children.length === 0 && (
               <Card>
-                Ingen förälder tillagd. Konfigurera på{" "}
+                Inga barn tillagda. Konfigurera på{" "}
                 <Link to="/family" className="font-bold text-blue-700">
                   familjsidan.
                 </Link>
               </Card>
-            ) : (
+            )}
+            {child && (
+              <Card width="w-full">
+                <select
+                  onChange={(e) => setChildId(e.target.value)}
+                  className="rounded-md p-2 w-full"
+                  name="child"
+                  value={childId}
+                >
+                  {children.map((c) => (
+                    <option value={c.id} key={c.id}>{`${c.name} (${
+                      c.dateOfBirth
+                        ? diffYearsFloor(
+                            new Date(),
+                            convertToDate(c.dateOfBirth)
+                          )
+                        : "?"
+                    } år)`}</option>
+                  ))}
+                </select>
+              </Card>
+            )}
+            {child && (
               <Card>
-                <div className="flex flex-col items-center w-max">
-                  <div className="flex flex-col gap-3">
-                    <div className="flex justify-end">
-                      <Button variant="delete" onClick={clearSelectedDates}>
-                        Avmarkera alla
-                      </Button>
-                    </div>
-                    <SelectedDatesList
-                      selectedDates={selectedDates}
-                      setSelectedDates={updateSelectedDates}
-                    />
-                    {selectedDates.length === 0 && <p>Inga datum valda.</p>}
-                    <div className="grid items-center grid-cols-[35%_65%] gap-2">
-                      <p>Ledig</p>
-                      <SegmentedControl
-                        optionValue={leave}
-                        setOptionValue={updateLeave}
-                        options={leaveOptions}
-                      />
-                      <p>Föräldrapenning</p>
-                      <SegmentedControl
-                        optionValue={payment}
-                        setOptionValue={updatePayment}
-                        options={paymentOptions}
-                      />
-                      <p>Nivå</p>
-                      <SegmentedControl
-                        optionValue={level}
-                        setOptionValue={(s) => setLevel(s)}
-                        options={[
-                          { label: "Sjukpenning", value: "Sjukpenning" },
-                          { label: "Lägstanivå", value: "Lägstanivå" },
-                        ]}
-                      />
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button variant="primary" onClick={handleSave}>
-                        Spara
-                      </Button>
-                      <Button variant="delete" onClick={handleDelete}>
-                        Ta bort
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                <Calendar
+                  selectedDates={selectedDates}
+                  setSelectedDates={updateSelectedDates}
+                  allocatedDates={allocatedDates}
+                />
               </Card>
             )}
           </div>
-        )}
+          {child && (
+            <div className="flex flex-col gap-4">
+              {!parent ? (
+                <Card>
+                  Ingen förälder tillagd. Konfigurera på{" "}
+                  <Link to="/family" className="font-bold text-blue-700">
+                    familjsidan.
+                  </Link>
+                </Card>
+              ) : (
+                <Card>
+                  <div className="flex flex-col items-center w-max">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex justify-end">
+                        <Button variant="delete" onClick={clearSelectedDates}>
+                          Avmarkera alla
+                        </Button>
+                      </div>
+                      <SelectedDatesList
+                        selectedDates={selectedDates}
+                        setSelectedDates={updateSelectedDates}
+                      />
+                      {selectedDates.length === 0 && <p>Inga datum valda.</p>}
+                      <div className="grid items-center grid-cols-[35%_65%] gap-2">
+                        <p>Ledig</p>
+                        <SegmentedControl
+                          optionValue={leave}
+                          setOptionValue={updateLeave}
+                          options={leaveOptions}
+                        />
+                        <p>Föräldrapenning</p>
+                        <SegmentedControl
+                          optionValue={payment}
+                          setOptionValue={updatePayment}
+                          options={paymentOptions}
+                        />
+                        <p>Nivå</p>
+                        <SegmentedControl
+                          optionValue={level}
+                          setOptionValue={(s) => setLevel(s)}
+                          options={[
+                            { label: "Sjukpenning", value: "Sjukpenning" },
+                            { label: "Lägstanivå", value: "Lägstanivå" },
+                          ]}
+                        />
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button variant="primary" onClick={handleSave}>
+                          Spara
+                        </Button>
+                        <Button variant="delete" onClick={handleClickDelete}>
+                          Rensa
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

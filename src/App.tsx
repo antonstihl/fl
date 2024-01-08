@@ -7,18 +7,11 @@ import NavBar from "./components/NavBar";
 import ChildProvider from "./context/ChildContext";
 
 const App = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setMenuOpen((open) => !open);
-  };
-
   return (
     <>
       <ParentProvider>
         <ChildProvider>
-          <NavBar toggleMenu={toggleMenu} menuOpen={menuOpen} />
-          {menuOpen && <Menu closeMenu={() => setMenuOpen(false)} />}
+          <NavBar/>
           <main>
             <Outlet />
           </main>

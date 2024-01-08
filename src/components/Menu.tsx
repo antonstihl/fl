@@ -19,7 +19,7 @@ function Menu({ closeMenu }: Props) {
     );
   };
   return (
-    <nav className="flex flex-row fixed top-11 h-full">
+    <nav className="flex flex-row fixed top-12 h-full">
       <div className="bg-green-700 pt-2 px-2 h-full text-white w-max flex-col space-y-2">
         {getMenuItem("Familj", "/family")}
         {getMenuItem("Kalender", "/calendar")}

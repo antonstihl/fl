@@ -54,7 +54,7 @@ export default function DateButton({
               selected ? "border-b-green-700" : "border-b-transparent"
             }
             border-r-[15px] border-r-transparent
-            -rotate-45 -translate-x-3 -translate-y-1 -z-50`}
+            -rotate-45 -translate-x-3 -translate-y-1 z-0`}
             />
             <div className="flex justify-end w-4 pr-1">
               <div>{today ? <p>{date.date}</p> : date.date}</div>
