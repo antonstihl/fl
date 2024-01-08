@@ -5,7 +5,7 @@ import Card from "../components/Card";
 import SegmentedControl, { Option } from "../components/SegmentedControl";
 import SelectedDatesList from "../components/SelectedDatesList";
 import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
-import { useChild, useChildUpdate } from "../context/ChildContext";
+import { useChild, useChildUpdate, useChildren } from "../context/ChildContext";
 import { convertToDate } from "../utils/DateUtilities";
 import { useParent } from "../context/ParentContext";
 
@@ -24,19 +24,6 @@ const paymentOptions: Option[] = [
   { label: "0%", value: 0 },
 ];
 
-const CHILDREN: Child[] = [
-  {
-    id: "1",
-    name: "Alfred",
-    dateOfBirth: { year: 2020, month: 3, date: 14 },
-  },
-  {
-    id: "2",
-    name: "Alma",
-    dateOfBirth: { year: 2023, month: 2, date: 30 },
-  },
-];
-
 type Level = "Sjukpenning" | "Lägstanivå";
 
 function CalendarPage() {
@@ -44,6 +31,7 @@ function CalendarPage() {
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
   const child = useChild();
+  const children = useChildren();
   const childId = child ? child.id : undefined;
   const setChildId = useChildUpdate();
   const parent = useParent();
@@ -135,7 +123,7 @@ function CalendarPage() {
               name="child"
               value={childId}
             >
-              {CHILDREN.map((c) => (
+              {children.map((c) => (
                 <option value={c.id} key={c.id}>{`${c.name} (${
                   c.dateOfBirth
                     ? diffYearsFloor(new Date(), convertToDate(c.dateOfBirth))

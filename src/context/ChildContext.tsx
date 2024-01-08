@@ -26,16 +26,21 @@ const dummyChild: Child = {
 };
 
 const ChildContext = createContext<Child | undefined>(dummyChild);
+const ChildrenContext = createContext<Child[]>([]);
 const ChildUpdateContext = createContext((id: string) =>
   alert(`No handler in place, but you entere${id}`)
 );
 const ChildAddContext = createContext(
-  (id: string, name: string, dateOfBirth: MyDate) =>
+  (id: string, name: string, dateOfBirth?: MyDate) =>
     alert(`No handler in place, but you entered ${id} ${name} ${dateOfBirth}`)
 );
 
 export function useChild() {
   return useContext(ChildContext);
+}
+
+export function useChildren() {
+  return useContext(ChildrenContext);
 }
 
 export function useChildUpdate() {
@@ -51,7 +56,7 @@ export default function ChildProvider({
 }: PropsWithChildren) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [child, setChild] = useState<Child | undefined>(undefined);
-  const [children, setChildren] = useState<Child[]>([]);
+  const [children, setChildren] = useState<Child[]>(CHILDREN);
 
   useEffect(() => {
     const savedChildren: Child[] =
@@ -78,11 +83,7 @@ export default function ChildProvider({
     setSearchParams(searchParams);
   };
 
-  const handleAddChild = (
-    id: string,
-    name: string,
-    dateOfBirth: MyDate | null
-  ) => {
+  const handleAddChild = (id: string, name: string, dateOfBirth?: MyDate) => {
     const newChild = { id, name, dateOfBirth } as Child;
     const updatedChildren = [...children, newChild];
     setChildren(updatedChildren);
@@ -93,7 +94,9 @@ export default function ChildProvider({
     <ChildContext.Provider value={child}>
       <ChildUpdateContext.Provider value={handleSetChild}>
         <ChildAddContext.Provider value={handleAddChild}>
-          {reactChildren}
+          <ChildrenContext.Provider value={children}>
+            {reactChildren}
+          </ChildrenContext.Provider>
         </ChildAddContext.Provider>
       </ChildUpdateContext.Provider>
     </ChildContext.Provider>
