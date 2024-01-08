@@ -48,12 +48,15 @@ export default function ParentProvider({ children }: PropsWithChildren) {
     const savedParents: Parent[] =
       JSON.parse(localStorage.getItem("parents") || "[]") || [];
     setParents(savedParents);
-    setParent(
-      savedParents.find((p) => p.id === searchParams.get("parent")) ||
-        savedParents.find((p) => p.id === localStorage.getItem("parent")) ||
-        savedParents[0]
-    );
   }, []);
+
+  useEffect(() => {
+    setParent(
+      parents.find((p) => p.id === searchParams.get("parent")) ||
+        parents.find((p) => p.id === localStorage.getItem("parent")) ||
+        parents[0]
+    );
+  }, [parents]);
 
   const handleSetParent = (id: string) => {
     setParent(parents.find((p) => p.id === id) || undefined);

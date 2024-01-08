@@ -1,7 +1,11 @@
 import { useState } from "react";
 import Button from "../components/Button";
 import Card from "../components/Card";
-import { useChildAdd, useChildren } from "../context/ChildContext";
+import {
+  useChildAdd,
+  useChildDelete,
+  useChildren,
+} from "../context/ChildContext";
 import {
   useParentAdd,
   useParentDelete,
@@ -12,11 +16,12 @@ import { convertToMyDate } from "../utils/DateUtilities";
 function FamilyPage() {
   const children = useChildren();
   const addChild = useChildAdd();
+  const deleteChild = useChildDelete();
   const parents = useParents();
   const deleteParent = useParentDelete();
   const addParent = useParentAdd();
   const [newChildName, setNewChildName] = useState("");
-  const [newChildDOB, setNewChildDOB] = useState(new Date());
+  const [newChildDOB, setNewChildDOB] = useState<Date | undefined>(undefined);
   const [newParentName, setNewParentName] = useState("");
 
   return (
@@ -29,7 +34,10 @@ function FamilyPage() {
             ) : (
               <ul className="list-disc list-inside">
                 {children.map((c) => (
-                  <li key={c.id}>
+                  <li key={c.id} className="flex items-center gap-2">
+                    <Button variant="delete" onClick={() => deleteChild(c.id)}>
+                      X
+                    </Button>
                     {`
                 ${c.name}${
                       c.dateOfBirth
@@ -78,7 +86,7 @@ function FamilyPage() {
                 addChild(
                   crypto.randomUUID(),
                   newChildName,
-                  convertToMyDate(newChildDOB)
+                  newChildDOB && convertToMyDate(newChildDOB)
                 )
               }
             >
