@@ -24,7 +24,7 @@ function Menu({ closeMenu }: Props) {
         {getMenuItem("Familj", "/family")}
         {getMenuItem("Kalender", "/calendar")}
         {getMenuItem("Statistik", "/stats")}
-        {getMenuItem("Hoppande kalkylator", "/calculator")}
+        {/* {getMenuItem("Hoppande kalkylator", "/calculator")} */}
         {getMenuItem("Hjälp", "/help")}
       </div>
       <div

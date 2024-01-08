@@ -37,10 +37,10 @@ const router = createBrowserRouter([
         path: "stats",
         element: <StatsPage />,
       },
-      {
-        path: "calculator",
-        element: <Calculator />,
-      },
+      // {
+      //   path: "calculator",
+      //   element: <Calculator />,
+      // },
       {
         path: "help",
         element: <Help />,
