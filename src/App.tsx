@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import "./App.css";
-import ParentProvider from "./utils/ParentContext";
+import ParentProvider from "./context/ParentContext";
 import Menu from "./components/Menu";
 import NavBar from "./components/NavBar";
-import ChildProvider from "./utils/ChildContext";
+import ChildProvider from "./context/ChildContext";
 
 const App = () => {
   const [menuOpen, setMenuOpen] = useState(false);

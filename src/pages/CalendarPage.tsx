@@ -5,9 +5,9 @@ import Card from "../components/Card";
 import SegmentedControl, { Option } from "../components/SegmentedControl";
 import SelectedDatesList from "../components/SelectedDatesList";
 import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
-import { useChild, useChildUpdate } from "../utils/ChildContext";
+import { useChild, useChildUpdate } from "../context/ChildContext";
 import { convertToDate } from "../utils/DateUtilities";
-import { useParent } from "../utils/ParentContext";
+import { useParent } from "../context/ParentContext";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
