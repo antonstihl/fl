@@ -10,6 +10,7 @@ import { convertToDate } from "../utils/DateUtilities";
 import { useParent } from "../context/ParentContext";
 import { Link } from "react-router-dom";
 import Modal from "../components/Modal";
+import ConfirmModal from "../components/ConfirmModal";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -58,8 +59,8 @@ function CalendarPage() {
   }, []);
 
   const updateSelectedDates = (dates: MyDate[]) => {
-    setSelectedDates(dates);
     localStorage.setItem("selectedDates", JSON.stringify(dates));
+    setSelectedDates(dates);
   };
 
   const clearSelectedDates = () => {
@@ -137,26 +138,22 @@ function CalendarPage() {
   return (
     <>
       {isRemoveModalOpen && (
-        <Modal>
-          <Card title="Bekräfta">
-            <div className="m-2">
-              <p className="mb-4">
-                Vill du verkligen rensa föräldraledighet för valda datum?
-              </p>
-              <div className="flex justify-end gap-2">
-                <Button variant="primary" onClick={handleDelete}>
-                  Rensa
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => setIsRemoveModalOpen(false)}
-                >
-                  Avbryt
-                </Button>
-              </div>
+        <ConfirmModal
+          text="Vill du verkligen rensa föräldraledighet för valda datum?"
+          footer={
+            <div className="flex justify-end gap-2">
+              <Button variant="primary" onClick={handleDelete}>
+                Rensa
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setIsRemoveModalOpen(false)}
+              >
+                Avbryt
+              </Button>
             </div>
-          </Card>
-        </Modal>
+          }
+        />
       )}
       <div className="m-4 flex flex-col justify-start gap-2 w-full">
         <div className="flex items-start gap-4 w-1/2">

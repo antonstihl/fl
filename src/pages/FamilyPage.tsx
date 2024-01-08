@@ -13,6 +13,7 @@ import {
 } from "../context/ParentContext";
 import { convertToMyDate } from "../utils/DateUtilities";
 import Modal from "../components/Modal";
+import ConfirmModal from "../components/ConfirmModal";
 
 function FamilyPage() {
   const children = useChildren();
@@ -26,6 +27,12 @@ function FamilyPage() {
   const [newParentName, setNewParentName] = useState("");
   const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false);
   const [isAddParentModalOpen, setIsAddParentModalOpen] = useState(false);
+  const [childToDelete, setChildToDelete] = useState<Child | undefined>(
+    undefined
+  );
+  const [parentToDelete, setParentToDelete] = useState<Parent | undefined>(
+    undefined
+  );
 
   const handleAddChildClick = () => {
     setIsAddChildModalOpen(true);
@@ -51,6 +58,19 @@ function FamilyPage() {
     setIsAddParentModalOpen(false);
   };
 
+  const handleDeleteChild = () => {
+    if (childToDelete) {
+      deleteChild(childToDelete.id);
+    }
+    setChildToDelete(undefined);
+  };
+
+  const handleDeleteParent = () => {
+    if (parentToDelete) {
+      deleteParent(parentToDelete.id);
+    }
+    setParentToDelete(undefined);
+  };
   return (
     <>
       {isAddChildModalOpen && (
@@ -104,16 +124,55 @@ function FamilyPage() {
               <Button variant="primary" onClick={handleAddParent}>
                 Lägg till
               </Button>
-              <Button variant="secondary" onClick={() => setIsAddParentModalOpen(false)}>
+              <Button
+                variant="secondary"
+                onClick={() => setIsAddParentModalOpen(false)}
+              >
                 Avbryt
               </Button>
             </div>
           </Card>
         </Modal>
       )}
-      <div className="flex m-4 gap-4 flex-col lg:flex-row">
+      {childToDelete && (
+        <ConfirmModal
+          text={`Vill du verkligen ta bort barnet ${childToDelete.name} (${childToDelete.id})?`}
+          footer={
+            <div className="flex justify-end gap-2">
+              <Button variant="primary" onClick={handleDeleteChild}>
+                Ta bort
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setChildToDelete(undefined)}
+              >
+                Avbryt
+              </Button>
+            </div>
+          }
+        />
+      )}
+      {parentToDelete && (
+        <ConfirmModal
+          text={`Vill du verkligen ta bort föräldern ${parentToDelete.name} (${parentToDelete.id})?`}
+          footer={
+            <div className="flex justify-end gap-2">
+              <Button variant="primary" onClick={handleDeleteParent}>
+                Ta bort
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setParentToDelete(undefined)}
+              >
+                Avbryt
+              </Button>
+            </div>
+          }
+        />
+      )}
+      <div className="flex m-4 gap-4 flex-col">
         <div className="flex flex-col gap-4">
-          <Card title="Barn" width="w-full">
+          <Card title="Barn" width="w-full lg:w-1/2">
             <div className="m-2">
               {children.length === 0 ? (
                 <p>Inga barn tillagda.</p>
@@ -123,7 +182,7 @@ function FamilyPage() {
                     <li key={c.id} className="flex items-center gap-2">
                       <Button
                         variant="delete"
-                        onClick={() => deleteChild(c.id)}
+                        onClick={() => setChildToDelete(c)}
                       >
                         X
                       </Button>
@@ -135,7 +194,7 @@ function FamilyPage() {
                             "-" +
                             c.dateOfBirth.month.toString().padStart(2, "0") +
                             "-" +
-                            c.dateOfBirth.date
+                            c.dateOfBirth.date.toString().padStart(2, "0")
                           : ""
                       }`}
                       <span title={c.id}>
@@ -156,7 +215,7 @@ function FamilyPage() {
           </Card>
         </div>
         <div className="flex flex-col gap-4">
-          <Card title="Föräldrar" width="w-full">
+          <Card title="Föräldrar" width="w-full lg:w-1/2">
             <div className="m-2">
               {parents.length === 0 ? (
                 <p>Inga föräldrar tillagda.</p>
@@ -166,7 +225,7 @@ function FamilyPage() {
                     <li key={p.id} className="flex items-center gap-2">
                       <Button
                         variant="delete"
-                        onClick={() => deleteParent(p.id)}
+                        onClick={() => setParentToDelete(p)}
                       >
                         X
                       </Button>
