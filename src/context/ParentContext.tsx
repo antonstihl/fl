@@ -16,7 +16,7 @@ export const ParentAddContext = createContext((name: string) =>
   alert("No handler in place, but you entered " + name)
 );
 export const ParentDeleteContext = createContext((id: string) =>
-  alert("No handler in place")
+  alert("No handler in place, but you entered " + id)
 );
 
 export function useParent() {

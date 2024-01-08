@@ -1,7 +1,6 @@
-import { useLeaves } from "../utils/Leave";
 
 export default function StatsPage() {
-  const leaves = useLeaves();
+  // const leaves = useLeaves();
 
   return <div>Hi stats page, how are you?</div>;
 
