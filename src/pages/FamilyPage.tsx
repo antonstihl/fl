@@ -1,13 +1,13 @@
 import Card from "../components/Card";
 
-function ProfilePage() {
+function FamilyPage() {
   return (
     <div className="m-4">
       <Card>
-        Profile stuff goes here
+        Family stuff goes here
       </Card>
     </div>
   );
 }
 
-export default ProfilePage;
+export default FamilyPage;

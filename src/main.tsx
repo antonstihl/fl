@@ -9,7 +9,7 @@ import {
 import Calculator from "./components/Calculator.tsx";
 import Help from "./components/Help.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
-import ProfilePage from "./pages/ProfilePage.tsx";
+import FamilyPage from "./pages/FamilyPage.tsx";
 import StatsPage from "./pages/StatsPage.tsx";
 
 const landingLoader = async () => {
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
         loader: landingLoader,
       },
       {
-        path: "profile",
-        element: <ProfilePage />,
+        path: "family",
+        element: <FamilyPage />,
       },
       {
         path: "calendar",
