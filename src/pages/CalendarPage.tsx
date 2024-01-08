@@ -35,10 +35,14 @@ function CalendarPage() {
   const childId = child ? child.id : undefined;
   const setChildId = useChildUpdate();
   const parent = useParent();
-  const { allAllocatedDatesMap, addAllocatedDates, removeAllocatedDates } =
+  const { allAllocatedDates, addAllocatedDates, removeAllocatedDates } =
     useAllAllocatedDates();
   const allocatedDates =
-    childId && parent ? allAllocatedDatesMap?.[childId]?.[parent.id] || [] : [];
+    childId && parent?.id
+      ? allAllocatedDates.filter(
+          (ad) => ad.childId === childId && ad.parentId === parent.id
+        )
+      : [];
 
   const [level, setLevel] = useState<Level>("Sjukpenning");
 

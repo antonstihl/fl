@@ -32,7 +32,7 @@ function FamilyPage() {
             {children.length === 0 ? (
               <p>Inga barn tillagda.</p>
             ) : (
-              <ul className="list-disc list-inside">
+              <ul className="list-disc list-inside flex flex-col gap-2">
                 {children.map((c) => (
                   <li key={c.id} className="flex items-center gap-2">
                     <Button variant="delete" onClick={() => deleteChild(c.id)}>

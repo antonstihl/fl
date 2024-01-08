@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
+import { myDatesEqual } from "../utils/DateUtilities";
 import {
   getAllAllocatedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorage";
-import { addDates, removeDates } from "../utils/DateUtilities";
 
 export function useAllAllocatedDates() {
-  const [allAllocatedDatesMap, setAllAllocatedDatesMap] = useState<
-    Record<string, Record<string, MyAllocatedDate[]>>
-  >({});
+  const [allAllocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>(
+    []
+  );
 
   useEffect(() => {
-    setAllAllocatedDatesMap(getAllAllocatedDatesFromLocalStorage());
+    setAllocatedDates(getAllAllocatedDatesFromLocalStorage());
   }, []);
 
   const addAllocatedDates = (
@@ -21,23 +21,26 @@ export function useAllAllocatedDates() {
     leave: number,
     payment: number
   ) => {
-    if (allAllocatedDatesMap !== null) {
-      if (!allAllocatedDatesMap?.[childId]) {
-        allAllocatedDatesMap[childId] = { [parentId]: [] };
-      } else if (!allAllocatedDatesMap[childId]?.[parentId]) {
-        allAllocatedDatesMap[childId][parentId] = [];
-      }
+    const prunedAllocatedDates = allAllocatedDates.filter(
+      (d) =>
+        !(d.childId === childId && d.parentId === parentId) ||
+        dates.findIndex((nd) => myDatesEqual(nd, d as MyDate)) === -1
+    );
+    console.log({ prunedAllocatedDates });
 
-      const existingAllocatedDates: MyDate[] = [
-        ...allAllocatedDatesMap?.[childId]?.[parentId],
-      ];
-      const updatedAllocatedDates: MyAllocatedDate[] = addDates(
-        dates,
-        existingAllocatedDates
-      ).map((date) => ({ pace: leave, payment, ...date }));
-      setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parentId);
-      setAllAllocatedDatesMap(getAllAllocatedDatesFromLocalStorage());
-    }
+    const newAllocatedDates = [...prunedAllocatedDates];
+    const allocatedDatesToAdd: MyAllocatedDate[] = dates.map((d) => ({
+      ...d,
+      pace: leave,
+      payment,
+      parentId,
+      childId,
+    }));
+    console.log({ allocatedDatesToAdd });
+    newAllocatedDates.push(...allocatedDatesToAdd);
+    console.log({ newAllocatedDates });
+    setAllocatedDatesLocalStorage(newAllocatedDates);
+    setAllocatedDates(newAllocatedDates);
   };
 
   const removeAllocatedDates = (
@@ -45,21 +48,17 @@ export function useAllAllocatedDates() {
     childId: string,
     dates: MyDate[]
   ) => {
-    if (allAllocatedDatesMap !== null) {
-      const existingAllocatedDates: MyDate[] = [
-        ...allAllocatedDatesMap?.[childId]?.[parentId],
-      ];
-      const updatedAllocatedDates: MyAllocatedDate[] = removeDates(
-        dates,
-        existingAllocatedDates
-      ) as MyAllocatedDate[];
-      setAllocatedDatesLocalStorage(updatedAllocatedDates, childId, parentId);
-      setAllAllocatedDatesMap(getAllAllocatedDatesFromLocalStorage());
-    }
+    const prunedAllocatedDates = allAllocatedDates.filter(
+      (d) =>
+        !(d.childId === childId && d.parentId === parentId) ||
+        dates.findIndex((nd) => myDatesEqual(nd, d as MyDate)) === -1
+    );
+    setAllocatedDatesLocalStorage(prunedAllocatedDates);
+    setAllocatedDates(prunedAllocatedDates);
   };
 
   return {
-    allAllocatedDatesMap,
+    allAllocatedDates,
     addAllocatedDates,
     removeAllocatedDates,
   };
