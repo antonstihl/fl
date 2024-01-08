@@ -26,8 +26,6 @@ export function useAllAllocatedDates() {
         !(d.childId === childId && d.parentId === parentId) ||
         dates.findIndex((nd) => myDatesEqual(nd, d as MyDate)) === -1
     );
-    console.log({ prunedAllocatedDates });
-
     const newAllocatedDates = [...prunedAllocatedDates];
     const allocatedDatesToAdd: MyAllocatedDate[] = dates.map((d) => ({
       ...d,
@@ -36,9 +34,7 @@ export function useAllAllocatedDates() {
       parentId,
       childId,
     }));
-    console.log({ allocatedDatesToAdd });
     newAllocatedDates.push(...allocatedDatesToAdd);
-    console.log({ newAllocatedDates });
     setAllocatedDatesLocalStorage(newAllocatedDates);
     setAllocatedDates(newAllocatedDates);
   };

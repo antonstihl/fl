@@ -82,6 +82,7 @@ export default function ChildProvider({
     }
   }, [children]);
 
+
   const handleSetChild = (id: string) => {
     setChild(children.find((p) => p.id === id) || children[0]);
     localStorage.setItem("child", id);

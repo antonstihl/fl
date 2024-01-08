@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import Card from "../components/Card";
+import ConfirmModal from "../components/ConfirmModal";
 import SegmentedControl, { Option } from "../components/SegmentedControl";
 import SelectedDatesList from "../components/SelectedDatesList";
-import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
 import { useChild, useChildUpdate, useChildren } from "../context/ChildContext";
-import { convertToDate } from "../utils/DateUtilities";
 import { useParent } from "../context/ParentContext";
-import { Link } from "react-router-dom";
-import Modal from "../components/Modal";
-import ConfirmModal from "../components/ConfirmModal";
+import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
+import { convertToDate } from "../utils/DateUtilities";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -49,6 +48,7 @@ function CalendarPage() {
       : [];
 
   const [level, setLevel] = useState<Level>("Sjukpenning");
+
   useEffect(() => {
     const selectedDates = JSON.parse(
       localStorage.getItem("selectedDates") || "[]"
