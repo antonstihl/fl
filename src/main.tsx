@@ -17,11 +17,11 @@ const landingLoader = async () => {
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <App />,
     children: [
       {
-        path: "/",
+        path: "",
         loader: landingLoader,
       },
       {
