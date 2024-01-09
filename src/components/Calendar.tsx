@@ -40,7 +40,7 @@ function getDateCells(year: number, month: number): DateCell[] {
     });
   }
   const isJanuary = month === 0;
-  const previousMonth: number = isJanuary ? 11 : month - 1;
+  const previousMonth: number = isJanuary ? 12 : month - 1;
   const yearOfPreviousMonth: number = isJanuary ? year - 1 : year;
   const isDecember = month === 11;
   const nextMonth = isDecember ? 0 : month + 1;
