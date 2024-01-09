@@ -5,7 +5,7 @@ import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
 import Button from "../components/Button";
 import { useSalaries } from "../hooks/useSalaries";
 
-type StagedSalary = {
+type SalaryToAdd = {
   employer?: string;
   parentId?: string;
   startDate?: MyDate;
@@ -15,17 +15,22 @@ type StagedSalary = {
 
 export default function SalaryPage() {
   const parents = useParents();
-  const [salaryToAdd, setSalaryToAdd] = useState<StagedSalary>({});
+  const [salaryToAdd, setSalaryToAdd] = useState<SalaryToAdd>({});
   const { addSalary, salaries } = useSalaries();
 
-  const handleAddSalaryClick = () => {
-    addSalary(salaryToAdd as Salary);
-    setSalaryToAdd({});
+  const validateSalary = (s: SalaryToAdd): boolean => {
+    if (s.employer && s.parentId && s.startDate && s.amountSEK) {
+      return true;
+    }
+    return false;
   };
 
-  console.log(
-    salaryToAdd.startDate ? convertToDate(salaryToAdd.startDate) : "bla"
-  );
+  const handleAddSalaryClick = () => {
+    if (validateSalary(salaryToAdd)) {
+      addSalary(salaryToAdd as Salary);
+      setSalaryToAdd({});
+    }
+  };
   return (
     <div className="m-4">
       <Card>
@@ -102,13 +107,15 @@ export default function SalaryPage() {
           <label htmlFor="salary">Månadslön (SEK)</label>
           <input
             name="salary"
-            value={salaryToAdd.amountSEK}
+            value={
+              salaryToAdd.amountSEK ? salaryToAdd.amountSEK / 12 : undefined
+            }
             type="number"
             min={0}
             onChange={(e) =>
               setSalaryToAdd((s) => ({
                 ...s,
-                salary: Number(e.target.value) * 12,
+                amountSEK: Number(e.target.value) * 12,
               }))
             }
             className="border-2 border-black p-1"
