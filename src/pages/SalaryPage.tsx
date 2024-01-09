@@ -34,12 +34,12 @@ export default function SalaryPage() {
   return (
     <div className="m-4">
       <Card>
-        <form className="grid grid-cols-2 gap-2 p-2 items-center">
+        <div className="grid grid-cols-2 gap-2 p-2 items-center">
           <label htmlFor="employer">Arbetsgivare</label>
           <input
             type="text"
             name="employer"
-            value={salaryToAdd.employer}
+            value={salaryToAdd.employer || ""}
             onChange={(e) =>
               setSalaryToAdd((s) => ({ ...s, employer: e.target.value }))
             }
@@ -48,7 +48,7 @@ export default function SalaryPage() {
           <label htmlFor="parentId">Förälder</label>
           <select
             name="parentId"
-            value={salaryToAdd.parentId}
+            value={salaryToAdd.parentId || "-1"}
             defaultValue="-1"
             onChange={(e) =>
               setSalaryToAdd((s) => ({ ...s, parentId: e.target.value }))
@@ -108,7 +108,7 @@ export default function SalaryPage() {
           <input
             name="salary"
             value={
-              salaryToAdd.amountSEK ? salaryToAdd.amountSEK / 12 : undefined
+              salaryToAdd.amountSEK ? salaryToAdd.amountSEK / 12 : ""
             }
             type="number"
             min={0}
@@ -120,7 +120,7 @@ export default function SalaryPage() {
             }
             className="border-2 border-black p-1"
           />
-        </form>
+        </div>
         <div className="flex justify-end m-2">
           <Button variant="primary" onClick={handleAddSalaryClick}>
             Lägg till
