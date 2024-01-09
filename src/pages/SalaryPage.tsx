@@ -1,9 +1,9 @@
-import { useReducer, useRef, useState } from "react";
+import { useState } from "react";
+import Button from "../components/Button";
 import Card from "../components/Card";
 import { useParents } from "../context/ParentContext";
-import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
-import Button from "../components/Button";
 import { useSalaries } from "../hooks/useSalaries";
+import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
 
 type SalaryToAdd = {
   employer?: string;
@@ -107,9 +107,7 @@ export default function SalaryPage() {
           <label htmlFor="salary">Månadslön (SEK)</label>
           <input
             name="salary"
-            value={
-              salaryToAdd.amountSEK ? salaryToAdd.amountSEK / 12 : ""
-            }
+            value={salaryToAdd.amountSEK ? salaryToAdd.amountSEK / 12 : ""}
             type="number"
             min={0}
             onChange={(e) =>
@@ -131,7 +129,11 @@ export default function SalaryPage() {
         {JSON.stringify(salaryToAdd, null, 2)}
       </p>
       <p className="p-6 m-2 w-fit rounded-md flex-wrap border-black border-2">
-        {JSON.stringify(salaries, null, 2)}
+        <ul>
+          {salaries.map((s) => (
+            <li className="list-disc mx-2">{JSON.stringify(s, null, 2)}</li>
+          ))}
+        </ul>
       </p>
     </div>
   );
