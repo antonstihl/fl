@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import {
   createBrowserRouter,
   redirect,
   RouterProvider,
 } from "react-router-dom";
-import Calculator from "./components/Calculator.tsx";
+import App from "./App.tsx";
 import Help from "./components/Help.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
 import FamilyPage from "./pages/FamilyPage.tsx";
