@@ -18,5 +18,11 @@ export function useSalaries() {
     setSalaries(newSalaries);
   };
 
-  return { addSalary, salaries };
+  const deleteSalary = (idToDelete: string) => {
+    const newSalaries = salaries.filter((s) => s.id !== idToDelete);
+    setSalariesLocalStorage(newSalaries);
+    setSalaries(newSalaries);
+  };
+
+  return { addSalary, deleteSalary, salaries };
 }

@@ -34,6 +34,7 @@ type Parent = {
 };
 
 type Salary = {
+  id: string;
   employer: string;
   parentId: string;
   startDate: MyDate;
