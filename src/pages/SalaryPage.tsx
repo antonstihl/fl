@@ -197,13 +197,13 @@ export default function SalaryPage() {
                 }k år ${salaryDate.getFullYear()})`}
                 dataKey="salaryBelowRoof"
                 stackId="a"
-                fill="#8884d8"
+                fill="#15803d"
               />
               <Bar
                 name="Lön över FK tak"
                 dataKey="salaryAboveRoof"
                 stackId="a"
-                fill="#82ca9d"
+                fill="#d97706"
               />
             </BarChart>
           </div>
