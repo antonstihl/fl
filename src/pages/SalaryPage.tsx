@@ -3,10 +3,11 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  LabelList,
   Legend,
   Tooltip,
   XAxis,
-  YAxis,
+  YAxis
 } from "recharts";
 import Button from "../components/Button";
 import Card from "../components/Card";
@@ -51,7 +52,14 @@ export default function SalaryPage() {
   )?.amount;
   const roof = pbb ? pbb * 10 : undefined;
 
-  const salaryGraphData = parents.map((p) => {
+  type SalaryGraphDataPoint = {
+    name: string;
+    salaryBelowRoof?: number;
+    salaryAboveRoof?: number;
+    föräldrapenning?: number;
+    föräldralön?: number;
+  };
+  const salaryGraphData: SalaryGraphDataPoint[] = parents.flatMap((p) => {
     const parentYearlySalary = salaries
       .filter((s) => s.parentId === p.id)
       .filter(
@@ -60,11 +68,23 @@ export default function SalaryPage() {
           (s.endDate ? convertToDate(s.endDate) >= salaryDate : true)
       )
       .reduce((a, b) => a + b.amountSEK, 0);
-    return {
-      name: p.name,
-      salaryBelowRoof: roof && Math.min(parentYearlySalary, roof),
-      salaryAboveRoof: roof && Math.max(parentYearlySalary - roof, 0),
-    };
+    const salaryBelowRoof = roof && Math.min(parentYearlySalary, roof);
+    const salaryAboveRoof = roof && Math.max(parentYearlySalary - roof, 0);
+    return [
+      {
+        name: p.name,
+        salaryBelowRoof,
+        salaryAboveRoof,
+      },
+      {
+        name: `${p.name} ledig`,
+        föräldrapenning: salaryBelowRoof && 0.8 * salaryBelowRoof,
+        föräldralön:
+          salaryAboveRoof &&
+          salaryBelowRoof &&
+          0.1 * salaryBelowRoof + 0.8 * salaryAboveRoof,
+      },
+    ];
   });
   return (
     <div className="flex gap-2 flex-wrap">
@@ -165,7 +185,12 @@ export default function SalaryPage() {
         </Card>
         <Card width="w-fit">
           <div className="flex flex-col items-center">
-            <div className="flex justify-end w-full pr-8">
+            <div className="flex justify-end gap-2 items-center w-full pr-8">
+              {!roof && (
+                <p className="text-red-500">
+                  Inget prisbasbelopp finns tillgängligt.
+                </p>
+              )}
               <input
                 className="border-2 border-black p-1"
                 type="date"
@@ -185,6 +210,7 @@ export default function SalaryPage() {
                 left: 20,
                 bottom: 5,
               }}
+              layout="horizontal"
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -205,6 +231,28 @@ export default function SalaryPage() {
                 stackId="a"
                 fill="#d97706"
               />
+              <Bar
+                name="Föräldrapenning"
+                dataKey="föräldrapenning"
+                stackId="a"
+                fill="#d97706"
+              />
+              <Bar
+                name="Föräldralön"
+                dataKey="föräldralön"
+                stackId="a"
+                fill="#1d4ed8"
+              >
+                <LabelList
+                  position="top"
+                  valueAccessor={(e: SalaryGraphDataPoint) =>
+                    (e.föräldralön || 0) +
+                    (e.föräldrapenning || 0) +
+                    (e.salaryAboveRoof || 0) +
+                    (e.salaryBelowRoof || 0)
+                  }
+                />
+              </Bar>
             </BarChart>
           </div>
         </Card>
