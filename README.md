@@ -8,20 +8,20 @@ _Testa gärna! Men notera att appen är en [alfaversion](https://sv.wikipedia.or
 
 ## Vad är detta?
 
-En app för att förenkla planering av föräldraledighet, löst "inspirerad" av Försäkringskassans funktioner för att ansöka om _föräldrapenning_.
+En app för att förenkla planering av föräldraledighet, löst inspirerad av Försäkringskassans verktyg för att ansöka om _föräldrapenning_.
 
 Här är några saker jag tänker att appen skall hjälpa föräldrar med.
 
-- Överblicka + planera av **föräldraledighetsdagar**
-- Överblicka uttag av **föräldrapenning**
-- Sammanställa **ekonomiskt utfall** för respektive förälder
-- Beräkna eventuell **föräldralön från arbetsgivare**
-- All möjlig **statistik**
+- **Förenkla planeringen:** Erbjuder översikt av föräldraledighetsdagar för båda föräldrar, för underlätta gemensam planering.
+- **Fatta välinformerade beslut:** Hjälper föräldrar att förstå konsekvenserna av sina beslut genom tydlig statistik och information.
+- **Klarhet i ekonomin:** Ger en sammanställning av det ekonomiska utfallet för varje förälder, inklusive föräldralön från arbetsgivare[^1].
+
+[^1] Efter bästa förmåga. Föräldralön från arbetsgivare har vitt skilda och ibland komplicerade villkor.
 
 ## Mål
-Formaliteterna kring föräldraledighet, föräldrapenning och eventuell föräldralön är oftast komplexa. Flappens mål är att hjälpa föräldrar förstå vad olika beslut får för konkreta konsekvenser i denna komplexa djungel.
+Formaliteterna kring föräldraledighet, föräldrapenning och eventuell föräldralön är oftast komplexa. Flappens mål är att hjälpa föräldrar förstå konkreta konsekvenser av olika beslut i denna komplexa djungel.
 
-Historiskt - så även i skrivande stund - tar mammor en majoritet av föräldraledighet. Med bättre information och underlag tror jag att detta går att förändra så att föräldraledigheten delas lika.
+Historiskt - så även i skrivande stund - tar mammor en majoritet av föräldraledighet. Med bättre information och underlag tror jag att detta går att förändra, så att föräldraledigheten nyttjas mer jämställt.
 
 ## Tekniskt
 Hej! 👋
@@ -30,9 +30,9 @@ Det här är mitt hobbyprojekt under föräldraledighet 2, och därtill min för
 
 Varmt välkommen att bidra, fixa buggar, tyck till eller vad som helst.
 
-
+### App scaffolding docs
 <details>
-<summary>App scaffolding documentation</summary>
+<summary>Expand</summary>
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
