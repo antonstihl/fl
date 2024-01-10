@@ -1,10 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  redirect,
-  RouterProvider,
-} from "react-router-dom";
+import { createHashRouter, redirect, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import Help from "./components/Help.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
@@ -12,10 +8,10 @@ import FamilyPage from "./pages/FamilyPage.tsx";
 import StatsPage from "./pages/StatsPage.tsx";
 
 const landingLoader = async () => {
-  return redirect("/calendar");
+  return redirect("calendar");
 };
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "",
     element: <App />,
