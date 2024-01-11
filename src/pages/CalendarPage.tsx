@@ -97,7 +97,7 @@ function CalendarPage() {
 
   const handleSave = () => {
     if (childId && parent && selectedDates.length > 0) {
-      updateSelectedDates([]);
+      clearSelectedDates();
       addAllocatedDates(parent.id, childId, selectedDates, leave, payment);
     }
   };
@@ -111,7 +111,7 @@ function CalendarPage() {
   const handleDelete = () => {
     if (childId && parent) {
       removeAllocatedDates(parent.id, childId, selectedDates);
-      setSelectedDates([]);
+      clearSelectedDates();
       setIsRemoveModalOpen(false);
     }
   };
