@@ -59,27 +59,19 @@ export default function SalaryPage() {
   };
 
   const salaryGraphData: any = [
-    ["Namn", "Lön under tak", "Lön ovan tak", "Föräldrapenning", "Föräldralön"],
+    ["Namn", "Lön under tak", "Lön ovan tak", "Föräldrapenning"],
   ];
 
   salaryGraphData.push(
     ...parents.flatMap((p) => {
       const parentYearlySalary = employments
         .filter((e) => e.parentId === p.id)
-        .reduce((a, b) => a + b.monthlySalary, 0);
+        .reduce((a, b) => a + b.monthlySalary * 12, 0);
       const salaryBelowRoof = roof && Math.min(parentYearlySalary, roof);
       const salaryAboveRoof = roof && Math.max(parentYearlySalary - roof, 0);
       return [
         [p.name, salaryBelowRoof, salaryAboveRoof, 0, 0],
-        [
-          `${p.name} ledig`,
-          0,
-          0,
-          salaryBelowRoof && 0.8 * salaryBelowRoof,
-          salaryAboveRoof &&
-            salaryBelowRoof &&
-            0.1 * salaryBelowRoof + 0.8 * salaryAboveRoof,
-        ],
+        [`${p.name} ledig`, 0, 0, salaryBelowRoof && 0.8 * salaryBelowRoof],
       ];
     })
   );
