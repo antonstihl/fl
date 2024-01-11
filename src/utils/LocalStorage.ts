@@ -22,6 +22,19 @@ export function getSalariesFromLocalStorage(): Salary[] {
   }
 }
 
+export function getEmploymentsFromLocalStorage(): Employment[] {
+  const localStorageData = localStorage.getItem("employments") || "[]";
+  try {
+    return JSON.parse(localStorageData);
+  } catch (e) {
+    return [];
+  }
+}
+
 export function setSalariesLocalStorage(salaries: Salary[]) {
   localStorage.setItem("salaries", JSON.stringify(salaries));
+}
+
+export function setEmploymentsLocalStorage(employments: Employment[]) {
+  localStorage.setItem("employments", JSON.stringify(employments));
 }

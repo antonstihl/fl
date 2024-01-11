@@ -1,45 +1,49 @@
 import { useState } from "react";
+import Chart, { ChartWrapperOptions } from "react-google-charts";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import Modal from "../components/Modal";
 import { useParents } from "../context/ParentContext";
-import { useSalaries } from "../hooks/useSalaries";
+import { useEmployments } from "../hooks/useEmployments";
 import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
 import { PRISBASBELOPP } from "../utils/Forsakringskassan";
-import Chart, { ChartWrapperOptions } from "react-google-charts";
 
-type SalaryToAdd = {
-  id: string;
-  employer?: string;
-  parentId?: string;
-  startDate?: MyDate;
-  endDate?: MyDate;
-  amountSEK?: number;
-};
+type EmploymentUnderEdit = Partial<Employment>;
 
 export default function SalaryPage() {
   const parents = useParents();
-  const [salaryToAdd, setSalaryToAdd] = useState<SalaryToAdd>({
+  const [employmentToAdd, setEmploymentToAdd] = useState<EmploymentUnderEdit>({
     id: crypto.randomUUID(),
   });
-  const [salaryDate, setSalaryDate] = useState<Date>(new Date());
-  const { addSalary, deleteSalary, salaries } = useSalaries();
+  const [employmentToEdit, setEmploymentToEdit] = useState<
+    EmploymentUnderEdit | undefined
+  >(undefined);
+  const { employments, addEmployment, deleteEmployment, updateEmployment } =
+    useEmployments();
 
-  const validateSalary = (s: SalaryToAdd): boolean => {
-    if (s.employer && s.parentId && s.startDate && s.amountSEK) {
+  const validateEmployment = (e: EmploymentUnderEdit): boolean => {
+    if (e.employer && e.parentId && e.startDate && e.monthlySalary) {
       return true;
     }
     return false;
   };
 
-  const handleAddSalaryClick = () => {
-    if (validateSalary(salaryToAdd)) {
-      addSalary(salaryToAdd as Salary);
-      setSalaryToAdd({ id: crypto.randomUUID() });
+  const handleAddEmploymentClick = () => {
+    if (validateEmployment(employmentToAdd)) {
+      addEmployment(employmentToAdd as Employment);
+      setEmploymentToAdd({ id: crypto.randomUUID() });
+    }
+  };
+
+  const handleEditEmploymentClick = () => {
+    if (employmentToEdit && validateEmployment(employmentToEdit)) {
+      updateEmployment(employmentToEdit as Employment);
+      setEmploymentToEdit(undefined);
     }
   };
 
   const pbb = PRISBASBELOPP.find(
-    (pb) => pb.year === salaryDate.getFullYear()
+    (pb) => pb.year === new Date().getFullYear()
   )?.amount;
   const roof = pbb ? pbb * 10 : undefined;
 
@@ -61,14 +65,9 @@ export default function SalaryPage() {
 
   salaryGraphData.push(
     ...parents.flatMap((p) => {
-      const parentYearlySalary = salaries
-        .filter((s) => s.parentId === p.id)
-        .filter(
-          (s) =>
-            convertToDate(s.startDate) <= salaryDate &&
-            (s.endDate ? convertToDate(s.endDate) >= salaryDate : true)
-        )
-        .reduce((a, b) => a + b.amountSEK, 0);
+      const parentYearlySalary = employments
+        .filter((e) => e.parentId === p.id)
+        .reduce((a, b) => a + b.monthlySalary, 0);
       const salaryBelowRoof = roof && Math.min(parentYearlySalary, roof);
       const salaryAboveRoof = roof && Math.max(parentYearlySalary - roof, 0);
       return [
@@ -86,31 +85,210 @@ export default function SalaryPage() {
     })
   );
 
-  console.log({ salaryGraphData });
   return (
-    <div className="flex gap-2 flex-wrap">
-      <div className="m-4 flex flex-col items-start gap-2">
+    <>
+      {employmentToEdit && (
+        <Modal>
+          <div className="m-2 w-fit">
+            <Card width="w-full" title="Uppdatera anställning">
+              <div className="grid grid-cols-2 gap-2 p-2 items-center">
+                <label htmlFor="employer">Arbetsgivare</label>
+                <input
+                  type="text"
+                  name="employer"
+                  value={employmentToEdit.employer || ""}
+                  onChange={(event) =>
+                    setEmploymentToEdit((e) => ({
+                      ...e,
+                      employer: event.target.value,
+                    }))
+                  }
+                  className="border-2 border-black p-1 rounded-md"
+                />
+                <label htmlFor="parentId">Förälder</label>
+                <select
+                  name="parentId"
+                  value={employmentToEdit.parentId || "-1"}
+                  defaultValue="-1"
+                  onChange={(e) =>
+                    setEmploymentToEdit((employment) => ({
+                      ...employment,
+                      parentId: e.target.value,
+                    }))
+                  }
+                  className="border-2 border-black p-1 rounded-md"
+                >
+                  <option value="-1" hidden disabled>
+                    ---
+                  </option>
+                  {parents.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+                <label htmlFor="startDate">Start</label>
+                <input
+                  name="startDate"
+                  type="date"
+                  value={
+                    employmentToEdit.startDate
+                      ? convertToDate(
+                          employmentToEdit.startDate
+                        ).toLocaleDateString("sv-SE")
+                      : ""
+                  }
+                  max={"3000-01-01"}
+                  min={"1990-01-01"}
+                  onChange={(e) =>
+                    setEmploymentToEdit((employment) => ({
+                      ...employment,
+                      startDate: convertToMyDate(new Date(e.target.value)),
+                    }))
+                  }
+                  className="border-2 border-black p-1 rounded-md"
+                />
+                <label htmlFor="endDate">Slut</label>
+                <input
+                  name="endDate"
+                  value={
+                    employmentToEdit.endDate
+                      ? convertToDate(
+                          employmentToEdit.endDate
+                        ).toLocaleDateString("sv-SE")
+                      : ""
+                  }
+                  type="date"
+                  max={"3000-01-01"}
+                  min={"1990-01-01"}
+                  onChange={(event) =>
+                    setEmploymentToEdit((e) => ({
+                      ...e,
+                      endDate: convertToMyDate(new Date(event.target.value)),
+                    }))
+                  }
+                  className="border-2 border-black p-1 rounded-md"
+                />
+                <label htmlFor="salary">Månadslön (SEK)</label>
+                <input
+                  name="salary"
+                  value={employmentToEdit?.monthlySalary || ""}
+                  type="number"
+                  min={0}
+                  onChange={(e) =>
+                    setEmploymentToEdit((employment) => ({
+                      ...employment,
+                      monthlySalary: Number(e.target.value),
+                    }))
+                  }
+                  className="border-2 border-black p-1 rounded-md"
+                />
+              </div>
+              <div className="flex justify-end m-2 gap-2">
+                <Button variant="primary" onClick={handleEditEmploymentClick}>
+                  Spara
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => setEmploymentToEdit(undefined)}
+                >
+                  Avbryt
+                </Button>
+              </div>
+              {/* {JSON.stringify(employmentToEdit, null, 2)} */}
+            </Card>
+          </div>
+        </Modal>
+      )}
+      <div className="m-4 flex flex-col gap-4">
+        <Card width="w-full" title="Anställningar">
+          {employments.length === 0 ? (
+            <p className="m-2">No employments saved.</p>
+          ) : (
+            <table className="table-auto border-separate border-spacing-2 w-full">
+              <thead>
+                <th className="text-left">Förälder</th>
+                <th className="text-left">Arbetsgivare</th>
+                <th className="text-left">Startdatum</th>
+                <th className="text-left">Slutdatum</th>
+                <th className="text-left">Månadslön</th>
+                {/* <th className="text-left"></th>
+                <th className="text-left"></th> */}
+              </thead>
+              <tbody>
+                {employments.map((e) => (
+                  <tr key={e.id}>
+                    <td>{parents.find((p) => p.id === e.parentId)?.name}</td>
+                    <td>{e.employer}</td>
+                    <td>
+                      {convertToDate(e.startDate).toLocaleDateString("sv-SE")}
+                    </td>
+                    <td>
+                      {e.endDate
+                        ? convertToDate(e.endDate).toLocaleDateString("sv-SE")
+                        : ""}
+                    </td>
+                    <td>{e.monthlySalary?.toFixed(0)} SEK</td>
+                    <td>
+                      <Button
+                        onClick={() => {
+                          setEmploymentToEdit(e as EmploymentUnderEdit);
+                        }}
+                      >
+                        Ändra
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={() => {
+                          deleteEmployment(e.id);
+                        }}
+                        variant="delete"
+                      >
+                        Ta bort
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Card>
         <Card width="w-full">
+          <Chart
+            chartType="BarChart"
+            width="100%"
+            data={salaryGraphData}
+            options={options}
+          />
+        </Card>
+        <Card width="w-full" title="Lägg till anställning">
           <div className="grid grid-cols-2 gap-2 p-2 items-center">
             <label htmlFor="employer">Arbetsgivare</label>
             <input
               type="text"
               name="employer"
-              value={salaryToAdd.employer || ""}
-              onChange={(e) =>
-                setSalaryToAdd((s) => ({ ...s, employer: e.target.value }))
+              value={employmentToAdd.employer || ""}
+              onChange={(event) =>
+                setEmploymentToAdd((e) => ({
+                  ...e,
+                  employer: event.target.value,
+                }))
               }
-              className="border-2 border-black p-1"
+              className="border-2 border-black p-1 rounded-md"
             />
             <label htmlFor="parentId">Förälder</label>
             <select
               name="parentId"
-              value={salaryToAdd.parentId || "-1"}
+              value={employmentToAdd.parentId || "-1"}
               defaultValue="-1"
               onChange={(e) =>
-                setSalaryToAdd((s) => ({ ...s, parentId: e.target.value }))
+                setEmploymentToAdd((employment) => ({
+                  ...employment,
+                  parentId: e.target.value,
+                }))
               }
-              className="border-2 border-black p-1"
+              className="border-2 border-black p-1 rounded-md"
             >
               <option value="-1" hidden disabled>
                 ---
@@ -126,8 +304,8 @@ export default function SalaryPage() {
               name="startDate"
               type="date"
               value={
-                salaryToAdd.startDate
-                  ? convertToDate(salaryToAdd.startDate).toLocaleDateString(
+                employmentToAdd.startDate
+                  ? convertToDate(employmentToAdd.startDate).toLocaleDateString(
                       "sv-SE"
                     )
                   : ""
@@ -135,19 +313,33 @@ export default function SalaryPage() {
               max={"3000-01-01"}
               min={"1990-01-01"}
               onChange={(e) =>
-                setSalaryToAdd((s) => ({
-                  ...s,
+                setEmploymentToAdd((employment) => ({
+                  ...employment,
                   startDate: convertToMyDate(new Date(e.target.value)),
                 }))
               }
-              className="border-2 border-black p-1"
+              className="border-2 border-black p-1 rounded-md"
             />
-            <label htmlFor="endDate">Slut</label>
+            <div className="flex gap-2">
+              <input
+                type="checkbox"
+                onChange={(event) => {
+                  setEmploymentToAdd((e) => {
+                    if (!event.target.value) {
+                      e.endDate = undefined;
+                    }
+                    return e;
+                  });
+                }}
+                value={!employmentToAdd.endDate ? "false" : "true"}
+              />
+              <label htmlFor="endDate">Slut</label>
+            </div>
             <input
               name="endDate"
               value={
-                salaryToAdd.endDate
-                  ? convertToDate(salaryToAdd.endDate).toLocaleDateString(
+                employmentToAdd.endDate
+                  ? convertToDate(employmentToAdd.endDate).toLocaleDateString(
                       "sv-SE"
                     )
                   : ""
@@ -155,94 +347,36 @@ export default function SalaryPage() {
               type="date"
               max={"3000-01-01"}
               min={"1990-01-01"}
-              onChange={(e) =>
-                setSalaryToAdd((s) => ({
-                  ...s,
-                  endDate: convertToMyDate(new Date(e.target.value)),
+              onChange={(event) =>
+                setEmploymentToAdd((e) => ({
+                  ...e,
+                  endDate: convertToMyDate(new Date(event.target.value)),
                 }))
               }
-              className="border-2 border-black p-1"
+              className="border-2 border-black p-1 rounded-md"
             />
             <label htmlFor="salary">Månadslön (SEK)</label>
             <input
               name="salary"
-              value={salaryToAdd.amountSEK ? salaryToAdd.amountSEK / 12 : ""}
+              value={employmentToAdd?.monthlySalary || ""}
               type="number"
               min={0}
               onChange={(e) =>
-                setSalaryToAdd((s) => ({
-                  ...s,
-                  amountSEK: Number(e.target.value) * 12,
+                setEmploymentToAdd((employment) => ({
+                  ...employment,
+                  monthlySalary: Number(e.target.value),
                 }))
               }
-              className="border-2 border-black p-1"
+              className="border-2 border-black p-1 rounded-md"
             />
           </div>
           <div className="flex justify-end m-2">
-            <Button variant="primary" onClick={handleAddSalaryClick}>
+            <Button variant="primary" onClick={handleAddEmploymentClick}>
               Lägg till
             </Button>
           </div>
         </Card>
-        <Card width="w-fit">
-          <div className="flex flex-col items-center">
-            <div className="flex justify-end gap-2 items-center w-full pr-8">
-              {!roof && (
-                <p className="text-red-500">
-                  Inget prisbasbelopp finns tillgängligt.
-                </p>
-              )}
-              <input
-                className="border-2 border-black p-1"
-                type="date"
-                max={"3000-01-01"}
-                min={"1990-01-01"}
-                value={salaryDate.toLocaleDateString("sv-SE")}
-                onChange={(e) => setSalaryDate(new Date(e.target.value))}
-              />
-            </div>
-            <div className="w-full">
-              <Chart
-                chartType="BarChart"
-                width="100%"
-                height="400px"
-                data={salaryGraphData}
-                options={options}
-              />
-            </div>
-          </div>
-        </Card>
       </div>
-      <div className="m-4 flex flex-col gap-2">
-        <Card>
-          {salaries.length === 0 ? (
-            <p>No salaries saved.</p>
-          ) : (
-            <ul className="flex w-full flex-col gap-2 justify-start">
-              {salaries.map((s) => (
-                <li
-                  className="grid grid-cols-9 bg-green-700 text-white justify-between items-center shadow-sm shadow-black rounded-md gap-4"
-                  title={JSON.stringify(s, null, 2)}
-                >
-                  <div className="pl-2 py-1 col-span-5">
-                    {s.employer} (
-                    {parents.find((p) => p.id === s.parentId)?.name || "?"})
-                  </div>
-                  <div className="mx-2 col-span-3">{s.amountSEK} SEK</div>
-                  <button
-                    className="text-white px-3 py-1 hover:bg-green-900 h-full rounded-md col-span-1"
-                    onClick={() => {
-                      deleteSalary(s.id);
-                    }}
-                  >
-                    X
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Card>
-      </div>
-    </div>
+    </>
   );
 }

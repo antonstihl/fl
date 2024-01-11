@@ -41,3 +41,17 @@ type Salary = {
   endDate?: MyDate;
   amountSEK: number;
 };
+
+type SalaryAdjustment = {
+  from: MyDate;
+  amountSEK: number;
+};
+
+type Employment = {
+  id: string;
+  employer: string;
+  parentId: string;
+  startDate: MyDate;
+  endDate?: MyDate;
+  monthlySalary: number;
+};
