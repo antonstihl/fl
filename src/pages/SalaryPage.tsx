@@ -47,7 +47,7 @@ export default function SalaryPage() {
   const roof = pbb ? pbb * 10 : undefined;
 
   const options: ChartWrapperOptions["options"] = {
-    title: "Löner",
+    title: "Årslöner",
     chartArea: { width: "75%" },
     legend: {
       position: "none",
