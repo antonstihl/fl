@@ -70,7 +70,7 @@ export default function SalaryPage() {
       const salaryBelowRoof = roof && Math.min(parentYearlySalary, roof);
       const salaryAboveRoof = roof && Math.max(parentYearlySalary - roof, 0);
       return [
-        [p.name, salaryBelowRoof, salaryAboveRoof, 0, 0],
+        [p.name, salaryBelowRoof, salaryAboveRoof, 0],
         [`${p.name} ledig`, 0, 0, salaryBelowRoof && 0.8 * salaryBelowRoof],
       ];
     })
