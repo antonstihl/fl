@@ -152,7 +152,6 @@ export default function SalaryPage() {
                   Avbryt
                 </Button>
               </div>
-              {/* {JSON.stringify(employmentToEdit, null, 2)} */}
             </Card>
           </div>
         </Modal>
@@ -167,8 +166,6 @@ export default function SalaryPage() {
                 <th className="text-left">Förälder</th>
                 <th className="text-left">Arbetsgivare</th>
                 <th className="text-left">Månadslön</th>
-                {/* <th className="text-left"></th>
-                <th className="text-left"></th> */}
               </thead>
               <tbody>
                 {employments.map((e) => (
