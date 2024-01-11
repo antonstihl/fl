@@ -78,6 +78,7 @@ export type Props = {
   allocatedDates: MyAllocatedDate[];
   allAllocatedDates: MyAllocatedDate[];
   parentId?: string;
+  childId?: string;
 };
 
 const Calendar = ({
@@ -86,6 +87,7 @@ const Calendar = ({
   allocatedDates,
   allAllocatedDates,
   parentId,
+  childId,
 }: Props) => {
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth());
@@ -146,7 +148,7 @@ const Calendar = ({
           </div>
         ))}
         {dates.map((dateCell) => {
-          const leavesForParent = allocatedDates
+          const leaves = allocatedDates
             .filter((allocatedDate) =>
               myDatesEqual(allocatedDate, dateCell.date)
             )
@@ -154,12 +156,13 @@ const Calendar = ({
               pace: allocatedDate.pace,
               payment: allocatedDate.payment,
             }));
-          const leavesForOtherParents = parentId
+          const secondaryLeaves = parentId
             ? allAllocatedDates
                 .filter(
                   (allocatedDate) =>
                     myDatesEqual(allocatedDate, dateCell.date) &&
-                    allocatedDate.parentId !== parentId
+                    allocatedDate.parentId !== parentId &&
+                    allocatedDate.childId === childId
                 )
                 .map((allocatedDate) => ({
                   pace: allocatedDate.pace,
@@ -171,8 +174,8 @@ const Calendar = ({
               key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
               date={dateCell.date}
               selected={isDateInArray(dateCell.date, selectedDates)}
-              leaves={[...leavesForParent]}
-              secondaryLeaves={[...leavesForOtherParents]}
+              leaves={[...leaves]}
+              secondaryLeaves={[...secondaryLeaves]}
               today={myDatesEqual(convertToMyDate(today), dateCell.date)}
               activeMonth={dateCell.current}
               toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}
