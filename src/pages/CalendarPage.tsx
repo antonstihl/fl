@@ -97,7 +97,7 @@ function CalendarPage() {
 
   const handleSave = () => {
     if (childId && parent && selectedDates.length > 0) {
-      updateSelectedDates([]);
+      clearSelectedDates();
       addAllocatedDates(parent.id, childId, selectedDates, leave, payment);
     }
   };
@@ -111,7 +111,7 @@ function CalendarPage() {
   const handleDelete = () => {
     if (childId && parent) {
       removeAllocatedDates(parent.id, childId, selectedDates);
-      setSelectedDates([]);
+      clearSelectedDates();
       setIsRemoveModalOpen(false);
     }
   };
@@ -182,7 +182,14 @@ function CalendarPage() {
                             convertToDate(c.dateOfBirth)
                           )
                         : "?"
-                    } år)`}</option>
+                    } år, ${
+                      c.dateOfBirth &&
+                      c.dateOfBirth?.year +
+                        "-" +
+                        c.dateOfBirth.month.toString().padStart(2, "0") +
+                        "-" +
+                        c.dateOfBirth.date.toString().padStart(2, "0")
+                    })`}</option>
                   ))}
                 </select>
               </Card>
@@ -193,6 +200,9 @@ function CalendarPage() {
                   selectedDates={selectedDates}
                   setSelectedDates={updateSelectedDates}
                   allocatedDates={allocatedDates}
+                  allAllocatedDates={allAllocatedDates}
+                  parentId={parent?.id}
+                  childId={childId}
                 />
               </Card>
             )}
