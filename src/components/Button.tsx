@@ -29,7 +29,7 @@ export default function Button({
 
   return (
     <button
-      className={`${variantStyle} rounded-md border-black px-2 py-1 ${shadowStyle} flex items-center justify-center ${
+      className={`${variantStyle} rounded-l-full rounded-r-full border-black px-3 py-1 ${shadowStyle} flex items-center justify-center ${
         props.disabled ? "cursor-not-allowed" : ""
       }`}
       {...props}

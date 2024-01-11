@@ -78,14 +78,12 @@ function Calculator() {
   return (
     <div className="border-black ml-4 mt-4 p-2 rounded-md border-2 flex w-max flex-col items-center hover:animate-bounce">
       <div className="justify-center">{count}</div>
-      <form>
-        <input
-          className="border-2 rounded-md border-black pl-2"
-          type="number"
-          value={input}
-          onChange={updateInput}
-        ></input>
-      </form>
+      <input
+        className="border-2 rounded-md border-black pl-2"
+        type="number"
+        value={input}
+        onChange={updateInput}
+      />
       <div className="mt-2 grid grid-rows-4 grid-cols-3 w-full gap-2">
         {[1, 2, 3].map((n) => getButtonCell(n))}
         {[4, 5, 6].map((n) => getButtonCell(n))}

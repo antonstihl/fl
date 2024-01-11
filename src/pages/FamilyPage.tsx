@@ -76,7 +76,7 @@ function FamilyPage() {
       {isAddChildModalOpen && (
         <Modal>
           <Card title="Lägg till barn">
-            <form className="grid grid-cols-2 m-2 items-center">
+            <div className="grid grid-cols-2 m-2 items-center">
               <label htmlFor="name">Namn</label>
               <input
                 type="text"
@@ -93,7 +93,7 @@ function FamilyPage() {
                 className="border-2 border-black m-2 p-1"
                 onChange={(e) => setNewChildDOB(new Date(e.target.value))}
               />
-            </form>
+            </div>
             <div className="flex justify-end m-4 gap-2">
               <Button variant="primary" onClick={handleAddChild}>
                 Lägg till
@@ -111,7 +111,7 @@ function FamilyPage() {
       {isAddParentModalOpen && (
         <Modal>
           <Card title="Lägg till förälder">
-            <form className="grid grid-cols-2 m-2 items-center">
+            <div className="grid grid-cols-2 m-2 items-center">
               <label htmlFor="name">Namn</label>
               <input
                 type="text"
@@ -119,7 +119,7 @@ function FamilyPage() {
                 className="border-2 border-black m-2 p-1"
                 onChange={(e) => setNewParentName(e.target.value)}
               />
-            </form>
+            </div>
             <div className="flex justify-end m-4 gap-2">
               <Button variant="primary" onClick={handleAddParent}>
                 Lägg till

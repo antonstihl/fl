@@ -14,7 +14,12 @@ type MyDate = {
   date: number;
 };
 
-type MyAllocatedDate = MyDate & { pace: number; payment: number, parentId: string, childId: string };
+type MyAllocatedDate = MyDate & {
+  pace: number;
+  payment: number;
+  parentId: string;
+  childId: string;
+};
 
 type Child = {
   name: string;
@@ -26,4 +31,25 @@ type Parent = {
   name: string;
   id: string;
   color: "green" | "red" | "blue";
+};
+
+type Salary = {
+  id: string;
+  employer: string;
+  parentId: string;
+  startDate: MyDate;
+  endDate?: MyDate;
+  amountSEK: number;
+};
+
+type SalaryAdjustment = {
+  from: MyDate;
+  amountSEK: number;
+};
+
+type Employment = {
+  id: string;
+  employer: string;
+  parentId: string;
+  monthlySalary: number;
 };

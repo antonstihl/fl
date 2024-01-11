@@ -6,6 +6,7 @@ import Help from "./components/Help.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
 import FamilyPage from "./pages/FamilyPage.tsx";
 import StatsPage from "./pages/StatsPage.tsx";
+import SalaryPage from "./pages/SalaryPage.tsx";
 
 const landingLoader = async () => {
   return redirect("calendar");
@@ -23,6 +24,10 @@ const router = createHashRouter([
       {
         path: "family",
         element: <FamilyPage />,
+      },
+      {
+        path: "salary",
+        element: <SalaryPage />,
       },
       {
         path: "calendar",
