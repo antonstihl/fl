@@ -182,7 +182,14 @@ function CalendarPage() {
                             convertToDate(c.dateOfBirth)
                           )
                         : "?"
-                    } år)`}</option>
+                    } år, ${
+                      c.dateOfBirth &&
+                      c.dateOfBirth?.year +
+                        "-" +
+                        c.dateOfBirth.month.toString().padStart(2, "0") +
+                        "-" +
+                        c.dateOfBirth.date.toString().padStart(2, "0")
+                    })`}</option>
                   ))}
                 </select>
               </Card>

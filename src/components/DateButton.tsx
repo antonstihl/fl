@@ -73,12 +73,12 @@ export default function DateButton({
               return (
                 <div key={index}>
                   <div
-                    className={`h-2 border-2 bg-white rounded-sm ${"border-slate-500"} ${
+                    className={`h-2 border-2 bg-white rounded-sm ${"border-slate-400"} ${
                       decoratedLeave.paceStyle
                     }`}
                   ></div>
                   <div
-                    className={`-mt-2 h-2 ${decoratedLeave.paymentStyle} bg-slate-500 rounded-sm`}
+                    className={`-mt-2 h-2 ${decoratedLeave.paymentStyle} bg-slate-400 rounded-sm`}
                   />
                 </div>
               );
