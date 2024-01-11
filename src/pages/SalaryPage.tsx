@@ -172,7 +172,13 @@ export default function SalaryPage() {
                   <tr key={e.id}>
                     <td>{parents.find((p) => p.id === e.parentId)?.name}</td>
                     <td>{e.employer}</td>
-                    <td>{e.monthlySalary?.toFixed(0)} SEK</td>
+                    <td>
+                      {e.monthlySalary &&
+                        Number(e.monthlySalary.toFixed(0)).toLocaleString(
+                          "sv-SE"
+                        )}{" "}
+                      SEK
+                    </td>
                     <td>
                       <Button
                         onClick={() => {
