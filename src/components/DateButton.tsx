@@ -16,6 +16,7 @@ export type Props = {
   date: MyDate;
   selected: boolean;
   leaves: Leave[];
+  secondaryLeaves: Leave[];
   today: boolean;
   activeMonth: boolean;
   toggleSelectedDate: () => void;
@@ -25,11 +26,18 @@ export default function DateButton({
   date,
   selected,
   leaves,
+  secondaryLeaves,
   today,
   activeMonth,
   toggleSelectedDate,
 }: Props) {
   const decoratedLeaves = leaves.map((leave: Leave) => ({
+    paceStyle: getAllocationBarWidthStyle(leave.pace),
+    paymentStyle: getAllocationBarWidthStyle(
+      Math.min(leave.payment, leave.pace)
+    ),
+  }));
+  const decoratedSecondaryLeaves = secondaryLeaves.map((leave: Leave) => ({
     paceStyle: getAllocationBarWidthStyle(leave.pace),
     paymentStyle: getAllocationBarWidthStyle(
       Math.min(leave.payment, leave.pace)
@@ -61,6 +69,20 @@ export default function DateButton({
             </div>
           </div>
           <div className="flex flex-col gap-0 align-bottom w-full">
+          {decoratedSecondaryLeaves.map((decoratedLeave, index) => {
+              return (
+                <div key={index}>
+                  <div
+                    className={`h-2 border-2 bg-white rounded-sm ${"border-slate-500"} ${
+                      decoratedLeave.paceStyle
+                    }`}
+                  ></div>
+                  <div
+                    className={`-mt-2 h-2 ${decoratedLeave.paymentStyle} bg-slate-500 rounded-sm`}
+                  />
+                </div>
+              );
+            })}
             {decoratedLeaves.map((decoratedLeave, index) => {
               return (
                 <div key={index}>

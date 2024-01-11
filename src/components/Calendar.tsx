@@ -76,12 +76,16 @@ export type Props = {
   selectedDates: MyDate[];
   setSelectedDates: (d: MyDate[]) => void;
   allocatedDates: MyAllocatedDate[];
+  allAllocatedDates: MyAllocatedDate[];
+  parentId?: string;
 };
 
 const Calendar = ({
   selectedDates,
   setSelectedDates,
   allocatedDates,
+  allAllocatedDates,
+  parentId,
 }: Props) => {
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth());
@@ -141,24 +145,40 @@ const Calendar = ({
             {weekday}
           </div>
         ))}
-        {dates.map((dateCell) => (
-          <DateButton
-            key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
-            date={dateCell.date}
-            selected={isDateInArray(dateCell.date, selectedDates)}
-            leaves={allocatedDates
-              .filter((allocatedDate) =>
-                myDatesEqual(allocatedDate, dateCell.date)
-              )
-              .map((allocatedDate) => ({
-                pace: allocatedDate.pace,
-                payment: allocatedDate.payment,
-              }))}
-            today={myDatesEqual(convertToMyDate(today), dateCell.date)}
-            activeMonth={dateCell.current}
-            toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}
-          />
-        ))}
+        {dates.map((dateCell) => {
+          const leavesForParent = allocatedDates
+            .filter((allocatedDate) =>
+              myDatesEqual(allocatedDate, dateCell.date)
+            )
+            .map((allocatedDate) => ({
+              pace: allocatedDate.pace,
+              payment: allocatedDate.payment,
+            }));
+          const leavesForOtherParents = parentId
+            ? allAllocatedDates
+                .filter(
+                  (allocatedDate) =>
+                    myDatesEqual(allocatedDate, dateCell.date) &&
+                    allocatedDate.parentId !== parentId
+                )
+                .map((allocatedDate) => ({
+                  pace: allocatedDate.pace,
+                  payment: allocatedDate.payment,
+                }))
+            : [];
+          return (
+            <DateButton
+              key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
+              date={dateCell.date}
+              selected={isDateInArray(dateCell.date, selectedDates)}
+              leaves={[...leavesForParent]}
+              secondaryLeaves={[...leavesForOtherParents]}
+              today={myDatesEqual(convertToMyDate(today), dateCell.date)}
+              activeMonth={dateCell.current}
+              toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}
+            />
+          );
+        })}
       </div>
     </>
   );

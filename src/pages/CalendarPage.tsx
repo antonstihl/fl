@@ -193,6 +193,8 @@ function CalendarPage() {
                   selectedDates={selectedDates}
                   setSelectedDates={updateSelectedDates}
                   allocatedDates={allocatedDates}
+                  allAllocatedDates={allAllocatedDates}
+                  parentId={parent?.id}
                 />
               </Card>
             )}
