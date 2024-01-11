@@ -1,20 +1,11 @@
 import { useState } from "react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  Legend,
-  Tooltip,
-  XAxis,
-  YAxis
-} from "recharts";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import { useParents } from "../context/ParentContext";
 import { useSalaries } from "../hooks/useSalaries";
 import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
 import { PRISBASBELOPP } from "../utils/Forsakringskassan";
+import Chart, { ChartWrapperOptions } from "react-google-charts";
 
 type SalaryToAdd = {
   id: string;
@@ -52,40 +43,50 @@ export default function SalaryPage() {
   )?.amount;
   const roof = pbb ? pbb * 10 : undefined;
 
-  type SalaryGraphDataPoint = {
-    name: string;
-    salaryBelowRoof?: number;
-    salaryAboveRoof?: number;
-    föräldrapenning?: number;
-    föräldralön?: number;
+  const options: ChartWrapperOptions["options"] = {
+    title: "Löner",
+    chartArea: { width: "75%" },
+    legend: {
+      position: "none",
+    },
+    isStacked: true,
+    hAxis: {
+      minValue: 0,
+    },
   };
-  const salaryGraphData: SalaryGraphDataPoint[] = parents.flatMap((p) => {
-    const parentYearlySalary = salaries
-      .filter((s) => s.parentId === p.id)
-      .filter(
-        (s) =>
-          convertToDate(s.startDate) <= salaryDate &&
-          (s.endDate ? convertToDate(s.endDate) >= salaryDate : true)
-      )
-      .reduce((a, b) => a + b.amountSEK, 0);
-    const salaryBelowRoof = roof && Math.min(parentYearlySalary, roof);
-    const salaryAboveRoof = roof && Math.max(parentYearlySalary - roof, 0);
-    return [
-      {
-        name: p.name,
-        salaryBelowRoof,
-        salaryAboveRoof,
-      },
-      {
-        name: `${p.name} ledig`,
-        föräldrapenning: salaryBelowRoof && 0.8 * salaryBelowRoof,
-        föräldralön:
+
+  const salaryGraphData: any = [
+    ["Namn", "Lön under tak", "Lön ovan tak", "Föräldrapenning", "Föräldralön"],
+  ];
+
+  salaryGraphData.push(
+    ...parents.flatMap((p) => {
+      const parentYearlySalary = salaries
+        .filter((s) => s.parentId === p.id)
+        .filter(
+          (s) =>
+            convertToDate(s.startDate) <= salaryDate &&
+            (s.endDate ? convertToDate(s.endDate) >= salaryDate : true)
+        )
+        .reduce((a, b) => a + b.amountSEK, 0);
+      const salaryBelowRoof = roof && Math.min(parentYearlySalary, roof);
+      const salaryAboveRoof = roof && Math.max(parentYearlySalary - roof, 0);
+      return [
+        [p.name, salaryBelowRoof, salaryAboveRoof, 0, 0],
+        [
+          `${p.name} ledig`,
+          0,
+          0,
+          salaryBelowRoof && 0.8 * salaryBelowRoof,
           salaryAboveRoof &&
-          salaryBelowRoof &&
-          0.1 * salaryBelowRoof + 0.8 * salaryAboveRoof,
-      },
-    ];
-  });
+            salaryBelowRoof &&
+            0.1 * salaryBelowRoof + 0.8 * salaryAboveRoof,
+        ],
+      ];
+    })
+  );
+
+  console.log({ salaryGraphData });
   return (
     <div className="flex gap-2 flex-wrap">
       <div className="m-4 flex flex-col items-start gap-2">
@@ -200,60 +201,15 @@ export default function SalaryPage() {
                 onChange={(e) => setSalaryDate(new Date(e.target.value))}
               />
             </div>
-            <BarChart
-              width={500}
-              height={300}
-              data={salaryGraphData}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-              layout="horizontal"
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar
-                name={`Lön under FK tak (${
-                  roof ? roof / 1000 : "?"
-                }k år ${salaryDate.getFullYear()})`}
-                dataKey="salaryBelowRoof"
-                stackId="a"
-                fill="#15803d"
+            <div className="w-full">
+              <Chart
+                chartType="BarChart"
+                width="100%"
+                height="400px"
+                data={salaryGraphData}
+                options={options}
               />
-              <Bar
-                name="Lön över FK tak"
-                dataKey="salaryAboveRoof"
-                stackId="a"
-                fill="#d97706"
-              />
-              <Bar
-                name="Föräldrapenning"
-                dataKey="föräldrapenning"
-                stackId="a"
-                fill="#d97706"
-              />
-              <Bar
-                name="Föräldralön"
-                dataKey="föräldralön"
-                stackId="a"
-                fill="#1d4ed8"
-              >
-                <LabelList
-                  position="top"
-                  valueAccessor={(e: SalaryGraphDataPoint) =>
-                    (e.föräldralön || 0) +
-                    (e.föräldrapenning || 0) +
-                    (e.salaryAboveRoof || 0) +
-                    (e.salaryBelowRoof || 0)
-                  }
-                />
-              </Bar>
-            </BarChart>
+            </div>
           </div>
         </Card>
       </div>
