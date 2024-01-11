@@ -5,7 +5,6 @@ import Card from "../components/Card";
 import Modal from "../components/Modal";
 import { useParents } from "../context/ParentContext";
 import { useEmployments } from "../hooks/useEmployments";
-import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
 import { PRISBASBELOPP } from "../utils/Forsakringskassan";
 
 type EmploymentUnderEdit = Partial<Employment>;
@@ -22,7 +21,7 @@ export default function SalaryPage() {
     useEmployments();
 
   const validateEmployment = (e: EmploymentUnderEdit): boolean => {
-    if (e.employer && e.parentId && e.startDate && e.monthlySalary) {
+    if (e.employer && e.parentId && e.monthlySalary) {
       return true;
     }
     return false;
@@ -127,48 +126,6 @@ export default function SalaryPage() {
                     </option>
                   ))}
                 </select>
-                <label htmlFor="startDate">Start</label>
-                <input
-                  name="startDate"
-                  type="date"
-                  value={
-                    employmentToEdit.startDate
-                      ? convertToDate(
-                          employmentToEdit.startDate
-                        ).toLocaleDateString("sv-SE")
-                      : ""
-                  }
-                  max={"3000-01-01"}
-                  min={"1990-01-01"}
-                  onChange={(e) =>
-                    setEmploymentToEdit((employment) => ({
-                      ...employment,
-                      startDate: convertToMyDate(new Date(e.target.value)),
-                    }))
-                  }
-                  className="border-2 border-black p-1 rounded-md"
-                />
-                <label htmlFor="endDate">Slut</label>
-                <input
-                  name="endDate"
-                  value={
-                    employmentToEdit.endDate
-                      ? convertToDate(
-                          employmentToEdit.endDate
-                        ).toLocaleDateString("sv-SE")
-                      : ""
-                  }
-                  type="date"
-                  max={"3000-01-01"}
-                  min={"1990-01-01"}
-                  onChange={(event) =>
-                    setEmploymentToEdit((e) => ({
-                      ...e,
-                      endDate: convertToMyDate(new Date(event.target.value)),
-                    }))
-                  }
-                  className="border-2 border-black p-1 rounded-md"
-                />
                 <label htmlFor="salary">Månadslön (SEK)</label>
                 <input
                   name="salary"
@@ -209,8 +166,6 @@ export default function SalaryPage() {
               <thead>
                 <th className="text-left">Förälder</th>
                 <th className="text-left">Arbetsgivare</th>
-                <th className="text-left">Startdatum</th>
-                <th className="text-left">Slutdatum</th>
                 <th className="text-left">Månadslön</th>
                 {/* <th className="text-left"></th>
                 <th className="text-left"></th> */}
@@ -220,14 +175,6 @@ export default function SalaryPage() {
                   <tr key={e.id}>
                     <td>{parents.find((p) => p.id === e.parentId)?.name}</td>
                     <td>{e.employer}</td>
-                    <td>
-                      {convertToDate(e.startDate).toLocaleDateString("sv-SE")}
-                    </td>
-                    <td>
-                      {e.endDate
-                        ? convertToDate(e.endDate).toLocaleDateString("sv-SE")
-                        : ""}
-                    </td>
                     <td>{e.monthlySalary?.toFixed(0)} SEK</td>
                     <td>
                       <Button
@@ -299,62 +246,6 @@ export default function SalaryPage() {
                 </option>
               ))}
             </select>
-            <label htmlFor="startDate">Start</label>
-            <input
-              name="startDate"
-              type="date"
-              value={
-                employmentToAdd.startDate
-                  ? convertToDate(employmentToAdd.startDate).toLocaleDateString(
-                      "sv-SE"
-                    )
-                  : ""
-              }
-              max={"3000-01-01"}
-              min={"1990-01-01"}
-              onChange={(e) =>
-                setEmploymentToAdd((employment) => ({
-                  ...employment,
-                  startDate: convertToMyDate(new Date(e.target.value)),
-                }))
-              }
-              className="border-2 border-black p-1 rounded-md"
-            />
-            <div className="flex gap-2">
-              <input
-                type="checkbox"
-                onChange={(event) => {
-                  setEmploymentToAdd((e) => {
-                    if (!event.target.value) {
-                      e.endDate = undefined;
-                    }
-                    return e;
-                  });
-                }}
-                value={!employmentToAdd.endDate ? "false" : "true"}
-              />
-              <label htmlFor="endDate">Slut</label>
-            </div>
-            <input
-              name="endDate"
-              value={
-                employmentToAdd.endDate
-                  ? convertToDate(employmentToAdd.endDate).toLocaleDateString(
-                      "sv-SE"
-                    )
-                  : ""
-              }
-              type="date"
-              max={"3000-01-01"}
-              min={"1990-01-01"}
-              onChange={(event) =>
-                setEmploymentToAdd((e) => ({
-                  ...e,
-                  endDate: convertToMyDate(new Date(event.target.value)),
-                }))
-              }
-              className="border-2 border-black p-1 rounded-md"
-            />
             <label htmlFor="salary">Månadslön (SEK)</label>
             <input
               name="salary"

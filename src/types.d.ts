@@ -51,7 +51,5 @@ type Employment = {
   id: string;
   employer: string;
   parentId: string;
-  startDate: MyDate;
-  endDate?: MyDate;
   monthlySalary: number;
 };
