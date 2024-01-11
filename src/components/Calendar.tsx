@@ -78,6 +78,7 @@ export type Props = {
   allocatedDates: MyAllocatedDate[];
   allAllocatedDates: MyAllocatedDate[];
   parentId?: string;
+  childId?: string;
 };
 
 const Calendar = ({
@@ -86,6 +87,7 @@ const Calendar = ({
   allocatedDates,
   allAllocatedDates,
   parentId,
+  childId
 }: Props) => {
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth());
@@ -159,7 +161,7 @@ const Calendar = ({
                 .filter(
                   (allocatedDate) =>
                     myDatesEqual(allocatedDate, dateCell.date) &&
-                    allocatedDate.parentId !== parentId
+                    (allocatedDate.parentId !== parentId || allocatedDate.childId !== childId)
                 )
                 .map((allocatedDate) => ({
                   pace: allocatedDate.pace,

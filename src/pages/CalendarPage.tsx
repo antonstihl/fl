@@ -202,6 +202,7 @@ function CalendarPage() {
                   allocatedDates={allocatedDates}
                   allAllocatedDates={allAllocatedDates}
                   parentId={parent?.id}
+                  childId={childId}
                 />
               </Card>
             )}
