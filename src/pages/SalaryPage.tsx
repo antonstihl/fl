@@ -283,7 +283,7 @@ export default function SalaryPage() {
             </>
           )}
         </Card>
-        <Card width="w-max">
+        <Card width="w-full">
           <Chart
             chartType="BarChart"
             width="100%"
@@ -291,7 +291,7 @@ export default function SalaryPage() {
             options={options}
           />
         </Card>
-        <Card width="w-max" title="Lägg till anställning">
+        <Card width="w-full" title="Lägg till anställning">
           <div className="grid grid-cols-2 gap-2 p-2 items-center">
             <label htmlFor="employer">Arbetsgivare</label>
             <input
