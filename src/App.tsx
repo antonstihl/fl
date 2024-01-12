@@ -7,10 +7,12 @@ import ParentProvider from "./context/ParentContext";
 const App = () => {
   return (
     <>
-      <div className="flex flex-col items-center w-full bg-amber-300 px-4 py-1 text-sm">
-        <p>Flappen är i alfaversion och kan gå sönder när som helst.</p>
+      <div className="flex flex-col items-center w-full min-w-fit bg-amber-300 px-4 py-1 text-sm">
+        <p className="text-center">
+          Flappen är i alfaversion och kan gå sönder när som helst.
+        </p>
         <p>
-          All data sparas <b>lokalt i din browser.</b>
+          All data sparas <b>lokalt i din webbläsare.</b>
         </p>
       </div>
       <ParentProvider>
