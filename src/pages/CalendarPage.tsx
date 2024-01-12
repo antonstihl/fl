@@ -191,7 +191,7 @@ function CalendarPage() {
             </Card>
           )}
           {child && (
-            <Card>
+            <Card width="w-full">
               <Calendar
                 selectedDates={selectedDates}
                 setSelectedDates={updateSelectedDates}

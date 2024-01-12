@@ -45,7 +45,7 @@ export default function DateButton({
   }));
 
   const dateButtonClasses =
-    "flex justify-between flex-col rounded-sm h-max aspect-square select-none";
+    "flex justify-between flex-col rounded-sm h-max select-none";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
   if (activeMonth) {
     return (
@@ -64,7 +64,7 @@ export default function DateButton({
             border-r-[15px] border-r-transparent
             -rotate-45 -translate-x-3 -translate-y-1 z-0`}
             />
-            <div className="flex justify-end w-4 pr-1">
+            <div className="flex justify-end w-2 pr-1">
               <div>{today ? <p>{date.date}</p> : date.date}</div>
             </div>
           </div>
