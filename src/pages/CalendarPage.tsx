@@ -155,58 +155,53 @@ function CalendarPage() {
           }
         />
       )}
-      <div className="m-4 flex flex-col justify-start gap-2 w-full">
-        <div className="flex items-start gap-4 w-1/2">
-          <div className="flex flex-col items-start gap-4">
-            {children.length === 0 && (
-              <Card>
-                Både barn och föräldrar krävs för kalendern. Konfigurera på{" "}
-                <Link to="/family" className="font-bold text-blue-700">
-                  familjsidan.
-                </Link>
-              </Card>
-            )}
-            {child && (
-              <Card width="w-full">
-                <select
-                  onChange={(e) => setChildId(e.target.value)}
-                  className="rounded-md p-2 w-full"
-                  name="child"
-                  value={childId}
-                >
-                  {children.map((c) => (
-                    <option value={c.id} key={c.id}>{`${c.name} (${
-                      c.dateOfBirth
-                        ? diffYearsFloor(
-                            new Date(),
-                            convertToDate(c.dateOfBirth)
-                          )
-                        : "?"
-                    } år, ${
-                      c.dateOfBirth &&
-                      c.dateOfBirth?.year +
-                        "-" +
-                        c.dateOfBirth.month.toString().padStart(2, "0") +
-                        "-" +
-                        c.dateOfBirth.date.toString().padStart(2, "0")
-                    })`}</option>
-                  ))}
-                </select>
-              </Card>
-            )}
-            {child && (
-              <Card>
-                <Calendar
-                  selectedDates={selectedDates}
-                  setSelectedDates={updateSelectedDates}
-                  allocatedDates={allocatedDates}
-                  allAllocatedDates={allAllocatedDates}
-                  parentId={parent?.id}
-                  childId={childId}
-                />
-              </Card>
-            )}
-          </div>
+      <div className="flex justify-center w-full gap-4 m-4">
+        <div className="flex flex-col gap-4">
+          {(children.length === 0 || !parent) && (
+            <Card>
+              Både barn och föräldrar krävs för kalendern. Konfigurera på{" "}
+              <Link to="/family" className="font-bold text-blue-700">
+                familjsidan.
+              </Link>
+            </Card>
+          )}
+          {child && (
+            <Card width="w-full">
+              <select
+                onChange={(e) => setChildId(e.target.value)}
+                className="rounded-md p-2 w-full"
+                name="child"
+                value={childId}
+              >
+                {children.map((c) => (
+                  <option value={c.id} key={c.id}>{`${c.name} (${
+                    c.dateOfBirth
+                      ? diffYearsFloor(new Date(), convertToDate(c.dateOfBirth))
+                      : "?"
+                  } år, ${
+                    c.dateOfBirth &&
+                    c.dateOfBirth?.year +
+                      "-" +
+                      c.dateOfBirth.month.toString().padStart(2, "0") +
+                      "-" +
+                      c.dateOfBirth.date.toString().padStart(2, "0")
+                  })`}</option>
+                ))}
+              </select>
+            </Card>
+          )}
+          {child && (
+            <Card>
+              <Calendar
+                selectedDates={selectedDates}
+                setSelectedDates={updateSelectedDates}
+                allocatedDates={allocatedDates}
+                allAllocatedDates={allAllocatedDates}
+                parentId={parent?.id}
+                childId={childId}
+              />
+            </Card>
+          )}
           {child && (
             <div className="flex flex-col gap-4">
               {!parent ? (
@@ -217,50 +212,48 @@ function CalendarPage() {
                   </Link>
                 </Card>
               ) : (
-                <Card>
-                  <div className="flex flex-col items-center w-max">
-                    <div className="flex flex-col gap-3">
-                      <div className="flex justify-end">
-                        <Button variant="delete" onClick={clearSelectedDates}>
-                          Avmarkera alla
-                        </Button>
-                      </div>
-                      <SelectedDatesList
-                        selectedDates={selectedDates}
-                        setSelectedDates={updateSelectedDates}
+                <Card width="w-full">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex justify-end">
+                      <Button variant="delete" onClick={clearSelectedDates}>
+                        Avmarkera alla
+                      </Button>
+                    </div>
+                    <SelectedDatesList
+                      selectedDates={selectedDates}
+                      setSelectedDates={updateSelectedDates}
+                    />
+                    {selectedDates.length === 0 && <p>Inga datum valda.</p>}
+                    <div className="grid items-center grid-cols-[35%_65%] gap-2">
+                      <p>Ledig</p>
+                      <SegmentedControl
+                        optionValue={leave}
+                        setOptionValue={updateLeave}
+                        options={leaveOptions}
                       />
-                      {selectedDates.length === 0 && <p>Inga datum valda.</p>}
-                      <div className="grid items-center grid-cols-[35%_65%] gap-2">
-                        <p>Ledig</p>
-                        <SegmentedControl
-                          optionValue={leave}
-                          setOptionValue={updateLeave}
-                          options={leaveOptions}
-                        />
-                        <p>Föräldrapenning</p>
-                        <SegmentedControl
-                          optionValue={payment}
-                          setOptionValue={updatePayment}
-                          options={paymentOptions}
-                        />
-                        <p>Nivå</p>
-                        <SegmentedControl
-                          optionValue={level}
-                          setOptionValue={(s) => setLevel(s)}
-                          options={[
-                            { label: "Sjukpenning", value: "Sjukpenning" },
-                            { label: "Lägstanivå", value: "Lägstanivå" },
-                          ]}
-                        />
-                      </div>
-                      <div className="flex justify-end gap-2">
-                        <Button variant="primary" onClick={handleSave}>
-                          Spara
-                        </Button>
-                        <Button variant="delete" onClick={handleClickDelete}>
-                          Rensa
-                        </Button>
-                      </div>
+                      <p>Föräldrapenning</p>
+                      <SegmentedControl
+                        optionValue={payment}
+                        setOptionValue={updatePayment}
+                        options={paymentOptions}
+                      />
+                      <p>Nivå</p>
+                      <SegmentedControl
+                        optionValue={level}
+                        setOptionValue={(s) => setLevel(s)}
+                        options={[
+                          { label: "Sjukpenning", value: "Sjukpenning" },
+                          { label: "Lägstanivå", value: "Lägstanivå" },
+                        ]}
+                      />
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      <Button variant="primary" onClick={handleSave}>
+                        Spara
+                      </Button>
+                      <Button variant="delete" onClick={handleClickDelete}>
+                        Rensa
+                      </Button>
                     </div>
                   </div>
                 </Card>
