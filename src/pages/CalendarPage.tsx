@@ -155,7 +155,7 @@ function CalendarPage() {
           }
         />
       )}
-      <div className="flex justify-center w-full gap-4 m-4">
+      <div className="flex justify-center w-scren m-4">
         <div className="flex flex-col gap-4">
           {(children.length === 0 || !parent) && (
             <Card>
@@ -169,7 +169,7 @@ function CalendarPage() {
             <Card width="w-full">
               <select
                 onChange={(e) => setChildId(e.target.value)}
-                className="rounded-md p-2 w-full"
+                className="rounded-md p-2 pr-4 w-full"
                 name="child"
                 value={childId}
               >
@@ -191,7 +191,7 @@ function CalendarPage() {
             </Card>
           )}
           {child && (
-            <Card>
+            <Card width="w-full">
               <Calendar
                 selectedDates={selectedDates}
                 setSelectedDates={updateSelectedDates}
@@ -223,8 +223,8 @@ function CalendarPage() {
                       selectedDates={selectedDates}
                       setSelectedDates={updateSelectedDates}
                     />
-                    {selectedDates.length === 0 && <p>Inga datum valda.</p>}
-                    <div className="grid items-center grid-cols-[35%_65%] gap-2">
+                    {selectedDates.length === 0 && <p className="w-full text-center">Inga datum valda.</p>}
+                    <div className="flex flex-col gap-2">
                       <p>Ledig</p>
                       <SegmentedControl
                         optionValue={leave}

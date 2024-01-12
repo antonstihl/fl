@@ -87,7 +87,7 @@ const Calendar = ({
   allocatedDates,
   allAllocatedDates,
   parentId,
-  childId
+  childId,
 }: Props) => {
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth());
@@ -128,7 +128,7 @@ const Calendar = ({
 
   return (
     <>
-      <div className="flex justify-center gap-2 w-full items-center pb-4">
+      <div className="flex justify-center gap-2 w-full min-w-fit items-center pb-4">
         <Button onClick={decreaseMonth}>{"<"}</Button>
         <div className="flex flex-col items-center w-36">
           <div>{monthName + " " + year}</div>
@@ -141,7 +141,7 @@ const Calendar = ({
         </div>
         <Button onClick={increaseMonth}>{">"}</Button>
       </div>
-      <div className="grid grid-cols-7">
+      <div className="grid grid-cols-7 gap-2">
         {Weekdays.map((weekday) => (
           <div key={weekday} className="flex justify-center items-center">
             {weekday}
@@ -161,7 +161,8 @@ const Calendar = ({
                 .filter(
                   (allocatedDate) =>
                     myDatesEqual(allocatedDate, dateCell.date) &&
-                    (allocatedDate.parentId !== parentId || allocatedDate.childId !== childId)
+                    (allocatedDate.parentId !== parentId ||
+                      allocatedDate.childId !== childId)
                 )
                 .map((allocatedDate) => ({
                   pace: allocatedDate.pace,

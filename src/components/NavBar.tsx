@@ -27,7 +27,7 @@ export default function NavBar() {
   );
   return (
     <>
-      <div className="flex justify-between items-center px-4 text-lg bg-green-700 text-white font-mono w-full h-12">
+      <div className="flex justify-between items-center px-4 text-lg bg-green-700 text-white font-mono w-screen min-w-fit h-12">
         <button onClick={() => toggleMenu()}>
           <div className="flex flex-col space-y-1 pr-4">
             {!menuOpen && line}
@@ -53,7 +53,7 @@ export default function NavBar() {
               </span>
               appen
             </p>
-            <div className="rotate-6 animate-pulse">👶</div>
+            <div className="rotate-6">👶</div>
           </div>
         </NavLink>
 
