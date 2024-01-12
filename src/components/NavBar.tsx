@@ -11,7 +11,6 @@ export default function NavBar() {
   const parents = useParents();
   const setParent = useParentUpdate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isHoveringTitle, setIsHoveringTitle] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen((menuOpen) => !menuOpen);
@@ -52,22 +51,8 @@ export default function NavBar() {
             </div>
           </button>
           <NavLink to={"/"} onClick={menuOpen ? toggleMenu : () => {}}>
-            <div
-              className="flex flex-row gap-2"
-              onMouseEnter={() => setIsHoveringTitle(true)}
-              onMouseLeave={() => setIsHoveringTitle(false)}
-            >
-              <p>
-                F
-                <span className={`${!isHoveringTitle && "hidden"}`}>
-                  öräldra
-                </span>
-                l
-                <span className={`${!isHoveringTitle && "hidden"}`}>
-                  edighets
-                </span>
-                appen
-              </p>
+            <div className="flex flex-row gap-2">
+              <p>Flappen</p>
               <div className="rotate-6">👶</div>
             </div>
           </NavLink>
