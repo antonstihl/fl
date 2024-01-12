@@ -12,7 +12,7 @@ const App = () => {
           Flappen är i alfaversion och kan gå sönder när som helst.
         </p>
         <p>
-          All data sparas <b>lokalt i din webbläsare.</b>
+          Data sparas <b>endast lokalt i din webbläsare.</b>
         </p>
       </div>
       <ParentProvider>
