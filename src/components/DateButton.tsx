@@ -45,7 +45,7 @@ export default function DateButton({
   }));
 
   const dateButtonClasses =
-    "flex justify-between flex-col rounded-sm h-12 select-none";
+    "flex justify-between flex-col rounded-sm h-max aspect-square select-none";
   const whiteBorderClasses = "border-white border-4 rounded-sm";
   if (activeMonth) {
     return (
@@ -68,8 +68,8 @@ export default function DateButton({
               <div>{today ? <p>{date.date}</p> : date.date}</div>
             </div>
           </div>
-          <div className="flex flex-col gap-0 align-bottom w-full">
-          {decoratedSecondaryLeaves.map((decoratedLeave, index) => {
+          <div className="flex flex-col justify-between w-full">
+            {decoratedSecondaryLeaves.map((decoratedLeave, index) => {
               return (
                 <div key={index}>
                   <div

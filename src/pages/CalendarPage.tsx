@@ -155,7 +155,7 @@ function CalendarPage() {
           }
         />
       )}
-      <div className="flex justify-center w-full gap-4 m-4">
+      <div className="flex justify-center w-fit gap-4 m-4">
         <div className="flex flex-col gap-4">
           {(children.length === 0 || !parent) && (
             <Card>
@@ -166,10 +166,10 @@ function CalendarPage() {
             </Card>
           )}
           {child && (
-            <Card width="w-full">
+            <Card>
               <select
                 onChange={(e) => setChildId(e.target.value)}
-                className="rounded-md p-2 w-full"
+                className="rounded-md p-2 pr-4 w-full"
                 name="child"
                 value={childId}
               >
