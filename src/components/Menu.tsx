@@ -24,7 +24,7 @@ function Menu({ closeMenu }: Props) {
         {getMenuItem("Lön", "/salary")}
         {/* {getMenuItem("Statistik", "/stats")} */}
         {/* {getMenuItem("Hoppande kalkylator", "/calculator")} */}
-        {getMenuItem("Hjälp", "/help")}
+        {/* {getMenuItem("Hjälp", "/help")} */}
       </div>
       <div
         className="flex-grow w-screen h-full bg-black bg-opacity-50 block"

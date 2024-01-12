@@ -40,10 +40,10 @@ const router = createHashRouter([
       //   path: "calculator",
       //   element: <Calculator />,
       // },
-      {
-        path: "help",
-        element: <Help />,
-      },
+      // {
+      //   path: "help",
+      //   element: <Help />,
+      // },M
     ],
   },
 ]);
