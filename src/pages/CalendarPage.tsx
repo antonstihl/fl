@@ -155,10 +155,10 @@ function CalendarPage() {
           }
         />
       )}
-      <div className="flex justify-center w-scren m-4">
+      <div className="flex justify-center m-4">
         <div className="flex flex-col gap-4">
           {(children.length === 0 || !parent) && (
-            <Card>
+            <Card width="w-full">
               Både barn och föräldrar krävs för kalendern. Konfigurera på{" "}
               <Link to="/family" className="font-bold text-blue-700">
                 familjsidan.

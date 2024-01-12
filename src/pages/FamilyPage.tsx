@@ -184,7 +184,7 @@ function FamilyPage() {
                         variant="delete"
                         onClick={() => setChildToDelete(c)}
                       >
-                        -
+                        x
                       </Button>
                       {`
                 ${c.name}${
