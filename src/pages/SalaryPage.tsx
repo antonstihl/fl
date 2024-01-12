@@ -225,8 +225,8 @@ export default function SalaryPage() {
           </div>
         </Modal>
       )}
-      <div className="m-4 flex flex-col gap-4">
-        <Card width="w-full" title="Anställningar">
+      <div className="m-4 flex flex-col items-center gap-4">
+        <Card width="w-max" title="Anställningar">
           {employments.length === 0 ? (
             <p className="m-2">No employments saved.</p>
           ) : (
@@ -283,7 +283,7 @@ export default function SalaryPage() {
             </>
           )}
         </Card>
-        <Card width="w-full">
+        <Card width="w-max">
           <Chart
             chartType="BarChart"
             width="100%"
@@ -291,7 +291,7 @@ export default function SalaryPage() {
             options={options}
           />
         </Card>
-        <Card width="w-full" title="Lägg till anställning">
+        <Card width="w-max" title="Lägg till anställning">
           <div className="grid grid-cols-2 gap-2 p-2 items-center">
             <label htmlFor="employer">Arbetsgivare</label>
             <input

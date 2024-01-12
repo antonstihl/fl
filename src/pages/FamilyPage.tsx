@@ -170,9 +170,9 @@ function FamilyPage() {
           }
         />
       )}
-      <div className="flex m-4 gap-4 flex-col">
-        <div className="flex flex-col gap-4">
-          <Card title="Barn" width="w-full lg:w-1/2">
+      <div className="flex m-4 justify-center">
+        <div className="flex flex-col gap-4 items-center w-max">
+          <Card title="Barn" width="w-full">
             <div className="m-2">
               {children.length === 0 ? (
                 <p>Inga barn tillagda.</p>
@@ -184,7 +184,7 @@ function FamilyPage() {
                         variant="delete"
                         onClick={() => setChildToDelete(c)}
                       >
-                        X
+                        -
                       </Button>
                       {`
                 ${c.name}${
@@ -213,9 +213,7 @@ function FamilyPage() {
               </Button>
             </div>
           </Card>
-        </div>
-        <div className="flex flex-col gap-4">
-          <Card title="Föräldrar" width="w-full lg:w-1/2">
+          <Card title="Föräldrar" width="w-full">
             <div className="m-2">
               {parents.length === 0 ? (
                 <p>Inga föräldrar tillagda.</p>
@@ -227,7 +225,7 @@ function FamilyPage() {
                         variant="delete"
                         onClick={() => setParentToDelete(p)}
                       >
-                        X
+                        x
                       </Button>
                       {p.name}
                       <span title={p.id}>

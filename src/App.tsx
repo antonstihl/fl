@@ -7,7 +7,7 @@ import ParentProvider from "./context/ParentContext";
 const App = () => {
   return (
     <>
-      <div className="flex flex-col items-center w-full min-w-fit bg-amber-300 px-4 py-1 text-sm">
+      <div className="flex flex-col sticky items-center w-full min-w-fit bg-amber-300 px-4 py-1 text-sm z-20">
         <p className="text-center">
           Flappen är i alfaversion och kan gå sönder när som helst.
         </p>
