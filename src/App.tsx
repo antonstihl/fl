@@ -7,9 +7,12 @@ import ParentProvider from "./context/ParentContext";
 const App = () => {
   return (
     <>
+      <div className="w-full bg-amber-300 px-4 py-1 text-lg text-center">
+        Flappen är i alfaversion och kan gå sönder när som helst.
+      </div>
       <ParentProvider>
         <ChildProvider>
-          <NavBar/>
+          <NavBar />
           <main>
             <Outlet />
           </main>
