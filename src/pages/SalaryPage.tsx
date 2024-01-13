@@ -226,7 +226,7 @@ export default function SalaryPage() {
         </Modal>
       )}
       <div className="m-4 flex flex-col items-center gap-4">
-        <Card width="max" title="Anställningar">
+        <Card width="full" title="Anställningar">
           {employments.length === 0 ? (
             <p className="m-2">No employments saved.</p>
           ) : (
