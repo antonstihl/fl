@@ -158,7 +158,7 @@ function CalendarPage() {
       <div className="flex justify-center m-4">
         <div className="flex flex-col gap-4">
           {(children.length === 0 || !parent) && (
-            <Card width="w-full">
+            <Card width="full">
               Både barn och föräldrar krävs för kalendern. Konfigurera på{" "}
               <Link to="/family" className="font-bold text-blue-700">
                 familjsidan.
@@ -166,7 +166,7 @@ function CalendarPage() {
             </Card>
           )}
           {child && (
-            <Card width="w-full">
+            <Card width="full">
               <select
                 onChange={(e) => setChildId(e.target.value)}
                 className="rounded-md p-2 pr-4 w-full"
@@ -191,7 +191,7 @@ function CalendarPage() {
             </Card>
           )}
           {child && (
-            <Card width="w-full">
+            <Card width="full">
               <Calendar
                 selectedDates={selectedDates}
                 setSelectedDates={updateSelectedDates}
@@ -212,7 +212,7 @@ function CalendarPage() {
                   </Link>
                 </Card>
               ) : (
-                <Card width="w-full">
+                <Card width="full">
                   <div className="flex flex-col gap-3">
                     <div className="flex justify-end">
                       <Button variant="delete" onClick={clearSelectedDates}>

@@ -172,7 +172,7 @@ function FamilyPage() {
       )}
       <div className="flex m-4 justify-center">
         <div className="flex flex-col gap-4 items-center w-max">
-          <Card title="Barn" width="w-full">
+          <Card title="Barn" width="full">
             <div className="m-2">
               {children.length === 0 ? (
                 <p>Inga barn tillagda.</p>
@@ -213,7 +213,7 @@ function FamilyPage() {
               </Button>
             </div>
           </Card>
-          <Card title="Föräldrar" width="w-full">
+          <Card title="Föräldrar" width="full">
             <div className="m-2">
               {parents.length === 0 ? (
                 <p>Inga föräldrar tillagda.</p>

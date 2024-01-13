@@ -93,7 +93,7 @@ export default function SalaryPage() {
       {employmentToEdit && (
         <Modal>
           <div className="m-2 w-fit">
-            <Card width="w-full" title="Uppdatera anställning">
+            <Card width="full" title="Uppdatera anställning">
               <div className="p-2 flex-col gap-2 flex">
                 <label htmlFor="employmentToDelete"></label>
                 <select
@@ -184,7 +184,7 @@ export default function SalaryPage() {
       {employmentIdToDelete && (
         <Modal>
           <div className="m-2 w-fit">
-            <Card width="w-full" title="Radera anställning">
+            <Card width="full" title="Radera anställning">
               <div className="p-2 flex-col gap-2 flex">
                 <label htmlFor="employmentToDelete"></label>
                 <select
@@ -226,7 +226,7 @@ export default function SalaryPage() {
         </Modal>
       )}
       <div className="m-4 flex flex-col items-center gap-4">
-        <Card width="w-max" title="Anställningar">
+        <Card width="max" title="Anställningar">
           {employments.length === 0 ? (
             <p className="m-2">No employments saved.</p>
           ) : (
@@ -283,7 +283,7 @@ export default function SalaryPage() {
             </>
           )}
         </Card>
-        <Card width="w-full">
+        <Card width="full">
           <Chart
             chartType="BarChart"
             width="100%"
@@ -291,7 +291,7 @@ export default function SalaryPage() {
             options={options}
           />
         </Card>
-        <Card width="w-full" title="Lägg till anställning">
+        <Card width="full" title="Lägg till anställning">
           <div className="grid grid-cols-2 gap-2 p-2 items-center">
             <label htmlFor="employer">Arbetsgivare</label>
             <input
