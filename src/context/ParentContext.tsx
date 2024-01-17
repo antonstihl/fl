@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Parent } from "../types/types";
 
 export const ParentContext = createContext<Parent | undefined>(undefined);
 export const ParentsContext = createContext<Parent[]>([]);

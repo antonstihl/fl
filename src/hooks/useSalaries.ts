@@ -3,6 +3,7 @@ import {
   getSalariesFromLocalStorage,
   setSalariesLocalStorage,
 } from "../utils/LocalStorage";
+import { Salary } from "../types/types";
 
 export function useSalaries() {
   const [salaries, setSalaries] = useState<Salary[]>([]);
