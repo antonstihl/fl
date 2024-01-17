@@ -3,11 +3,6 @@ export type DateCell = {
   current: boolean;
 };
 
-export type Leave = {
-  pace: number;
-  payment: number;
-};
-
 export type MyDate = {
   year: number;
   month: number;

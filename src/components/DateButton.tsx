@@ -1,4 +1,4 @@
-import { Leave, MyDate } from "../types/types";
+import { MyDate } from "../types/types";
 
 function getAllocationBarWidthStyle(allocation?: number) {
   if (!allocation || allocation < 0.25) {
@@ -13,6 +13,11 @@ function getAllocationBarWidthStyle(allocation?: number) {
     return "w-full";
   }
 }
+
+type Leave = {
+  pace: number;
+  payment: number;
+};
 
 export type Props = {
   date: MyDate;
