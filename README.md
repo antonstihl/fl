@@ -26,9 +26,11 @@ Historiskt - så även i skrivande stund - tar mammor en majoritet av föräldra
 ## Tekniskt
 Hej! 👋
 
-Det här är mitt hobbyprojekt under föräldraledighet 2, och därtill min första frontend-app som jag bygger från grunden. Jag har valt React.js för att enligt uppgift är otroligt populärt och bör vara användbart när jag är tillbaka på jobbet.
+Detta är mitt hobbyprojekt under föräldraledighet 2. Detta är tänkt att bli appen jag hade velat ha redan för några år sedan.
 
-Varmt välkommen att bidra, fixa buggar, tyck till eller vad som helst.
+Det är min första frontend-app som jag bygger från grunden. Jag har valt React.js för det är populärt och kan vara användbart tillbaka på jobbet. För styling föll valet på TailwindCSS för att det verkade roligare än ren CSS.
+
+Varmt välkommen att bidra, fixa buggar, tyck till eller vad som helst!
 
 ### App scaffolding docs
 <details>
