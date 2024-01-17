@@ -41,7 +41,7 @@ function getDateCells(year: number, month: number): DateCell[] {
     });
   }
   const isJanuary = month === 0;
-  const previousMonth: number = isJanuary ? 12 : month - 1;
+  const previousMonth: number = isJanuary ? 11 : month - 1;
   const yearOfPreviousMonth: number = isJanuary ? year - 1 : year;
   const isDecember = month === 11;
   const nextMonth = isDecember ? 0 : month + 1;
@@ -52,7 +52,7 @@ function getDateCells(year: number, month: number): DateCell[] {
       month: previousMonth,
       date: getDaysInMonth(yearOfPreviousMonth, previousMonth),
     };
-    getDayOfMyDate(d) > 0;
+    getDayOfMyDate(d) !== 0;
     d = { year: yearOfPreviousMonth, month: previousMonth, date: d.date - 1 }
   ) {
     dates.unshift({
@@ -80,6 +80,7 @@ export type Props = {
   allAllocatedDates: MyAllocatedDate[];
   parentId?: string;
   childId?: string;
+  hoveredDate?: MyDate;
 };
 
 const Calendar = ({
@@ -89,6 +90,7 @@ const Calendar = ({
   allAllocatedDates,
   parentId,
   childId,
+  hoveredDate,
 }: Props) => {
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth());
@@ -180,6 +182,9 @@ const Calendar = ({
               today={myDatesEqual(convertToMyDate(today), dateCell.date)}
               activeMonth={dateCell.current}
               toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}
+              highlight={
+                hoveredDate ? myDatesEqual(hoveredDate, dateCell.date) : false
+              }
             />
           );
         })}

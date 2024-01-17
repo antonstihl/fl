@@ -5,11 +5,10 @@ import Calendar from "../components/Calendar";
 import Card from "../components/Card";
 import ConfirmModal from "../components/ConfirmModal";
 import SegmentedControl, { Option } from "../components/SegmentedControl";
-import SelectedDatesList from "../components/SelectedDatesList";
 import { useChild, useChildUpdate, useChildren } from "../context/ChildContext";
 import { useParent } from "../context/ParentContext";
 import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
-import { convertToDate } from "../utils/DateUtilities";
+import { convertToDate, toggleDateInArray } from "../utils/DateUtilities";
 import { MyDate } from "../types/types";
 
 const leaveOptions: Option[] = [
@@ -47,8 +46,8 @@ function CalendarPage() {
           (ad) => ad.childId === childId && ad.parentId === parent.id
         )
       : [];
-
   const [level, setLevel] = useState<Level>("Sjukpenning");
+  const [hoveredDate, setHoveredDate] = useState<MyDate | undefined>(undefined);
 
   useEffect(() => {
     const selectedDates = JSON.parse(
@@ -200,6 +199,7 @@ function CalendarPage() {
                 allAllocatedDates={allAllocatedDates}
                 parentId={parent?.id}
                 childId={childId}
+                hoveredDate={hoveredDate}
               />
             </Card>
           )}
@@ -220,11 +220,45 @@ function CalendarPage() {
                         Avmarkera alla
                       </Button>
                     </div>
-                    <SelectedDatesList
-                      selectedDates={selectedDates}
-                      setSelectedDates={updateSelectedDates}
-                    />
-                    {selectedDates.length === 0 && <p className="w-full text-center">Inga datum valda.</p>}
+                    <div className="flex w-full flex-col gap-2 justify-start">
+                      {selectedDates
+                        .sort(
+                          (a, b) =>
+                            convertToDate(a).getTime() -
+                            convertToDate(b).getTime()
+                        )
+                        .map((sd) => (
+                          <div
+                            key={
+                              sd.year.toString() +
+                              sd.month.toString() +
+                              sd.date.toString()
+                            }
+                            className="flex bg-green-700 text-white justify-between items-center shadow-sm shadow-black rounded-md"
+                            onMouseEnter={() => setHoveredDate(sd)}
+                            onMouseLeave={() => setHoveredDate(undefined)}
+                          >
+                            <div className="font-mono text-sm pl-2 py-1">{`${
+                              sd.year
+                            }-${String(sd.month + 1).padStart(2, "0")}-${String(
+                              sd.date
+                            ).padStart(2, "0")}`}</div>
+                            <button
+                              className="text-white px-3 py-1 hover:bg-green-900 h-full rounded-md"
+                              onClick={() =>
+                                updateSelectedDates(
+                                  toggleDateInArray(sd, selectedDates)
+                                )
+                              }
+                            >
+                              x
+                            </button>
+                          </div>
+                        ))}
+                    </div>
+                    {selectedDates.length === 0 && (
+                      <p className="w-full text-center">Inga datum valda.</p>
+                    )}
                     <div className="flex flex-col gap-2">
                       <p>Ledig</p>
                       <SegmentedControl

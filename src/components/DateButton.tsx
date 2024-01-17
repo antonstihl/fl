@@ -22,6 +22,7 @@ export type Props = {
   today: boolean;
   activeMonth: boolean;
   toggleSelectedDate: () => void;
+  highlight: boolean;
 };
 
 export default function DateButton({
@@ -32,6 +33,7 @@ export default function DateButton({
   today,
   activeMonth,
   toggleSelectedDate,
+  highlight,
 }: Props) {
   const decoratedLeaves = leaves.map((leave: Leave) => ({
     paceStyle: getAllocationBarWidthStyle(leave.pace),
@@ -52,7 +54,9 @@ export default function DateButton({
     </div>
   ) : (
     <button
-      className="flex justify-between flex-col rounded-sm h-max min-w-fit select-none shadow-sm shadow-black"
+      className={`flex justify-between flex-col rounded-sm h-max min-w-fit select-none shadow-sm shadow-black ${
+        highlight ? "bg-black text-white" : "bg-white"
+      }`}
       onClick={toggleSelectedDate}
     >
       <div className="flex justify-center">
