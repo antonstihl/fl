@@ -15,6 +15,8 @@ import {
 import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
 import Modal from "../components/Modal";
 import ConfirmModal from "../components/ConfirmModal";
+import { Child, ChildSchema } from "../types/Child";
+import { Parent } from "../types/types";
 
 type ChildUnderEdit = Partial<Child>;
 
@@ -60,9 +62,14 @@ function FamilyPage() {
     setNewChildDOB(undefined);
   };
 
-  const handleEditChild = () => {
-    editChild(childToEdit as Child);
-    setChildToEdit(undefined);
+  const handleSubmitEditChild = () => {
+    const parse = ChildSchema.safeParse(childToEdit);
+    if (parse.success) {
+      editChild(parse.data);
+      setChildToEdit(undefined);
+    } else {
+      console.error(parse.error);
+    }
   };
 
   const handleAddParentClick = () => {
@@ -128,7 +135,6 @@ function FamilyPage() {
         <Modal>
           <Card title="Redigera barn">
             <div className="grid grid-cols-2 m-2 items-center">
-              <label htmlFor="employmentToEdit"></label>
               <select
                 className="border-2 border-black p-1 rounded-sm w-min"
                 name="employmentToEdit"
@@ -151,6 +157,7 @@ function FamilyPage() {
                   </option>
                 ))}
               </select>
+              <label htmlFor="employmentToEdit"></label>
               <label htmlFor="name">Namn</label>
               <input
                 type="text"
@@ -184,7 +191,7 @@ function FamilyPage() {
               />
             </div>
             <div className="flex justify-end m-4 gap-2">
-              <Button variant="primary" onClick={handleEditChild}>
+              <Button variant="primary" onClick={handleSubmitEditChild}>
                 Spara
               </Button>
               <Button

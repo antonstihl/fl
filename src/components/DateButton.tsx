@@ -1,3 +1,5 @@
+import { Leave, MyDate } from "../types/types";
+
 function getAllocationBarWidthStyle(allocation?: number) {
   if (!allocation || allocation < 0.25) {
     return "w-0";

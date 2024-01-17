@@ -6,6 +6,7 @@ import Modal from "../components/Modal";
 import { useParents } from "../context/ParentContext";
 import { useEmployments } from "../hooks/useEmployments";
 import { PRISBASBELOPP } from "../utils/Forsakringskassan";
+import { Employment } from "../types/types";
 
 type EmploymentUnderEdit = Partial<Employment>;
 
@@ -95,7 +96,6 @@ export default function SalaryPage() {
           <div className="m-2 w-fit">
             <Card width="full" title="Uppdatera anställning">
               <div className="p-2 flex-col gap-2 flex">
-                <label htmlFor="employmentToEdit"></label>
                 <select
                   className="border-2 border-black p-1 rounded-sm w-min"
                   name="employmentToEdit"

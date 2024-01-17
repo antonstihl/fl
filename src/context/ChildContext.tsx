@@ -6,6 +6,8 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Child } from "../types/Child";
+import { MyDate } from "../types/types";
 
 export const CHILDREN: Child[] = [
   {
@@ -123,15 +125,15 @@ export default function ChildProvider({
   return (
     <ChildrenContext.Provider value={children}>
       <ChildContext.Provider value={child}>
-        <ChildEditContext.Provider value={handleEditChild}>
-          <ChildUpdateContext.Provider value={handleSetChild}>
-            <ChildAddContext.Provider value={handleAddChild}>
+        <ChildAddContext.Provider value={handleAddChild}>
+          <ChildEditContext.Provider value={handleEditChild}>
+            <ChildUpdateContext.Provider value={handleSetChild}>
               <ChildDeleteContext.Provider value={handleDeleteChild}>
                 {reactChildren}
               </ChildDeleteContext.Provider>
-            </ChildAddContext.Provider>
-          </ChildUpdateContext.Provider>
-        </ChildEditContext.Provider>
+            </ChildUpdateContext.Provider>
+          </ChildEditContext.Provider>
+        </ChildAddContext.Provider>
       </ChildContext.Provider>
     </ChildrenContext.Provider>
   );

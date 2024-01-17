@@ -8,6 +8,7 @@ import {
 } from "../utils/DateUtilities";
 import Button from "./Button";
 import DateButton from "./DateButton";
+import { DateCell, MyAllocatedDate, MyDate } from "../types/types";
 
 const Months = [
   "Januari",

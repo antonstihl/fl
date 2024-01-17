@@ -1,3 +1,5 @@
+import { Employment, MyAllocatedDate, Salary } from "../types/types";
+
 export function getAllAllocatedDatesFromLocalStorage(): MyAllocatedDate[] {
   const localStorageData = localStorage.getItem("allocatedDates") || "[]";
   try {

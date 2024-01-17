@@ -1,3 +1,4 @@
+import { MyDate } from "../types/types";
 import { convertToDate, toggleDateInArray } from "../utils/DateUtilities";
 
 export type Props = {
