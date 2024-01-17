@@ -6,6 +6,7 @@ import Modal from "../components/Modal";
 import { useParents } from "../context/ParentContext";
 import { useEmployments } from "../hooks/useEmployments";
 import { PRISBASBELOPP } from "../utils/Forsakringskassan";
+import { Employment } from "../types/types";
 
 type EmploymentUnderEdit = Partial<Employment>;
 
@@ -93,12 +94,11 @@ export default function SalaryPage() {
       {employmentToEdit && (
         <Modal>
           <div className="m-2 w-fit">
-            <Card width="w-full" title="Uppdatera anställning">
+            <Card width="full" title="Uppdatera anställning">
               <div className="p-2 flex-col gap-2 flex">
-                <label htmlFor="employmentToDelete"></label>
                 <select
                   className="border-2 border-black p-1 rounded-sm w-min"
-                  name="employmentToDelete"
+                  name="employmentToEdit"
                   value={employmentToEdit.id}
                   onChange={(e) => {
                     setEmploymentToEdit(
@@ -132,7 +132,6 @@ export default function SalaryPage() {
                   <select
                     name="parentId"
                     value={employmentToEdit.parentId || "-1"}
-                    defaultValue="-1"
                     onChange={(e) =>
                       setEmploymentToEdit((employment) => ({
                         ...employment,
@@ -184,7 +183,7 @@ export default function SalaryPage() {
       {employmentIdToDelete && (
         <Modal>
           <div className="m-2 w-fit">
-            <Card width="w-full" title="Radera anställning">
+            <Card width="full" title="Radera anställning">
               <div className="p-2 flex-col gap-2 flex">
                 <label htmlFor="employmentToDelete"></label>
                 <select
@@ -226,34 +225,32 @@ export default function SalaryPage() {
         </Modal>
       )}
       <div className="m-4 flex flex-col items-center gap-4">
-        <Card width="w-max" title="Anställningar">
+        <Card width="full" title="Anställningar">
           {employments.length === 0 ? (
             <p className="m-2">No employments saved.</p>
           ) : (
             <>
               <table className="table-auto border-separate border-spacing-2 w-full">
                 <thead>
-                  <th className="text-left">Förälder</th>
-                  <th className="text-left">Arbetsgivare</th>
-                  <th className="text-left">Månadslön</th>
+                  <tr>
+                    <th className="text-left">Förälder</th>
+                    <th className="text-left">Arbetsgivare</th>
+                    <th className="text-left">Månadslön</th>
+                  </tr>
                 </thead>
                 <tbody>
                   {employments.map((e) => (
-                    <>
-                      <tr key={e.id}>
-                        <td>
-                          {parents.find((p) => p.id === e.parentId)?.name}
-                        </td>
-                        <td>{e.employer}</td>
-                        <td>
-                          {e.monthlySalary &&
-                            Number(e.monthlySalary.toFixed(0)).toLocaleString(
-                              "sv-SE"
-                            )}{" "}
-                          SEK
-                        </td>
-                      </tr>
-                    </>
+                    <tr key={e.id}>
+                      <td>{parents.find((p) => p.id === e.parentId)?.name}</td>
+                      <td>{e.employer}</td>
+                      <td>
+                        {e.monthlySalary &&
+                          Number(e.monthlySalary.toFixed(0)).toLocaleString(
+                            "sv-SE"
+                          )}{" "}
+                        SEK
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
@@ -283,7 +280,7 @@ export default function SalaryPage() {
             </>
           )}
         </Card>
-        <Card width="w-full">
+        <Card width="full">
           <Chart
             chartType="BarChart"
             width="100%"
@@ -291,7 +288,7 @@ export default function SalaryPage() {
             options={options}
           />
         </Card>
-        <Card width="w-full" title="Lägg till anställning">
+        <Card width="full" title="Lägg till anställning">
           <div className="grid grid-cols-2 gap-2 p-2 items-center">
             <label htmlFor="employer">Arbetsgivare</label>
             <input
@@ -310,7 +307,6 @@ export default function SalaryPage() {
             <select
               name="parentId"
               value={employmentToAdd.parentId || "-1"}
-              defaultValue="-1"
               onChange={(e) =>
                 setEmploymentToAdd((employment) => ({
                   ...employment,

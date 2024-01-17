@@ -39,7 +39,7 @@ export default function NavBar() {
   return (
     <>
       <div className="flex flex-col justify-start sticky top-0 z-20">
-        <div className="flex justify-between items-center text-lg bg-green-700 text-white font-mono w-screen min-w-fit h-12">
+        <div className="flex justify-between items-center text-lg bg-green-700 text-white font-mono w-full min-w-fit h-12">
           <button onClick={() => toggleMenu()}>
             <div className="flex flex-col space-y-1 py-3 px-4">
               {!menuOpen && line}
@@ -72,7 +72,7 @@ export default function NavBar() {
         </div>
       </div>
       {menuOpen && (
-        <div className="sticky top-12 flex flex-row w-screen h-0 z-20">
+        <div className="sticky top-12 flex flex-row w-full h-0 z-20">
           <nav className="left-0 bg-green-700 pt-2 px-2 h-screen text-white w-max flex flex-col z-20">
             {getMenuItem("Familj", "/family")}
             {getMenuItem("Kalender", "/calendar")}
@@ -82,7 +82,7 @@ export default function NavBar() {
       )}
       {menuOpen && (
         <div
-          className="fixed top-0 w-screen h-screen bg-black bg-opacity-50 block z-10"
+          className="fixed top-0 w-full h-full bg-black bg-opacity-50 block z-10"
           onClick={() => setMenuOpen(false)}
         />
       )}

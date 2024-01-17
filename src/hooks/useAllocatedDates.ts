@@ -4,6 +4,7 @@ import {
   getAllAllocatedDatesFromLocalStorage,
   setAllocatedDatesLocalStorage,
 } from "../utils/LocalStorage";
+import { MyAllocatedDate, MyDate } from "../types/types";
 
 export function useAllAllocatedDates() {
   const [allAllocatedDates, setAllocatedDates] = useState<MyAllocatedDate[]>(
