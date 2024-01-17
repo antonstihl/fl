@@ -4,6 +4,7 @@ import Card from "../components/Card";
 import {
   useChildAdd,
   useChildDelete,
+  useChildEdit,
   useChildren,
 } from "../context/ChildContext";
 import {
@@ -11,14 +12,17 @@ import {
   useParentDelete,
   useParents,
 } from "../context/ParentContext";
-import { convertToMyDate } from "../utils/DateUtilities";
+import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
 import Modal from "../components/Modal";
 import ConfirmModal from "../components/ConfirmModal";
+
+type ChildUnderEdit = Partial<Child>;
 
 function FamilyPage() {
   const children = useChildren();
   const addChild = useChildAdd();
   const deleteChild = useChildDelete();
+  const editChild = useChildEdit();
   const parents = useParents();
   const deleteParent = useParentDelete();
   const addParent = useParentAdd();
@@ -33,9 +37,16 @@ function FamilyPage() {
   const [parentToDelete, setParentToDelete] = useState<Parent | undefined>(
     undefined
   );
+  const [childToEdit, setChildToEdit] = useState<ChildUnderEdit | undefined>(
+    undefined
+  );
 
   const handleAddChildClick = () => {
     setIsAddChildModalOpen(true);
+  };
+
+  const handleEditChildClick = () => {
+    setChildToEdit({ ...children[0] });
   };
 
   const handleAddChild = () => {
@@ -47,6 +58,11 @@ function FamilyPage() {
     setIsAddChildModalOpen(false);
     setNewChildName("");
     setNewChildDOB(undefined);
+  };
+
+  const handleEditChild = () => {
+    editChild(childToEdit as Child);
+    setChildToEdit(undefined);
   };
 
   const handleAddParentClick = () => {
@@ -101,6 +117,79 @@ function FamilyPage() {
               <Button
                 variant="secondary"
                 onClick={() => setIsAddChildModalOpen(false)}
+              >
+                Avbryt
+              </Button>
+            </div>
+          </Card>
+        </Modal>
+      )}
+      {childToEdit && (
+        <Modal>
+          <Card title="Redigera barn">
+            <div className="grid grid-cols-2 m-2 items-center">
+              <label htmlFor="employmentToEdit"></label>
+              <select
+                className="border-2 border-black p-1 rounded-sm w-min"
+                name="employmentToEdit"
+                value={childToEdit.id}
+                onChange={(e) => {
+                  setChildToEdit(children.find((c) => c.id === e.target.value));
+                }}
+              >
+                {children.map((c) => (
+                  <option value={c.id} key={c.id}>
+                    {`${c.name} ${
+                      c.dateOfBirth
+                        ? "(" +
+                          convertToDate(c.dateOfBirth).toLocaleDateString(
+                            "sv-SE"
+                          ) +
+                          ")"
+                        : ""
+                    }`}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="name">Namn</label>
+              <input
+                type="text"
+                name="name"
+                className="border-2 border-black m-2 p-1"
+                value={childToEdit.name}
+                onChange={(e) =>
+                  setChildToEdit((c) => ({ ...c, name: e.target.value }))
+                }
+              />
+              <label htmlFor="dateOfBirth">Födelsedatum</label>
+              <input
+                type="date"
+                name="dateOfBirth"
+                max={"3000-01-01"}
+                min={"1990-01-01"}
+                value={
+                  childToEdit.dateOfBirth
+                    ? convertToDate(childToEdit.dateOfBirth).toLocaleDateString(
+                        "sv-SE"
+                      )
+                    : ""
+                }
+                className="border-2 border-black m-2 p-1"
+                onChange={(e) =>
+                  setChildToEdit((c) => ({
+                    ...c,
+                    dateOfBirth: convertToMyDate(new Date(e.target.value)),
+                  }))
+                }
+              />
+            </div>
+            <div className="flex justify-end m-4 gap-2">
+              <Button variant="primary" onClick={handleEditChild}>
+                Spara
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setChildToEdit(undefined)}
               >
                 Avbryt
               </Button>
@@ -207,7 +296,10 @@ function FamilyPage() {
                 </ul>
               )}
             </div>
-            <div className="flex justify-end m-2">
+            <div className="flex justify-end m-2 gap-2">
+              <Button variant="secondary" onClick={handleEditChildClick}>
+                Redigera
+              </Button>
               <Button variant="primary" onClick={handleAddChildClick}>
                 Lägg till
               </Button>

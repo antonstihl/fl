@@ -35,6 +35,10 @@ const ChildDeleteContext = createContext((id: string) =>
   alert(`No delete handler in place, but you entered ${id}`)
 );
 
+const ChildEditContext = createContext((child: Child) =>
+  alert(`No delete handler in place, but you entered ${JSON.stringify(child)}`)
+);
+
 export function useChild() {
   return useContext(ChildContext);
 }
@@ -49,6 +53,10 @@ export function useChildUpdate() {
 
 export function useChildAdd() {
   return useContext(ChildAddContext);
+}
+
+export function useChildEdit() {
+  return useContext(ChildEditContext);
 }
 
 export function useChildDelete() {
@@ -82,7 +90,6 @@ export default function ChildProvider({
     }
   }, [children]);
 
-
   const handleSetChild = (id: string) => {
     setChild(children.find((p) => p.id === id) || children[0]);
     localStorage.setItem("child", id);
@@ -97,6 +104,14 @@ export default function ChildProvider({
     localStorage.setItem("children", JSON.stringify(updatedChildren));
   };
 
+  const handleEditChild = (editedChild: Child) => {
+    const index = children.findIndex((c) => c.id === editedChild.id);
+    let updatedChildren = [...children];
+    updatedChildren.splice(index, 1, editedChild);
+    setChildren(updatedChildren);
+    localStorage.setItem("children", JSON.stringify(updatedChildren));
+  };
+
   const handleDeleteChild = (id: string) => {
     const index = children.findIndex((c) => c.id === id);
     const updatedChildren = [...children];
@@ -106,16 +121,18 @@ export default function ChildProvider({
   };
 
   return (
-    <ChildContext.Provider value={child}>
-      <ChildUpdateContext.Provider value={handleSetChild}>
-        <ChildAddContext.Provider value={handleAddChild}>
-          <ChildDeleteContext.Provider value={handleDeleteChild}>
-            <ChildrenContext.Provider value={children}>
-              {reactChildren}
-            </ChildrenContext.Provider>
-          </ChildDeleteContext.Provider>
-        </ChildAddContext.Provider>
-      </ChildUpdateContext.Provider>
-    </ChildContext.Provider>
+    <ChildrenContext.Provider value={children}>
+      <ChildContext.Provider value={child}>
+        <ChildEditContext.Provider value={handleEditChild}>
+          <ChildUpdateContext.Provider value={handleSetChild}>
+            <ChildAddContext.Provider value={handleAddChild}>
+              <ChildDeleteContext.Provider value={handleDeleteChild}>
+                {reactChildren}
+              </ChildDeleteContext.Provider>
+            </ChildAddContext.Provider>
+          </ChildUpdateContext.Provider>
+        </ChildEditContext.Provider>
+      </ChildContext.Provider>
+    </ChildrenContext.Provider>
   );
 }

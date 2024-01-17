@@ -95,10 +95,10 @@ export default function SalaryPage() {
           <div className="m-2 w-fit">
             <Card width="full" title="Uppdatera anställning">
               <div className="p-2 flex-col gap-2 flex">
-                <label htmlFor="employmentToDelete"></label>
+                <label htmlFor="employmentToEdit"></label>
                 <select
                   className="border-2 border-black p-1 rounded-sm w-min"
-                  name="employmentToDelete"
+                  name="employmentToEdit"
                   value={employmentToEdit.id}
                   onChange={(e) => {
                     setEmploymentToEdit(
