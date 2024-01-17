@@ -132,7 +132,6 @@ export default function SalaryPage() {
                   <select
                     name="parentId"
                     value={employmentToEdit.parentId || "-1"}
-                    defaultValue="-1"
                     onChange={(e) =>
                       setEmploymentToEdit((employment) => ({
                         ...employment,
@@ -233,27 +232,25 @@ export default function SalaryPage() {
             <>
               <table className="table-auto border-separate border-spacing-2 w-full">
                 <thead>
-                  <th className="text-left">Förälder</th>
-                  <th className="text-left">Arbetsgivare</th>
-                  <th className="text-left">Månadslön</th>
+                  <tr>
+                    <th className="text-left">Förälder</th>
+                    <th className="text-left">Arbetsgivare</th>
+                    <th className="text-left">Månadslön</th>
+                  </tr>
                 </thead>
                 <tbody>
                   {employments.map((e) => (
-                    <>
-                      <tr key={e.id}>
-                        <td>
-                          {parents.find((p) => p.id === e.parentId)?.name}
-                        </td>
-                        <td>{e.employer}</td>
-                        <td>
-                          {e.monthlySalary &&
-                            Number(e.monthlySalary.toFixed(0)).toLocaleString(
-                              "sv-SE"
-                            )}{" "}
-                          SEK
-                        </td>
-                      </tr>
-                    </>
+                    <tr key={e.id}>
+                      <td>{parents.find((p) => p.id === e.parentId)?.name}</td>
+                      <td>{e.employer}</td>
+                      <td>
+                        {e.monthlySalary &&
+                          Number(e.monthlySalary.toFixed(0)).toLocaleString(
+                            "sv-SE"
+                          )}{" "}
+                        SEK
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
@@ -310,7 +307,6 @@ export default function SalaryPage() {
             <select
               name="parentId"
               value={employmentToAdd.parentId || "-1"}
-              defaultValue="-1"
               onChange={(e) =>
                 setEmploymentToAdd((employment) => ({
                   ...employment,
