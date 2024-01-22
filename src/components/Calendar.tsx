@@ -99,8 +99,6 @@ const Calendar = ({
   const monthName = Months[month];
   const leaves = useLeaves();
 
-  console.log("rendering Calendar", leaves.length);
-
   const allocatedDatesFromLeaves = getAllocatedDatesInMonthFromLeave(
     { year, month },
     leaves,
