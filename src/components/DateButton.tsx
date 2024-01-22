@@ -42,7 +42,6 @@ export default function DateButton({
   highlight,
   clickable,
 }: Props) {
-
   const decoratedLeaves = leaves.map((leave: Leave) => ({
     paceStyle: getAllocationBarWidthStyle(leave.pace),
     paymentStyle: getAllocationBarWidthStyle(
@@ -62,7 +61,7 @@ export default function DateButton({
     </div>
   ) : (
     <button
-      className={`flex justify-between flex-col rounded-sm h-max min-w-fit select-none shadow-sm shadow-black ${
+      className={`flex justify-between flex-col rounded-sm h-max min-w-fit select-none shadow-black shadow-sm ${
         highlight ? "bg-blue-900 text-white" : "bg-white"
       }`}
       disabled={!clickable}

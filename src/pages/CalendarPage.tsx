@@ -10,10 +10,7 @@ import { useChild, useChildUpdate, useChildren } from "../context/ChildContext";
 import { useParent } from "../context/ParentContext";
 import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
 import { MyDate } from "../types/types";
-import {
-  convertToDate,
-  toggleDateInArray
-} from "../utils/DateUtilities";
+import { convertToDate, toggleDateInArray } from "../utils/DateUtilities";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -119,6 +116,8 @@ export default function () {
     }
   };
 
+  const isEnabled = child && parent;
+
   return (
     <>
       {isRemoveModalOpen && (
@@ -141,179 +140,164 @@ export default function () {
       )}
       <div className="flex justify-center m-4">
         <div className="flex flex-col gap-4">
-          {(children.length === 0 || !parent) && (
+          {!isEnabled ? (
             <Card width="full">
               Både barn och föräldrar krävs för kalendern. Konfigurera på{" "}
               <Link to="/family" className="font-bold text-blue-700">
                 familjsidan.
               </Link>
             </Card>
-          )}
-          {child && (
-            <Card width="full">
-              <select
-                onChange={(e) => setChildId(e.target.value)}
-                className="rounded-md p-2 pr-4 w-full"
-                name="child"
-                value={childId}
-              >
-                {children.map((c) => (
-                  <option value={c.id} key={c.id}>{`${c.name} (${
-                    c.dateOfBirth
-                      ? diffYearsFloor(new Date(), convertToDate(c.dateOfBirth))
-                      : "?"
-                  } år, ${
-                    c.dateOfBirth &&
-                    c.dateOfBirth?.year +
-                      "-" +
-                      c.dateOfBirth.month.toString().padStart(2, "0") +
-                      "-" +
-                      c.dateOfBirth.date.toString().padStart(2, "0")
-                  })`}</option>
-                ))}
-              </select>
-            </Card>
-          )}
-          {child && parent && (
-            <Card width="full">
-              <div className="flex flex-col gap-4">
-                {/* <div className="flex gap-2 justify-evenly items-center">
-                  <Button
-                    variant="secondary"
-                    onClick={() => setIsAddScheduleModalOpen(true)}
-                  >
-                    Lägg till schema
-                  </Button>
-                </div> */}
-                <Calendar
-                  selectedDates={isSelectDatesActive ? selectedDates : []}
-                  toggleSelectedDate={
-                    isSelectDatesActive
-                      ? (date: MyDate) => {
-                          setSelectedDates(
-                            toggleDateInArray(date, selectedDates)
-                          );
-                        }
-                      : undefined
-                  }
-                  allocatedDates={allocatedDates}
-                  allAllocatedDates={allAllocatedDates}
-                  parentId={parent.id}
-                  childId={child.id}
-                  hoveredDate={hoveredDate}
-                />
-                <div className="w-full flex justify-between">
-                  <Button
-                    variant="secondary"
-                    onClick={() => setIsAddScheduleModalOpen(true)}
-                  >
-                    📅 Lägg till schema
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={() => setIsSelectDatesActive((b) => !b)}
-                  >
-                    ✏️ Redigera
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          )}
-          {isAddScheduleModalOpen && (
-            <AddSchedule close={() => setIsAddScheduleModalOpen(false)} />
-          )}
-
-          {child && isSelectDatesActive && (
-            <div className="flex flex-col gap-4">
-              {!parent ? (
-                <Card>
-                  Ingen förälder tillagd. Konfigurera på{" "}
-                  <Link to="/family" className="font-bold text-blue-700">
-                    familjsidan.
-                  </Link>
-                </Card>
-              ) : (
-                <Card width="full">
-                  <div className="flex flex-col gap-3">
-                    <div className="flex justify-end">
-                      <Button variant="delete" onClick={clearSelectedDates}>
-                        Avmarkera alla
-                      </Button>
-                    </div>
-                    <div className="flex w-full flex-col gap-2 justify-start">
-                      {selectedDates
-                        .sort(
-                          (a, b) =>
-                            convertToDate(a).getTime() -
-                            convertToDate(b).getTime()
-                        )
-                        .map((sd) => (
-                          <div
-                            key={
-                              sd.year.toString() +
-                              sd.month.toString() +
-                              sd.date.toString()
-                            }
-                            className="flex bg-blue-500 text-white justify-between items-center shadow-sm shadow-black rounded-md"
-                            onMouseEnter={() => setHoveredDate(sd)}
-                            onMouseLeave={() => setHoveredDate(undefined)}
-                          >
-                            <div className="font-mono text-sm pl-2 py-1">{`${
-                              sd.year
-                            }-${String(sd.month + 1).padStart(2, "0")}-${String(
-                              sd.date
-                            ).padStart(2, "0")}`}</div>
-                            <button
-                              className="text-white px-3 py-1 hover:bg-blue-900 h-full rounded-md"
-                              onClick={() =>
-                                updateSelectedDates(
-                                  toggleDateInArray(sd, selectedDates)
-                                )
-                              }
-                            >
-                              x
-                            </button>
-                          </div>
-                        ))}
-                    </div>
-                    {selectedDates.length === 0 && (
-                      <p className="w-full text-center">Inga datum valda.</p>
-                    )}
-                    <div className="flex flex-col gap-2">
-                      <p>Ledig</p>
-                      <SegmentedControl
-                        optionValue={leave}
-                        setOptionValue={updateLeave}
-                        options={leaveOptions}
-                      />
-                      <p>Föräldrapenning</p>
-                      <SegmentedControl
-                        optionValue={payment}
-                        setOptionValue={updatePayment}
-                        options={paymentOptions}
-                      />
-                      <p>Nivå</p>
-                      <SegmentedControl
-                        optionValue={level}
-                        setOptionValue={(s) => setLevel(s)}
-                        options={[
-                          { label: "Sjukpenning", value: "Sjukpenning" },
-                          { label: "Lägstanivå", value: "Lägstanivå" },
-                        ]}
-                      />
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button variant="primary" onClick={handleSave}>
-                        Spara
-                      </Button>
-                      <Button variant="delete" onClick={handleClickDelete}>
-                        Rensa
-                      </Button>
-                    </div>
+          ) : (
+            <>
+              <Card width="full">
+                <select
+                  onChange={(e) => setChildId(e.target.value)}
+                  className="rounded-md p-2 pr-4 w-full"
+                  name="child"
+                  value={childId}
+                >
+                  {children.map((c) => (
+                    <option value={c.id} key={c.id}>{`${c.name} (${
+                      c.dateOfBirth
+                        ? diffYearsFloor(
+                            new Date(),
+                            convertToDate(c.dateOfBirth)
+                          )
+                        : "?"
+                    } år, ${
+                      c.dateOfBirth &&
+                      c.dateOfBirth?.year +
+                        "-" +
+                        c.dateOfBirth.month.toString().padStart(2, "0") +
+                        "-" +
+                        c.dateOfBirth.date.toString().padStart(2, "0")
+                    })`}</option>
+                  ))}
+                </select>
+              </Card>
+              <Card width="full">
+                <div className="flex flex-col gap-4">
+                  <Calendar
+                    selectedDates={isSelectDatesActive ? selectedDates : []}
+                    toggleSelectedDate={
+                      isSelectDatesActive
+                        ? (date: MyDate) => {
+                            setSelectedDates(
+                              toggleDateInArray(date, selectedDates)
+                            );
+                          }
+                        : undefined
+                    }
+                    allocatedDates={allocatedDates}
+                    allAllocatedDates={allAllocatedDates}
+                    parentId={parent.id}
+                    childId={child.id}
+                    hoveredDate={hoveredDate}
+                  />
+                  <div className="w-full flex justify-between">
+                    <Button
+                      variant="secondary"
+                      onClick={() => setIsAddScheduleModalOpen(true)}
+                    >
+                      📅 Lägg till schema
+                    </Button>
+                    <Button
+                      variant="select"
+                      onClick={() => setIsSelectDatesActive((b) => !b)}
+                    >
+                      ✏️ Välj datum
+                    </Button>
                   </div>
-                </Card>
+                </div>
+              </Card>
+              {isAddScheduleModalOpen && (
+                <AddSchedule close={() => setIsAddScheduleModalOpen(false)} />
               )}
-            </div>
+              {isSelectDatesActive && (
+                <div className="flex flex-col gap-4">
+                  <Card width="full">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex justify-end">
+                        <Button variant="delete" onClick={clearSelectedDates}>
+                          Avmarkera alla
+                        </Button>
+                      </div>
+                      <div className="flex w-full flex-col gap-2 justify-start">
+                        {selectedDates
+                          .sort(
+                            (a, b) =>
+                              convertToDate(a).getTime() -
+                              convertToDate(b).getTime()
+                          )
+                          .map((sd) => (
+                            <div
+                              key={
+                                sd.year.toString() +
+                                sd.month.toString() +
+                                sd.date.toString()
+                              }
+                              className="flex bg-blue-500 text-white justify-between items-center shadow-sm shadow-black rounded-md"
+                              onMouseEnter={() => setHoveredDate(sd)}
+                              onMouseLeave={() => setHoveredDate(undefined)}
+                            >
+                              <div className="font-mono text-sm pl-2 py-1">{`${
+                                sd.year
+                              }-${String(sd.month + 1).padStart(
+                                2,
+                                "0"
+                              )}-${String(sd.date).padStart(2, "0")}`}</div>
+                              <button
+                                className="text-white px-3 py-1 hover:bg-blue-900 h-full rounded-md"
+                                onClick={() =>
+                                  updateSelectedDates(
+                                    toggleDateInArray(sd, selectedDates)
+                                  )
+                                }
+                              >
+                                x
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                      {selectedDates.length === 0 && (
+                        <p className="w-full text-center">Inga datum valda.</p>
+                      )}
+                      <div className="flex flex-col gap-2">
+                        <p>Ledig</p>
+                        <SegmentedControl
+                          optionValue={leave}
+                          setOptionValue={updateLeave}
+                          options={leaveOptions}
+                        />
+                        <p>Föräldrapenning</p>
+                        <SegmentedControl
+                          optionValue={payment}
+                          setOptionValue={updatePayment}
+                          options={paymentOptions}
+                        />
+                        <p>Nivå</p>
+                        <SegmentedControl
+                          optionValue={level}
+                          setOptionValue={(s) => setLevel(s)}
+                          options={[
+                            { label: "Sjukpenning", value: "Sjukpenning" },
+                            { label: "Lägstanivå", value: "Lägstanivå" },
+                          ]}
+                        />
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button variant="primary" onClick={handleSave}>
+                          Spara
+                        </Button>
+                        <Button variant="delete" onClick={handleClickDelete}>
+                          Rensa
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
