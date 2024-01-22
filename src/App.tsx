@@ -3,6 +3,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import ChildProvider from "./context/ChildContext";
 import ParentProvider from "./context/ParentContext";
+import { LeaveProvider } from "./context/LeaveContext";
 
 const App = () => {
   return (
@@ -17,10 +18,12 @@ const App = () => {
       </div>
       <ParentProvider>
         <ChildProvider>
-          <NavBar />
-          <main>
-            <Outlet />
-          </main>
+          <LeaveProvider>
+            <NavBar />
+            <main>
+              <Outlet />
+            </main>
+          </LeaveProvider>
         </ChildProvider>
       </ParentProvider>
     </>

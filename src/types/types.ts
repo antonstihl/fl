@@ -1,13 +1,22 @@
+import { z } from "zod";
+import { convertToDate, convertToMyDate } from "../utils/DateUtilities";
+
 export type DateCell = {
   date: MyDate;
   current: boolean;
 };
 
-export type MyDate = {
-  year: number;
-  month: number;
-  date: number;
-};
+const MyDateSchema = z.object({
+  year: z.number().int().min(1970).max(3000),
+  month: z.number().int().min(0).max(11),
+  date: z.number().int().min(1).max(31),
+});
+
+export type MyDate = z.infer<typeof MyDateSchema>;
+
+const MyMonthSchema = MyDateSchema.omit({ date: true });
+
+export type MyMonth = z.infer<typeof MyMonthSchema>;
 
 export type MyAllocatedDate = MyDate & {
   pace: number;
@@ -15,6 +24,41 @@ export type MyAllocatedDate = MyDate & {
   parentId: string;
   childId: string;
 };
+
+const WeekdayEnum = z.enum([
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+]);
+export type Weekday = z.infer<typeof WeekdayEnum>;
+
+export const ScheduleSchema = z
+  .object({
+    startDate: z
+      .date()
+      .min(new Date("1900-01-01"))
+      .max(new Date("3000-01-01"))
+      .transform((d) => convertToMyDate(d)),
+    endDate: z
+      .date()
+      .min(new Date("1900-01-01"))
+      .max(new Date("3000-01-01"))
+      .transform((d) => convertToMyDate(d)),
+    pace: z.number().min(0.125).max(1),
+    payment: z.number().min(0).max(1),
+    cadence: z.enum(["daily", "weekly"]),
+    weekdays: z.array(WeekdayEnum).optional(), //.nonempty()
+  })
+  .refine(
+    (s) => convertToDate(s.endDate) >= convertToDate(s.startDate),
+    "End date must be after start date."
+  );
+
+export type Schedule = z.infer<typeof ScheduleSchema>;
 
 export type Parent = {
   name: string;

@@ -1,14 +1,15 @@
 import { useState } from "react";
+import { DateCell, MyAllocatedDate, MyDate } from "../types/types";
 import {
   convertToMyDate,
+  getAllocatedDatesInMonthFromLeave,
   getDayOfMyDate,
   isDateInArray,
   myDatesEqual,
-  toggleDateInArray,
 } from "../utils/DateUtilities";
 import Button from "./Button";
 import DateButton from "./DateButton";
-import { DateCell, MyAllocatedDate, MyDate } from "../types/types";
+import { useLeaves } from "../context/LeaveContext";
 
 const Months = [
   "Januari",
@@ -75,17 +76,17 @@ function getDateCells(year: number, month: number): DateCell[] {
 
 export type Props = {
   selectedDates: MyDate[];
-  setSelectedDates: (d: MyDate[]) => void;
+  toggleSelectedDate?: (d: MyDate) => void;
   allocatedDates: MyAllocatedDate[];
   allAllocatedDates: MyAllocatedDate[];
-  parentId?: string;
-  childId?: string;
+  parentId: string;
+  childId: string;
   hoveredDate?: MyDate;
 };
 
 const Calendar = ({
   selectedDates,
-  setSelectedDates,
+  toggleSelectedDate,
   allocatedDates,
   allAllocatedDates,
   parentId,
@@ -96,10 +97,16 @@ const Calendar = ({
   const [month, setMonth] = useState(today.getMonth());
   const [year, setYear] = useState(today.getFullYear());
   const monthName = Months[month];
+  const leaves = useLeaves();
 
-  const toggleSelectedDate = (date: MyDate) => {
-    setSelectedDates(toggleDateInArray(date, selectedDates));
-  };
+  console.log("rendering Calendar", leaves.length);
+
+  const allocatedDatesFromLeaves = getAllocatedDatesInMonthFromLeave(
+    { year, month },
+    leaves,
+    childId,
+    parentId
+  );
 
   const decreaseMonth = () => {
     const isJanuary = month === 0;
@@ -151,7 +158,7 @@ const Calendar = ({
           </div>
         ))}
         {dates.map((dateCell) => {
-          const leaves = allocatedDates
+          const leaves = [...allocatedDates, ...allocatedDatesFromLeaves]
             .filter((allocatedDate) =>
               myDatesEqual(allocatedDate, dateCell.date)
             )
@@ -174,17 +181,22 @@ const Calendar = ({
             : [];
           return (
             <DateButton
-              key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}`}
+              key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}+${leaves.length}`}
               date={dateCell.date}
               selected={isDateInArray(dateCell.date, selectedDates)}
               leaves={[...leaves]}
               secondaryLeaves={[...secondaryLeaves]}
               today={myDatesEqual(convertToMyDate(today), dateCell.date)}
               activeMonth={dateCell.current}
-              toggleSelectedDate={() => toggleSelectedDate(dateCell.date)}
               highlight={
                 hoveredDate ? myDatesEqual(hoveredDate, dateCell.date) : false
               }
+              toggleSelectedDate={
+                toggleSelectedDate
+                  ? () => toggleSelectedDate(dateCell.date)
+                  : () => {}
+              }
+              clickable={!!toggleSelectedDate}
             />
           );
         })}

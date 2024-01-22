@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import AddSchedule from "../components/AddSchedule";
 import Button from "../components/Button";
 import Calendar from "../components/Calendar";
 import Card from "../components/Card";
@@ -8,8 +9,11 @@ import SegmentedControl, { Option } from "../components/SegmentedControl";
 import { useChild, useChildUpdate, useChildren } from "../context/ChildContext";
 import { useParent } from "../context/ParentContext";
 import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
-import { convertToDate, toggleDateInArray } from "../utils/DateUtilities";
 import { MyDate } from "../types/types";
+import {
+  convertToDate,
+  toggleDateInArray
+} from "../utils/DateUtilities";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -28,11 +32,13 @@ const paymentOptions: Option[] = [
 
 type Level = "Sjukpenning" | "Lägstanivå";
 
-function CalendarPage() {
+export default function () {
   const [selectedDates, setSelectedDates] = useState<MyDate[]>([]);
   const [leave, setLeave] = useState<number>(1);
   const [payment, setPayment] = useState<number>(1);
   const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
+  const [isAddScheduleModalOpen, setIsAddScheduleModalOpen] = useState(false);
+  const [isSelectDatesActive, setIsSelectDatesActive] = useState(false);
   const child = useChild();
   const children = useChildren();
   const childId = child ? child.id : undefined;
@@ -42,9 +48,11 @@ function CalendarPage() {
     useAllAllocatedDates();
   const allocatedDates =
     childId && parent?.id
-      ? allAllocatedDates.filter(
-          (ad) => ad.childId === childId && ad.parentId === parent.id
-        )
+      ? [
+          ...allAllocatedDates.filter(
+            (ad) => ad.childId === childId && ad.parentId === parent.id
+          ),
+        ]
       : [];
   const [level, setLevel] = useState<Level>("Sjukpenning");
   const [hoveredDate, setHoveredDate] = useState<MyDate | undefined>(undefined);
@@ -85,11 +93,6 @@ function CalendarPage() {
     }
   };
 
-  // const isWeekday = (date: Date) => {
-  //   const day = date.getDay();
-  //   return day >= 1 && day <= 5;
-  // };
-
   const diffYearsFloor = (d1: Date, d2: Date) => {
     const timeDiff = Math.abs(d1.getTime() - d2.getTime());
     return Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365));
@@ -115,25 +118,6 @@ function CalendarPage() {
       setIsRemoveModalOpen(false);
     }
   };
-
-  // const daysWithPayment = allocatedDates
-  //   .map((ad) => ad.payment)
-  //   .reduce((acc, current) => {
-  //     return acc + current;
-  //   }, 0);
-  // const allocatedWeekdayDates = allocatedDates.filter((ad) =>
-  //   isWeekday(convertToDate(ad))
-  // );
-  // const weekdaysWithLeave = allocatedWeekdayDates
-  //   .map((ad) => ad.pace)
-  //   .reduce((acc, current) => {
-  //     return acc + current;
-  //   }, 0);
-  // const daysWithLeave = allocatedDates
-  //   .map((ad) => ad.pace)
-  //   .reduce((acc, current) => {
-  //     return acc + current;
-  //   }, 0);
 
   return (
     <>
@@ -190,20 +174,56 @@ function CalendarPage() {
               </select>
             </Card>
           )}
-          {child && (
+          {child && parent && (
             <Card width="full">
-              <Calendar
-                selectedDates={selectedDates}
-                setSelectedDates={updateSelectedDates}
-                allocatedDates={allocatedDates}
-                allAllocatedDates={allAllocatedDates}
-                parentId={parent?.id}
-                childId={childId}
-                hoveredDate={hoveredDate}
-              />
+              <div className="flex flex-col gap-4">
+                {/* <div className="flex gap-2 justify-evenly items-center">
+                  <Button
+                    variant="secondary"
+                    onClick={() => setIsAddScheduleModalOpen(true)}
+                  >
+                    Lägg till schema
+                  </Button>
+                </div> */}
+                <Calendar
+                  selectedDates={isSelectDatesActive ? selectedDates : []}
+                  toggleSelectedDate={
+                    isSelectDatesActive
+                      ? (date: MyDate) => {
+                          setSelectedDates(
+                            toggleDateInArray(date, selectedDates)
+                          );
+                        }
+                      : undefined
+                  }
+                  allocatedDates={allocatedDates}
+                  allAllocatedDates={allAllocatedDates}
+                  parentId={parent.id}
+                  childId={child.id}
+                  hoveredDate={hoveredDate}
+                />
+                <div className="w-full flex justify-between">
+                  <Button
+                    variant="secondary"
+                    onClick={() => setIsAddScheduleModalOpen(true)}
+                  >
+                    📅 Lägg till schema
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => setIsSelectDatesActive((b) => !b)}
+                  >
+                    ✏️ Redigera
+                  </Button>
+                </div>
+              </div>
             </Card>
           )}
-          {child && (
+          {isAddScheduleModalOpen && (
+            <AddSchedule close={() => setIsAddScheduleModalOpen(false)} />
+          )}
+
+          {child && isSelectDatesActive && (
             <div className="flex flex-col gap-4">
               {!parent ? (
                 <Card>
@@ -234,7 +254,7 @@ function CalendarPage() {
                               sd.month.toString() +
                               sd.date.toString()
                             }
-                            className="flex bg-green-700 text-white justify-between items-center shadow-sm shadow-black rounded-md"
+                            className="flex bg-blue-500 text-white justify-between items-center shadow-sm shadow-black rounded-md"
                             onMouseEnter={() => setHoveredDate(sd)}
                             onMouseLeave={() => setHoveredDate(undefined)}
                           >
@@ -244,7 +264,7 @@ function CalendarPage() {
                               sd.date
                             ).padStart(2, "0")}`}</div>
                             <button
-                              className="text-white px-3 py-1 hover:bg-green-900 h-full rounded-md"
+                              className="text-white px-3 py-1 hover:bg-blue-900 h-full rounded-md"
                               onClick={() =>
                                 updateSelectedDates(
                                   toggleDateInArray(sd, selectedDates)
@@ -300,5 +320,3 @@ function CalendarPage() {
     </>
   );
 }
-
-export default CalendarPage;
