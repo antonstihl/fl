@@ -21,7 +21,7 @@ export default function Card({
     >
       {title && !collapsible && (
         <h2
-          className="px-2 py-2 text-xl font-bold"
+          className="p-2 text-xl font-bold"
           onClick={() => collapsible && setIsCollapsed((c) => !c)}
         >
           {title}
@@ -48,7 +48,7 @@ export default function Card({
               d="M9 5 5 1 1 5"
             />
           </svg>
-          <h2 className="text-xl font-bold">{title}</h2>
+          <h2 className="p-2 text-xl font-bold">{title}</h2>
         </div>
       )}
       {!isCollapsed && children}

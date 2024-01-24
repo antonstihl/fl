@@ -1,10 +1,10 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useLeaveAdd } from "../context/LeaveContext";
-import { Schedule, ScheduleSchema } from "../types/types";
+import { NewSchedule, NewScheduleSchema } from "../types/types";
 import Button from "./Button";
 import Card from "./Card";
 import Modal from "./Modal";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   close: () => any;
@@ -16,11 +16,11 @@ export default function AddSchedule({ close }: Props) {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Schedule>({ resolver: zodResolver(ScheduleSchema) });
+  } = useForm<NewSchedule>({ resolver: zodResolver(NewScheduleSchema) });
 
   const addLeave = useLeaveAdd();
 
-  const onSubmit: SubmitHandler<Schedule> = (data) => {
+  const onSubmit: SubmitHandler<NewSchedule> = (data) => {
     addLeave(data);
     reset();
     close();
@@ -70,6 +70,7 @@ export default function AddSchedule({ close }: Props) {
             <label>Ledig</label>
             <input
               type="number"
+              step="any"
               className={"border border-black p-1 rounded-sm"}
               {...register("pace", {
                 required: true,
@@ -80,6 +81,7 @@ export default function AddSchedule({ close }: Props) {
             <label>Föräldrapenning</label>
             <input
               type="number"
+              step="any"
               className={"border border-black p-1 rounded-sm"}
               {...register("payment", {
                 required: true,

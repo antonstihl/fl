@@ -5,10 +5,13 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Schedule } from "../types/types";
+import { NewSchedule, Schedule } from "../types/types";
 
 const LeaveContext = createContext<Schedule[]>([]);
-const LeaveAddContext = createContext<(schedule: Schedule) => void>(() =>
+const LeaveAddContext = createContext<(_: NewSchedule) => void>(() =>
+  alert("Not implemented.")
+);
+const LeaveDeleteContext = createContext<(_: string) => void>(() =>
   alert("Not implemented.")
 );
 
@@ -18,6 +21,10 @@ export function useLeaves() {
 
 export function useLeaveAdd() {
   return useContext(LeaveAddContext);
+}
+
+export function useLeaveDelete() {
+  return useContext(LeaveDeleteContext);
 }
 
 export function LeaveProvider({ children }: PropsWithChildren) {
@@ -30,8 +37,16 @@ export function LeaveProvider({ children }: PropsWithChildren) {
     }
   }, []);
 
-  const addLeave = (schedule: Schedule) => {
-    const newLeaves = [...leaves, schedule];
+  const addLeave = (schedule: NewSchedule) => {
+    const newLeaves = [...leaves, { ...schedule, id: crypto.randomUUID() }];
+    setLeaves(newLeaves);
+    localStorage.setItem("leaves", JSON.stringify(newLeaves));
+  };
+
+  const deleteLeave = (id: string) => {
+    const i = leaves.findIndex((l) => l.id === id);
+    const newLeaves = [...leaves];
+    newLeaves.splice(i, 1);
     setLeaves(newLeaves);
     localStorage.setItem("leaves", JSON.stringify(newLeaves));
   };
@@ -39,7 +54,9 @@ export function LeaveProvider({ children }: PropsWithChildren) {
   return (
     <LeaveContext.Provider value={leaves}>
       <LeaveAddContext.Provider value={addLeave}>
-        {children}
+        <LeaveDeleteContext.Provider value={deleteLeave}>
+          {children}
+        </LeaveDeleteContext.Provider>
       </LeaveAddContext.Provider>
     </LeaveContext.Provider>
   );

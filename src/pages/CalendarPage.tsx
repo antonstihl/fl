@@ -11,6 +11,7 @@ import { useParent } from "../context/ParentContext";
 import { useAllAllocatedDates } from "../hooks/useAllocatedDates";
 import { MyDate } from "../types/types";
 import { convertToDate, toggleDateInArray } from "../utils/DateUtilities";
+import { useLeaveDelete, useLeaves } from "../context/LeaveContext";
 
 const leaveOptions: Option[] = [
   { label: "100%", value: 1 },
@@ -53,6 +54,8 @@ export default function () {
       : [];
   const [level, setLevel] = useState<Level>("Sjukpenning");
   const [hoveredDate, setHoveredDate] = useState<MyDate | undefined>(undefined);
+  const leaves = useLeaves();
+  const deleteLeave = useLeaveDelete();
 
   useEffect(() => {
     const selectedDates = JSON.parse(
@@ -138,6 +141,9 @@ export default function () {
           }
         />
       )}
+      {isAddScheduleModalOpen && (
+        <AddSchedule close={() => setIsAddScheduleModalOpen(false)} />
+      )}
       <div className="flex justify-center m-4">
         <div className="flex flex-col gap-4">
           {!isEnabled ? (
@@ -210,12 +216,9 @@ export default function () {
                   </div>
                 </div>
               </Card>
-              {isAddScheduleModalOpen && (
-                <AddSchedule close={() => setIsAddScheduleModalOpen(false)} />
-              )}
               {isSelectDatesActive && (
                 <div className="flex flex-col gap-4">
-                  <Card width="full">
+                  <Card width="full" title="Lägg till datum">
                     <div className="flex flex-col gap-3">
                       <div className="flex justify-end">
                         <Button variant="delete" onClick={clearSelectedDates}>
@@ -297,6 +300,44 @@ export default function () {
                   </Card>
                 </div>
               )}
+              <Card title="Scheman" collapsible={leaves.length > 0}>
+                {leaves.length === 0 ? (
+                  <p className="px-2 pb-2">Inga scheman tillagda.</p>
+                ) : (
+                  <table className="border-separate border-spacing-x-2 border-spacing-y-1">
+                    <thead>
+                      <tr className="text-left">
+                        <th>Start</th>
+                        <th>Slut</th>
+                        <th>Ledig</th>
+                        <th>FP</th>
+                      </tr>
+                    </thead>
+                    {leaves.map((l) => (
+                      <tr key={l.id}>
+                        <td>
+                          {convertToDate(l.startDate).toLocaleDateString(
+                            "sv-SE"
+                          )}
+                        </td>
+                        <td>
+                          {convertToDate(l.endDate).toLocaleDateString("sv-SE")}
+                        </td>
+                        <td>{l.pace}</td>
+                        <td>{l.payment}</td>
+                        <td>
+                          <Button
+                            variant="delete"
+                            onClick={() => deleteLeave(l.id)}
+                          >
+                            x
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </table>
+                )}
+              </Card>
             </>
           )}
         </div>
