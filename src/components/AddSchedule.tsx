@@ -1,10 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useLeaveAdd } from "../context/LeaveContext";
-import { NewSchedule, NewScheduleSchema } from "../types/types";
+import { NewSchedule, NewScheduleSchema, Weekday } from "../types/types";
 import Button from "./Button";
 import Card from "./Card";
 import Modal from "./Modal";
+import WeekdaySelect from "./WeekdaySelect";
+import { useParents } from "../context/ParentContext";
+import { useChildren } from "../context/ChildContext";
 
 type Props = {
   close: () => any;
@@ -15,37 +18,77 @@ export default function AddSchedule({ close }: Props) {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
-  } = useForm<NewSchedule>({ resolver: zodResolver(NewScheduleSchema) });
-
+    getValues,
+    watch,
+  } = useForm<NewSchedule>({
+    resolver: zodResolver(NewScheduleSchema),
+    defaultValues: {
+      cadence: "daily",
+    },
+  });
   const addLeave = useLeaveAdd();
+  const parents = useParents();
+  const children = useChildren();
+
+  console.log({ values: getValues() });
 
   const onSubmit: SubmitHandler<NewSchedule> = (data) => {
+    console.log(data);
     addLeave(data);
     reset();
     close();
   };
 
+  const todayDateString = new Date().toLocaleDateString("sv-SE");
+
   return (
     <Modal>
       <Card title="Skapa schema">
         <div className="m-2">
-          {/* <ul>
-            {leaves.map((l) => (
-              <li key={l.pace}>{JSON.stringify(l)}</li>
-            ))}
-          </ul> */}
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="grid grid-cols-2 gap-1 items-center"
           >
+            <label>Förälder</label>
+            <select
+              autoFocus
+              className={"border border-black p-1 rounded-sm"}
+              {...register("parentId", {
+                required: true,
+              })}
+            >
+              {parents.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            <p className="text-red-800 col-span-2">
+              {errors.parentId?.message}
+            </p>
+            <label>Barn</label>
+            <select
+              className={"border border-black p-1 rounded-sm"}
+              {...register("childId", {
+                required: true,
+              })}
+            >
+              {children.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            <p className="text-red-800 col-span-2">{errors.childId?.message}</p>
             <label>Start</label>
             <input
               type="date"
+              defaultValue={todayDateString}
               className={"border border-black p-1 rounded-sm"}
               min="1900-01-01"
               max="3000-01-01"
-              defaultValue={new Date().toLocaleDateString("sv-SE")}
               {...register("startDate", {
                 required: true,
                 valueAsDate: true,
@@ -57,10 +100,10 @@ export default function AddSchedule({ close }: Props) {
             <label>Slut</label>
             <input
               type="date"
+              defaultValue={todayDateString}
               className={"border border-black p-1 rounded-sm"}
               min="1900-01-01"
               max="3000-01-01"
-              defaultValue={new Date().toLocaleDateString("sv-SE")}
               {...register("endDate", {
                 required: true,
                 valueAsDate: true,
@@ -92,12 +135,30 @@ export default function AddSchedule({ close }: Props) {
             <label>Frekvens</label>
             <select
               className={"border border-black p-1 rounded-sm"}
-              {...register("cadence", { required: true })}
+              {...register("cadence", {
+                required: true,
+              })}
             >
-              <option value="daily">Varje dag</option>
-              <option value="weekly">Varje vecka</option>
+              <option value="daily" id="daily">
+                Varje dag
+              </option>
+              <option value="weekly" id="weekly">
+                Varje vecka
+              </option>
             </select>
-            <p className="text-red-800 col-span-2">{errors.payment?.message}</p>
+            {watch().cadence == "weekly" && (
+              <>
+                <label>Veckodagar</label>
+                <Controller
+                  control={control}
+                  name="weekdays"
+                  render={({ field: { onChange, value } }) => (
+                    <WeekdaySelect onChange={onChange} value={value} />
+                  )}
+                />
+              </>
+            )}
+            <p className="text-red-800 col-span-2">{errors.cadence?.message}</p>
             <p className="text-red-800 col-span-2">
               {Object.values(errors)
                 .filter((v) => v.type === "custom")

@@ -53,9 +53,7 @@ export function toggleAllocatedDates(
 
 export function getAllocatedDatesInMonthFromLeave(
   month: MyMonth,
-  leaves: Schedule[],
-  childId: string,
-  parentId: string
+  leaves: Schedule[]
 ): MyAllocatedDate[] {
   const daysInMonth = new Date(month.year, month.month, 0).getDate();
   return leaves.flatMap((l) => {
@@ -66,8 +64,8 @@ export function getAllocatedDatesInMonthFromLeave(
       const d = new Date(month.year, month.month, i);
       if (startDate <= d && endDate >= d) {
         allocatedDates.push({
-          childId,
-          parentId,
+          childId: l.childId,
+          parentId: l.parentId,
           year: d.getFullYear(),
           month: d.getMonth(),
           date: d.getDate(),

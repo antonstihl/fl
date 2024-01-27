@@ -101,9 +101,7 @@ const Calendar = ({
 
   const allocatedDatesFromLeaves = getAllocatedDatesInMonthFromLeave(
     { year, month },
-    leaves,
-    childId,
-    parentId
+    leaves
   );
 
   const decreaseMonth = () => {
@@ -157,26 +155,30 @@ const Calendar = ({
         ))}
         {dates.map((dateCell) => {
           const leaves = [...allocatedDates, ...allocatedDatesFromLeaves]
-            .filter((allocatedDate) =>
-              myDatesEqual(allocatedDate, dateCell.date)
+            .filter(
+              (allocatedDate) =>
+                myDatesEqual(allocatedDate, dateCell.date) &&
+                allocatedDate.childId === childId &&
+                allocatedDate.parentId === parentId
             )
             .map((allocatedDate) => ({
               pace: allocatedDate.pace,
               payment: allocatedDate.payment,
             }));
-          const secondaryLeaves = parentId
-            ? allAllocatedDates
-                .filter(
-                  (allocatedDate) =>
-                    myDatesEqual(allocatedDate, dateCell.date) &&
-                    (allocatedDate.parentId !== parentId ||
-                      allocatedDate.childId !== childId)
-                )
-                .map((allocatedDate) => ({
-                  pace: allocatedDate.pace,
-                  payment: allocatedDate.payment,
-                }))
-            : [];
+          const secondaryLeaves = [
+            ...allAllocatedDates,
+            ...allocatedDatesFromLeaves,
+          ]
+            .filter(
+              (allocatedDate) =>
+                myDatesEqual(allocatedDate, dateCell.date) &&
+                (allocatedDate.parentId !== parentId ||
+                  allocatedDate.childId !== childId)
+            )
+            .map((allocatedDate) => ({
+              pace: allocatedDate.pace,
+              payment: allocatedDate.payment,
+            }));
           return (
             <DateButton
               key={`${dateCell.date.year}+${dateCell.date.month}+${dateCell.date.date}+${leaves.length}`}
