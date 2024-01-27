@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useChildren } from "../context/ChildContext";
 import { useLeaveAdd } from "../context/LeaveContext";
-import { NewSchedule, NewScheduleSchema, Weekday } from "../types/types";
+import { useParents } from "../context/ParentContext";
+import { NewSchedule, NewScheduleSchema } from "../types/types";
 import Button from "./Button";
 import Card from "./Card";
 import Modal from "./Modal";
 import WeekdaySelect from "./WeekdaySelect";
-import { useParents } from "../context/ParentContext";
-import { useChildren } from "../context/ChildContext";
 
 type Props = {
   close: () => any;

@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useChildren } from "../context/ChildContext";
 import {
-  useLeaveAdd,
   useLeaveDelete,
-  useLeaves,
+  useLeaves
 } from "../context/LeaveContext";
-import { ALL_WEEKDAYS, Parent, Weekday } from "../types/types";
+import { useParents } from "../context/ParentContext";
+import { ALL_WEEKDAYS, Weekday } from "../types/types";
 import { convertToDate } from "../utils/DateUtilities";
 import Button from "./Button";
-import { useParents } from "../context/ParentContext";
-import { useChildren } from "../context/ChildContext";
 
 export default function () {
   const leaves = useLeaves();
