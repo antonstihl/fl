@@ -1,4 +1,4 @@
-import { MyDate } from "../types/types";
+import { MyAllocatedDate, MyDate, MyMonth, Schedule } from "../types/types";
 
 export function getDayOfMyDate(myDate: MyDate): number {
   return new Date(myDate.year, myDate.month, myDate.date).getDay();
@@ -49,4 +49,31 @@ export function toggleAllocatedDates(
     newAllocatedDates = toggleDateInArray(date, newAllocatedDates);
   });
   return newAllocatedDates;
+}
+
+export function getAllocatedDatesInMonthFromLeave(
+  month: MyMonth,
+  leaves: Schedule[]
+): MyAllocatedDate[] {
+  const daysInMonth = new Date(month.year, month.month, 0).getDate();
+  return leaves.flatMap((l) => {
+    const startDate = convertToDate(l.startDate);
+    const endDate = convertToDate(l.endDate);
+    let allocatedDates: MyAllocatedDate[] = [];
+    for (let i = 1; i <= daysInMonth; i++) {
+      const d = new Date(month.year, month.month, i);
+      if (startDate <= d && endDate >= d) {
+        allocatedDates.push({
+          childId: l.childId,
+          parentId: l.parentId,
+          year: d.getFullYear(),
+          month: d.getMonth(),
+          date: d.getDate(),
+          pace: l.pace,
+          payment: l.payment,
+        });
+      }
+    }
+    return allocatedDates;
+  });
 }

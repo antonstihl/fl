@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import CalendarPage from "./pages/CalendarPage.tsx";
 import FamilyPage from "./pages/FamilyPage.tsx";
 import SalaryPage from "./pages/SalaryPage.tsx";
+import SchedulePage from "./pages/SchedulePage.tsx";
 
 const landingLoader = async () => {
   return redirect("calendar");
@@ -30,6 +31,10 @@ const router = createHashRouter([
       {
         path: "calendar",
         element: <CalendarPage />,
+      },
+      {
+        path: "schedule",
+        element: <SchedulePage />,
       },
       // {
       //   path: "stats",

@@ -1,4 +1,4 @@
-import { Leave, MyDate } from "../types/types";
+import { MyDate } from "../types/types";
 
 function getAllocationBarWidthStyle(allocation?: number) {
   if (!allocation || allocation < 0.25) {
@@ -14,6 +14,11 @@ function getAllocationBarWidthStyle(allocation?: number) {
   }
 }
 
+type Leave = {
+  pace: number;
+  payment: number;
+};
+
 export type Props = {
   date: MyDate;
   selected: boolean;
@@ -23,6 +28,7 @@ export type Props = {
   activeMonth: boolean;
   toggleSelectedDate: () => void;
   highlight: boolean;
+  clickable: boolean;
 };
 
 export default function DateButton({
@@ -34,6 +40,7 @@ export default function DateButton({
   activeMonth,
   toggleSelectedDate,
   highlight,
+  clickable,
 }: Props) {
   const decoratedLeaves = leaves.map((leave: Leave) => ({
     paceStyle: getAllocationBarWidthStyle(leave.pace),
@@ -54,17 +61,18 @@ export default function DateButton({
     </div>
   ) : (
     <button
-      className={`flex justify-between flex-col rounded-sm h-max min-w-fit select-none shadow-sm shadow-black ${
-        highlight ? "bg-black text-white" : "bg-white"
+      className={`flex justify-between flex-col rounded-sm h-max min-w-fit select-none shadow-black shadow-sm ${
+        highlight ? "bg-blue-900 text-white" : "bg-white"
       }`}
-      onClick={toggleSelectedDate}
+      disabled={!clickable}
+      onClick={clickable ? toggleSelectedDate : () => {}}
     >
       <div className="flex justify-center">
         <div
           className={`w-0 h-0 
             border-l-[15px] border-l-transparent
             border-b-[15px] ${
-              selected ? "border-b-green-700" : "border-b-transparent"
+              selected ? "border-b-blue-500" : "border-b-transparent"
             }
             border-r-[15px] border-r-transparent
             -rotate-45 -translate-x-3 -translate-y-1 z-0`}
